@@ -46,7 +46,8 @@ import java.net.URL;
 import java.util.Vector;
 
 public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
-    public final String LOG_TAG = SunshineSyncAdapter.class.getSimpleName();
+//    public final String LOG_TAG = SunshineSyncAdapter.class.getSimpleName();
+    String LOG_TAG = MainActivity.class.getSimpleName();
     // Interval at which to sync with the weather, in seconds.
     // 60 seconds (1 minute) * 180 = 3 hours
     public static final int SYNC_INTERVAL = 60 * 180;
@@ -86,16 +87,17 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
         String forecastJsonStr = null;
 
         String format = "json";
-        String units = "metric";
-        int numDays = 14;
+        String units = "imperial";
+        int numDays = 1;
 
         try {
             // Construct the URL for the OpenWeatherMap query
             // Possible parameters are avaiable at OWM's forecast API page, at
             // http://openweathermap.org/API#forecast
+//            http://api.openweathermap.org/data/2.5/forecast?zip=67114,US&mode=json&units=imperial&cnt=1&APPID=0ef0b7a5a9bf08bc8b34717875b06049
             final String FORECAST_BASE_URL =
-                    "http://api.openweathermap.org/data/2.5/forecast/daily?";
-            final String QUERY_PARAM = "q";
+                    "http://api.openweathermap.org/data/2.5/forecast?";
+            final String QUERY_PARAM = "zip";
             final String FORMAT_PARAM = "mode";
             final String UNITS_PARAM = "units";
             final String DAYS_PARAM = "cnt";
@@ -110,6 +112,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                     .build();
 
             URL url = new URL(builtUri.toString());
+            Log.d(LOG_TAG, "URL is: " + url);
 
             // Create the request to OpenWeatherMap, and open the connection
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -120,6 +123,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
             InputStream inputStream = urlConnection.getInputStream();
             StringBuffer buffer = new StringBuffer();
             if (inputStream == null) {
+                Log.d(LOG_TAG, "input Stream is null");
                 // Nothing to do.
                 return;
             }
@@ -131,20 +135,23 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                 // But it does make debugging a *lot* easier if you print out the completed
                 // buffer for debugging.
                 buffer.append(line + "\n");
+                Log.d("sunshine", "line is: " + line);
             }
 
             if (buffer.length() == 0) {
                 // Stream was empty.  No point in parsing.
+                Log.d("sunshine", " buffer is empty ");
                 return;
             }
             forecastJsonStr = buffer.toString();
+            Log.d("sunshine", "buffer is: " + forecastJsonStr);
             getWeatherDataFromJson(forecastJsonStr, locationQuery);
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Error ", e);
+            Log.e(LOG_TAG, "IOException ", e);
             // If the code didn't successfully get the weather data, there's no point in attempting
             // to parse it.
         } catch (JSONException e) {
-            Log.e(LOG_TAG, e.getMessage(), e);
+            Log.e(LOG_TAG, "JSONException ", e);
             e.printStackTrace();
         } finally {
             if (urlConnection != null) {
@@ -171,6 +178,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
     private void getWeatherDataFromJson(String forecastJsonStr,
                                         String locationSetting)
             throws JSONException {
+        Log.d("sunshine", "inside get Weather Data From Json ");
 
         // Now we have a String representing the complete forecast in JSON Format.
         // Fortunately parsing is easy:  constructor takes the JSON string and converts it
@@ -197,8 +205,8 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
         // All temperatures are children of the "temp" object.
         final String OWM_TEMPERATURE = "temp";
-        final String OWM_MAX = "max";
-        final String OWM_MIN = "min";
+        final String OWM_MAX = "temp_max";
+        final String OWM_MIN = "temp_min";
 
         final String OWM_WEATHER = "weather";
         final String OWM_DESCRIPTION = "main";
@@ -236,7 +244,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
             // now we work exclusively in UTC
             dayTime = new Time();
-
+            Log.d("sunshine", "weather array length: " + weatherArray.length());
             for(int i = 0; i < weatherArray.length(); i++) {
                 // These are the values that will be collected.
                 long dateTime;
@@ -254,13 +262,39 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                 // Get the JSON object representing the day
                 JSONObject dayForecast = weatherArray.getJSONObject(i);
 
+//                JSONObject outerObject = new JSONObject(jsonString);
+
+//                JSONArray jsonArray = dayForecast.names();
+//                for(int j = 0; j < jsonArray.length(); j++) {
+//                    Log.d("sunshine", "json array at index: " + jsonArray.get(j).toString());
+//
+//                }
                 // Cheating to convert this to UTC time, which is what we want anyhow
                 dateTime = dayTime.setJulianDay(julianStartDay+i);
+//                if (dayForecast.has(OWM_PRESSURE)) {
+//                    String name = dayForecast.getString(OWM_PRESSURE);
+//                    Log.d("sunshine", "Json object has pressure");
+//
+//                } else {
+//                    Log.d("sunshine", "Json object does not have pressure");
+//                }
 
-                pressure = dayForecast.getDouble(OWM_PRESSURE);
-                humidity = dayForecast.getInt(OWM_HUMIDITY);
-                windSpeed = dayForecast.getDouble(OWM_WINDSPEED);
-                windDirection = dayForecast.getDouble(OWM_WIND_DIRECTION);
+                pressure = dayForecast.getJSONObject(OWM_DESCRIPTION).getDouble(OWM_PRESSURE); // Assuming "inner" is a key to another JSON object
+//                String innerValue = innerObject.getString(OWM_PRESSURE);
+                Log.d("sunshine", "json pressure value: " + pressure);
+//                pressure = dayForecast.getDouble(OWM_PRESSURE);
+
+                humidity = dayForecast.getJSONObject(OWM_DESCRIPTION).getInt(OWM_HUMIDITY);
+                Log.d("sunshine", "json humidity value: " + humidity);
+//                humidity = dayForecast.getInt(OWM_HUMIDITY);
+
+                windSpeed = dayForecast.getJSONObject("wind").getInt(OWM_WINDSPEED);
+                Log.d("sunshine", "json windspeed value: " + windSpeed);
+//                windSpeed = dayForecast.getDouble(OWM_WINDSPEED);
+
+                windDirection = dayForecast.getJSONObject("wind").getDouble(OWM_WIND_DIRECTION);
+                Log.d("sunshine", "json wind Direction value: " + windDirection);
+//                windDirection = dayForecast.getDouble(OWM_WIND_DIRECTION);
 
                 // Description is in a child array called "weather", which is 1 element long.
                 // That element also contains a weather code.
@@ -271,9 +305,14 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
                 // Temperatures are in a child object called "temp".  Try not to name variables
                 // "temp" when working with temperature.  It confuses everybody.
-                JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
-                high = temperatureObject.getDouble(OWM_MAX);
-                low = temperatureObject.getDouble(OWM_MIN);
+                high = dayForecast.getJSONObject(OWM_DESCRIPTION).getDouble(OWM_MAX);
+                Log.d("sunshine", "json high temp value: " + high);
+
+//                JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
+//                high = temperatureObject.getDouble(OWM_MAX);
+                low = dayForecast.getJSONObject(OWM_DESCRIPTION).getDouble(OWM_MIN);
+                Log.d("sunshine", "json low temp value: " + low);
+//                low = temperatureObject.getDouble(OWM_MIN);
 
                 ContentValues weatherValues = new ContentValues();
 
@@ -534,6 +573,8 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     public static void initializeSyncAdapter(Context context) {
+        String LOG_TAG = MainActivity.class.getSimpleName();
+        Log.d(LOG_TAG, "initialize sync adapter ");
         getSyncAccount(context);
     }
 }
