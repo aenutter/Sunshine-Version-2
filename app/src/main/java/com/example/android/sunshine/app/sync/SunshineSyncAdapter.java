@@ -88,7 +88,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
         String format = "json";
         String units = "imperial";
-        int numDays = 1;
+        int numDays = 14;
 
         try {
             // Construct the URL for the OpenWeatherMap query
