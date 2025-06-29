@@ -50,16 +50,17 @@ public class ForecastAdapter extends CursorAdapter {
         // Choose the layout type
         int viewType = getItemViewType(cursor.getPosition());
         int layoutId = -1;
-        switch (viewType) {
-            case VIEW_TYPE_TODAY: {
-                layoutId = R.layout.list_item_forecast_today;
-                break;
-            }
-            case VIEW_TYPE_FUTURE_DAY: {
-                layoutId = R.layout.list_item_forecast;
-                break;
-            }
-        }
+        layoutId = R.layout.list_item_forecast;
+//        switch (viewType) {
+//            case VIEW_TYPE_TODAY: {
+//                layoutId = R.layout.list_item_forecast_today;
+//                break;
+//            }
+//            case VIEW_TYPE_FUTURE_DAY: {
+//                layoutId = R.layout.list_item_forecast;
+//                break;
+//            }
+//        }
 
         View view = LayoutInflater.from(context).inflate(layoutId, parent, false);
 
@@ -73,24 +74,26 @@ public class ForecastAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
 
         ViewHolder viewHolder = (ViewHolder) view.getTag();
+//
+        viewHolder.iconView.setImageResource(Utility.getIconResourceForWeatherCondition(
+                cursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID)));
+//
+//        int viewType = getItemViewType(cursor.getPosition());
+//        switch (viewType) {
+//            case VIEW_TYPE_TODAY: {
+//                // Get weather icon
+//                viewHolder.iconView.setImageResource(Utility.getArtResourceForWeatherCondition(
+//                        cursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID)));
+//                break;
+//            }
+//            case VIEW_TYPE_FUTURE_DAY: {
+//                // Get weather icon
+//                viewHolder.iconView.setImageResource(Utility.getIconResourceForWeatherCondition(
+//                        cursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID)));
+//                break;
+//            }
+//        }
 
-        int viewType = getItemViewType(cursor.getPosition());
-        switch (viewType) {
-            case VIEW_TYPE_TODAY: {
-                // Get weather icon
-                viewHolder.iconView.setImageResource(Utility.getArtResourceForWeatherCondition(
-                        cursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID)));
-                break;
-            }
-            case VIEW_TYPE_FUTURE_DAY: {
-                // Get weather icon
-                viewHolder.iconView.setImageResource(Utility.getIconResourceForWeatherCondition(
-                        cursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID)));
-                break;
-            }
-        }
-
-        // Read date from cursor
         long dateInMillis = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);
         // Find TextView and set formatted date on it
         viewHolder.dateView.setText(Utility.getFriendlyDayString(context, dateInMillis));
