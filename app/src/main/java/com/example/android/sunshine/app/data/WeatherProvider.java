@@ -23,6 +23,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.util.Log;
+
+import com.example.android.sunshine.app.MyLogger;
 
 public class WeatherProvider extends ContentProvider {
 
@@ -180,11 +183,18 @@ public class WeatherProvider extends ContentProvider {
             case WEATHER_WITH_LOCATION_AND_DATE:
             {
                 retCursor = getWeatherByLocationSettingAndDate(uri, projection, sortOrder);
+//                Log.d("sunshine", "projection: " + projection[1]);
+//                System.out.println("projection" + projection[1]);
+                MyLogger.d("sunshine", "projection: " + projection[1]); //instead of Log.d().
+
                 break;
             }
             // "weather/*"
             case WEATHER_WITH_LOCATION: {
                 retCursor = getWeatherByLocationSetting(uri, projection, sortOrder);
+//                Log.d("sunshine", "projection: " + projection);
+//                System.out.println("projection" + projection);
+                MyLogger.d("sunshine", "projection: " + projection[1]);
                 break;
             }
             // "weather"
@@ -198,6 +208,9 @@ public class WeatherProvider extends ContentProvider {
                         null,
                         sortOrder
                 );
+//                Log.d("sunshine", "projection: " + projection);
+//                System.out.println("projection" + projection);
+                MyLogger.d("sunshine", "projection: " + projection[1]);
                 break;
             }
             // "location"
@@ -211,6 +224,9 @@ public class WeatherProvider extends ContentProvider {
                         null,
                         sortOrder
                 );
+//                Log.d("sunshine", "projection: " + projection);
+//                System.out.println("projection" + projection);
+                MyLogger.d("sunshine", "projection: " + projection[1]);
                 break;
             }
 
