@@ -6,8 +6,11 @@ import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import static android.R.attr.button;
 
 /**
  * {@link ForecastAdapter} exposes a list of weather forecasts
@@ -31,8 +34,10 @@ public class ForecastAdapter extends CursorAdapter {
         public final TextView descriptionView;
         public final TextView highTempView;
         public final TextView lowTempView;
+        public final TextView playGroupView;
 
         public ViewHolder(View view) {
+            playGroupView = (TextView) view.findViewById(R.id.my_button);
             iconView = (ImageView) view.findViewById(R.id.list_item_icon);
             dateView = (TextView) view.findViewById(R.id.list_item_date_textview);
             descriptionView = (TextView) view.findViewById(R.id.list_item_forecast_textview);
@@ -90,6 +95,7 @@ public class ForecastAdapter extends CursorAdapter {
             }
         }
 
+        viewHolder.playGroupView.setTextColor(context.getResources().getColor(R.color.grey));
         // Read date from cursor
         long dateInMillis = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);
         // Find TextView and set formatted date on it
