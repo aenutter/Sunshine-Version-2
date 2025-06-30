@@ -29,7 +29,6 @@ import android.util.Log;
 
 import com.example.android.sunshine.app.BuildConfig;
 import com.example.android.sunshine.app.MainActivity;
-import com.example.android.sunshine.app.MyLogger;
 import com.example.android.sunshine.app.R;
 import com.example.android.sunshine.app.Utility;
 import com.example.android.sunshine.app.data.WeatherContract;
@@ -312,8 +311,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 //                JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
 //                high = temperatureObject.getDouble(OWM_MAX);
                 low = dayForecast.getJSONObject(OWM_DESCRIPTION).getDouble(OWM_MIN);
-//                Log.d("sunshine", "json low temp value: " + low);
-                MyLogger.d("sunshine", "json low temp value: " + low);
+                Log.d("sunshine", "json low temp value: " + low);
 //                low = temperatureObject.getDouble(OWM_MIN);
 
                 ContentValues weatherValues = new ContentValues();

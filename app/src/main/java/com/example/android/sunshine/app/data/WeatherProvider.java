@@ -194,8 +194,7 @@ public class WeatherProvider extends ContentProvider {
                 retCursor = getWeatherByLocationSetting(uri, projection, sortOrder);
 //                Log.d("sunshine", "projection: " + projection);
 //                System.out.println("projection" + projection);
-                MyLogger.d("sunshine", "projection: " + projection[1] + " " + projection[2]);
-                MyLogger.d("sunshine", "sort order: " + sortOrder);
+                MyLogger.d("sunshine", "projection: " + projection[1]);
                 break;
             }
             // "weather"
@@ -227,7 +226,7 @@ public class WeatherProvider extends ContentProvider {
                 );
 //                Log.d("sunshine", "projection: " + projection);
 //                System.out.println("projection" + projection);
-                MyLogger.d("sunshine", "projection: " + projection[0]);
+                MyLogger.d("sunshine", "projection: " + projection[1]);
                 break;
             }
 
