@@ -29,6 +29,7 @@ import android.util.Log;
 
 import com.example.android.sunshine.app.BuildConfig;
 import com.example.android.sunshine.app.MainActivity;
+import com.example.android.sunshine.app.MyLogger;
 import com.example.android.sunshine.app.R;
 import com.example.android.sunshine.app.Utility;
 import com.example.android.sunshine.app.data.WeatherContract;
@@ -179,6 +180,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                                         String locationSetting)
             throws JSONException {
         Log.d("sunshine", "inside get Weather Data From Json ");
+        MyLogger.d("sunshine", "inside get Weather Data From Json ");
 
         // Now we have a String representing the complete forecast in JSON Format.
         // Fortunately parsing is easy:  constructor takes the JSON string and converts it
@@ -244,7 +246,9 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
             // now we work exclusively in UTC
             dayTime = new Time();
-            Log.d("sunshine", "weather array length: " + weatherArray.length());
+//            Log.d("sunshine", "weather array length: " + weatherArray.length());
+            MyLogger.d("sunshine", "weather array length: " + weatherArray.length());
+
             for(int i = 0; i < weatherArray.length(); i++) {
                 // These are the values that will be collected.
                 long dateTime;
@@ -281,19 +285,20 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
                 pressure = dayForecast.getJSONObject(OWM_DESCRIPTION).getDouble(OWM_PRESSURE); // Assuming "inner" is a key to another JSON object
 //                String innerValue = innerObject.getString(OWM_PRESSURE);
-                Log.d("sunshine", "json pressure value: " + pressure);
+//                Log.d("sunshine", "json pressure value: " + pressure);
+                MyLogger.d("sunshine", "json pressure value: " + pressure);
 //                pressure = dayForecast.getDouble(OWM_PRESSURE);
 
                 humidity = dayForecast.getJSONObject(OWM_DESCRIPTION).getInt(OWM_HUMIDITY);
-                Log.d("sunshine", "json humidity value: " + humidity);
+//                Log.d("sunshine", "json humidity value: " + humidity);
 //                humidity = dayForecast.getInt(OWM_HUMIDITY);
 
                 windSpeed = dayForecast.getJSONObject("wind").getInt(OWM_WINDSPEED);
-                Log.d("sunshine", "json windspeed value: " + windSpeed);
+//                Log.d("sunshine", "json windspeed value: " + windSpeed);
 //                windSpeed = dayForecast.getDouble(OWM_WINDSPEED);
 
                 windDirection = dayForecast.getJSONObject("wind").getDouble(OWM_WIND_DIRECTION);
-                Log.d("sunshine", "json wind Direction value: " + windDirection);
+//                Log.d("sunshine", "json wind Direction value: " + windDirection);
 //                windDirection = dayForecast.getDouble(OWM_WIND_DIRECTION);
 
                 // Description is in a child array called "weather", which is 1 element long.
@@ -306,12 +311,12 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                 // Temperatures are in a child object called "temp".  Try not to name variables
                 // "temp" when working with temperature.  It confuses everybody.
                 high = dayForecast.getJSONObject(OWM_DESCRIPTION).getDouble(OWM_MAX);
-                Log.d("sunshine", "json high temp value: " + high);
+//                Log.d("sunshine", "json high temp value: " + high);
 
 //                JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
 //                high = temperatureObject.getDouble(OWM_MAX);
                 low = dayForecast.getJSONObject(OWM_DESCRIPTION).getDouble(OWM_MIN);
-                Log.d("sunshine", "json low temp value: " + low);
+//                Log.d("sunshine", "json low temp value: " + low);
 //                low = temperatureObject.getDouble(OWM_MIN);
 
                 ContentValues weatherValues = new ContentValues();

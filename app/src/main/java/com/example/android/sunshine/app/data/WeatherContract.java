@@ -126,6 +126,9 @@ public class WeatherContract {
         // Degrees are meteorological degrees (e.g, 0 is north, 180 is south).  Stored as floats.
         public static final String COLUMN_DEGREES = "degrees";
 
+        // playgroup.  Stored as text.
+        public static final String COLUMN_PLAYGROUP = "playgroup";
+
         public static Uri buildWeatherUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }

@@ -37,7 +37,7 @@ public class ForecastAdapter extends CursorAdapter {
         public final TextView playGroupView;
 
         public ViewHolder(View view) {
-            playGroupView = (TextView) view.findViewById(R.id.my_button);
+            playGroupView = (TextView) view.findViewById(R.id.list_item_playgroup);
             iconView = (ImageView) view.findViewById(R.id.list_item_icon);
             dateView = (TextView) view.findViewById(R.id.list_item_date_textview);
             descriptionView = (TextView) view.findViewById(R.id.list_item_forecast_textview);
@@ -55,16 +55,17 @@ public class ForecastAdapter extends CursorAdapter {
         // Choose the layout type
         int viewType = getItemViewType(cursor.getPosition());
         int layoutId = -1;
-        switch (viewType) {
-            case VIEW_TYPE_TODAY: {
-                layoutId = R.layout.list_item_forecast_today;
-                break;
-            }
-            case VIEW_TYPE_FUTURE_DAY: {
-                layoutId = R.layout.list_item_forecast;
-                break;
-            }
-        }
+        layoutId = R.layout.list_item_forecast;
+//        switch (viewType) {
+//            case VIEW_TYPE_TODAY: {
+//                layoutId = R.layout.list_item_forecast_today;
+//                break;
+//            }
+//            case VIEW_TYPE_FUTURE_DAY: {
+//                layoutId = R.layout.list_item_forecast;
+//                break;
+//            }
+//        }
 
         View view = LayoutInflater.from(context).inflate(layoutId, parent, false);
 
@@ -80,22 +81,27 @@ public class ForecastAdapter extends CursorAdapter {
         ViewHolder viewHolder = (ViewHolder) view.getTag();
 
         int viewType = getItemViewType(cursor.getPosition());
-        switch (viewType) {
-            case VIEW_TYPE_TODAY: {
-                // Get weather icon
-                viewHolder.iconView.setImageResource(Utility.getArtResourceForWeatherCondition(
-                        cursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID)));
-                break;
-            }
-            case VIEW_TYPE_FUTURE_DAY: {
-                // Get weather icon
-                viewHolder.iconView.setImageResource(Utility.getIconResourceForWeatherCondition(
-                        cursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID)));
-                break;
-            }
-        }
+        viewHolder.iconView.setImageResource(Utility.getIconResourceForWeatherCondition(
+                cursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID)));
+//        switch (viewType) {
+//            case VIEW_TYPE_TODAY: {
+//                // Get weather icon
+//                viewHolder.iconView.setImageResource(Utility.getArtResourceForWeatherCondition(
+//                        cursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID)));
+//                break;
+//            }
+//            case VIEW_TYPE_FUTURE_DAY: {
+//                // Get weather icon
+//                viewHolder.iconView.setImageResource(Utility.getIconResourceForWeatherCondition(
+//                        cursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID)));
+//                break;
+//            }
+//        }
 
-        viewHolder.playGroupView.setTextColor(context.getResources().getColor(R.color.grey));
+        // Read playgroup from cursor
+        String playgroup = cursor.getString(ForecastFragment.COL_WEATHER_DESC);
+        // Find TextView and set weather forecast on it
+        viewHolder.descriptionView.setText(playgroup);
         // Read date from cursor
         long dateInMillis = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);
         // Find TextView and set formatted date on it

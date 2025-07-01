@@ -226,7 +226,7 @@ public class WeatherProvider extends ContentProvider {
                 );
 //                Log.d("sunshine", "projection: " + projection);
 //                System.out.println("projection" + projection);
-                MyLogger.d("sunshine", "projection: " + projection[1]);
+                MyLogger.d("sunshine", "projection: " + projection[0]);
                 break;
             }
 
