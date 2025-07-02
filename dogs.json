@@ -1,0 +1,53 @@
+{
+"cod":"200",
+"message":0,
+"cnt":5,
+"list":
+   [
+   
+      {
+      "dog":
+         {
+         "name":"Refried Beans",
+         "breed":"German Shepherd",
+         "gender":"Male",
+         "walk_AM":true,
+         "walk_PM":false,
+         "office":true,
+         "visitor":true,
+         "volunteer_room":true,
+         "adventure_tails":true
+         }
+      },
+   
+      {
+      "dog":
+         {
+         "name":"Captain Nincompoop",
+         "breed":"Chocolate Lab",
+         "gender":"Male",
+         "walk_AM":true,
+         "walk_PM":false,
+         "office":true,
+         "visitor":true,
+         "volunteer_room":true,
+         "adventure_tails":true
+         }
+      },
+   
+      {
+      "dog":
+         {
+         "name":"Tapioca",
+         "breed":"German Shepherd",
+         "gender":"female",
+         "walk_AM":true,
+         "walk_PM":false,
+         "office":true,
+         "visitor":true,
+         "volunteer_room":true,
+         "adventure_tails":false
+         }
+      }
+   ]
+}

@@ -185,7 +185,7 @@ public class WeatherProvider extends ContentProvider {
                 retCursor = getWeatherByLocationSettingAndDate(uri, projection, sortOrder);
 //                Log.d("sunshine", "projection: " + projection[1]);
 //                System.out.println("projection" + projection[1]);
-                MyLogger.d("sunshine", "projection: " + projection[1]); //instead of Log.d().
+//                MyLogger.d("sunshine", "projection: " + projection[1]); //instead of Log.d().
 
                 break;
             }
@@ -194,7 +194,7 @@ public class WeatherProvider extends ContentProvider {
                 retCursor = getWeatherByLocationSetting(uri, projection, sortOrder);
 //                Log.d("sunshine", "projection: " + projection);
 //                System.out.println("projection" + projection);
-                MyLogger.d("sunshine", "projection: " + projection[1]);
+//                MyLogger.d("sunshine", "projection: " + projection[1]);
                 break;
             }
             // "weather"
@@ -210,7 +210,7 @@ public class WeatherProvider extends ContentProvider {
                 );
 //                Log.d("sunshine", "projection: " + projection);
 //                System.out.println("projection" + projection);
-                MyLogger.d("sunshine", "projection: " + projection[1]);
+//                MyLogger.d("sunshine", "projection: " + projection[1]);
                 break;
             }
             // "location"
@@ -343,6 +343,7 @@ public class WeatherProvider extends ContentProvider {
                     for (ContentValues value : values) {
                         normalizeDate(value);
                         long _id = db.insert(WeatherContract.WeatherEntry.TABLE_NAME, null, value);
+                        MyLogger.d("sunshine", "ContentValues values: " + value);
                         if (_id != -1) {
                             returnCount++;
                         }
