@@ -99,10 +99,10 @@ public class ForecastAdapter extends CursorAdapter {
 //        }
 
         // Read playgroup from cursor
-        String playgroup = cursor.getString(ForecastFragment.COL_PLAYGROUP);
+//        String playgroup = cursor.getString(ForecastFragment.COL_PLAYGROUP);
         // Find TextView and set weather forecast on it
-        viewHolder.playGroupView.setText(playgroup);
-        MyLogger.d("sunshine", "playgroup: " + playgroup); //instead of Log.d().
+//        viewHolder.playGroupView.setText(playgroup);
+//        MyLogger.d("sunshine", "playgroup: " + playgroup); //instead of Log.d().
 
         // Read date from cursor
         long dateInMillis = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);

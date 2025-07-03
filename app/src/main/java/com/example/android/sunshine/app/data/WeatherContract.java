@@ -43,6 +43,7 @@ public class WeatherContract {
     // At least, let's hope not.  Don't be that dev, reader.  Don't be that dev.
     public static final String PATH_WEATHER = "weather";
     public static final String PATH_LOCATION = "location";
+    public static final String PATH_DOG = "dog";
 
     // To make it easy to query for the exact date, we normalize all dates that go into
     // the database to the start of the the Julian day at UTC.
@@ -78,13 +79,19 @@ public class WeatherContract {
 
         // In order to uniquely pinpoint the location on the map when we launch the
         // map intent, we store the latitude and longitude as returned by openweathermap.
-        public static final String COLUMN_COORD_LAT = "coord_lat";
-        public static final String COLUMN_COORD_LONG = "coord_long";
+        public static final String COLUMN_DOG_GENDER = "gender";
+        public static final String COLUMN_DOG_WALK_AM = "walk_AM";
+        public static final String COLUMN_DOG_WALK_PM = "walk_PM";
+        public static final String COLUMN_DOG_OFFICE = "office";
+        public static final String COLUMN_DOG_VISITOR = "visitor";
+        public static final String COLUMN_DOG_VOLUNTEER_ROOM = "volunteer_room";
+        public static final String COLUMN_DOG_ADVENTURE_TAILS = "adventure_tails";
 
-        public static Uri buildLocationUri(long id) {
+        public static Uri buildDogUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }
+
 
     /* Inner class that defines the table contents of the location table */
     public static final class LocationEntry implements BaseColumns {
@@ -159,7 +166,7 @@ public class WeatherContract {
         public static final String COLUMN_DEGREES = "degrees";
 
         // playgroup.  Stored as text.
-        public static final String COLUMN_PLAYGROUP = "playgroup";
+//        public static final String COLUMN_PLAYGROUP = "playgroup";
 
         public static Uri buildWeatherUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);

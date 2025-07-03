@@ -34,6 +34,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.android.sunshine.app.data.WeatherContract;
+import com.example.android.sunshine.app.sync.DogSyncAdapter;
 import com.example.android.sunshine.app.sync.SunshineSyncAdapter;
 
 /**
@@ -67,8 +68,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING,
             WeatherContract.WeatherEntry.COLUMN_WEATHER_ID,
             WeatherContract.LocationEntry.COLUMN_COORD_LAT,
-            WeatherContract.LocationEntry.COLUMN_COORD_LONG,
-            WeatherContract.WeatherEntry.COLUMN_PLAYGROUP
+            WeatherContract.LocationEntry.COLUMN_COORD_LONG
     };
 
     // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
@@ -82,7 +82,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     static final int COL_WEATHER_CONDITION_ID = 6;
     static final int COL_COORD_LAT = 7;
     static final int COL_COORD_LONG = 8;
-    static final int COL_PLAYGROUP = 9;
+//    static final int COL_PLAYGROUP = 9;
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -191,6 +191,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     private void updateWeather() {
         SunshineSyncAdapter.syncImmediately(getActivity());
+        DogSyncAdapter.syncImmediately(getActivity());
     }
 
     private void openPreferredLocationInMap() {

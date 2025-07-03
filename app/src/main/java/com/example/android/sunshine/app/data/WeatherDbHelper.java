@@ -21,6 +21,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.android.sunshine.app.data.WeatherContract.LocationEntry;
 import com.example.android.sunshine.app.data.WeatherContract.WeatherEntry;
+import com.example.android.sunshine.app.data.WeatherContract.DogEntry;
 
 /**
  * Manages a local database for weather data.
@@ -28,7 +29,7 @@ import com.example.android.sunshine.app.data.WeatherContract.WeatherEntry;
 public class WeatherDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     static final String DATABASE_NAME = "weather.db";
 
@@ -38,6 +39,22 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
+
+        // Create a table to hold locations.  A location consists of the string supplied in the
+        // location setting, the city name, and the latitude and longitude
+        final String SQL_CREATE_DOG_TABLE = "CREATE TABLE " + DogEntry.TABLE_NAME + " (" +
+                DogEntry._ID + " INTEGER PRIMARY KEY," +
+                DogEntry.COLUMN_DOG_NAME + " TEXT NOT NULL, " +
+                DogEntry.COLUMN_DOG_BREED + " TEXT NOT NULL, " +
+                DogEntry.COLUMN_DOG_GENDER + " TEXT NOT NULL, " +
+                DogEntry.COLUMN_DOG_WALK_AM + " INTEGER NOT NULL, " +
+                DogEntry.COLUMN_DOG_WALK_PM + " INTEGER NOT NULL, " +
+                DogEntry.COLUMN_DOG_OFFICE + " INTEGER NOT NULL, " +
+                DogEntry.COLUMN_DOG_VISITOR + " INTEGER NOT NULL, " +
+                DogEntry.COLUMN_DOG_VOLUNTEER_ROOM + " INTEGER NOT NULL, " +
+                DogEntry.COLUMN_DOG_ADVENTURE_TAILS + " INTEGER NOT NULL " +
+                " );";
+
         // Create a table to hold locations.  A location consists of the string supplied in the
         // location setting, the city name, and the latitude and longitude
         final String SQL_CREATE_LOCATION_TABLE = "CREATE TABLE " + LocationEntry.TABLE_NAME + " (" +
@@ -81,6 +98,7 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
 
         sqLiteDatabase.execSQL(SQL_CREATE_LOCATION_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_WEATHER_TABLE);
+        sqLiteDatabase.execSQL(SQL_CREATE_DOG_TABLE);
     }
 
     @Override

@@ -113,7 +113,9 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                     .build();
 
             URL url = new URL(builtUri.toString());
-            Log.d(LOG_TAG, "URL is: " + url);
+//            Log.d(LOG_TAG, "URL is: " + url);
+            MyLogger.d("sunshine", "URL is: " + url);
+
 
             // Create the request to OpenWeatherMap, and open the connection
             urlConnection = (HttpURLConnection) url.openConnection();
