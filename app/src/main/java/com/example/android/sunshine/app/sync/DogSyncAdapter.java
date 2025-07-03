@@ -99,22 +99,26 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
             // http://openweathermap.org/API#forecast
 //            http://api.openweathermap.org/data/2.5/forecast?zip=67114,US&mode=json&units=imperial&cnt=1&APPID=0ef0b7a5a9bf08bc8b34717875b06049
             final String FORECAST_BASE_URL =
-                    "http://172.16.14.176:3000/list";
+                    "http://10.0.2.2:3000/list";
             final String QUERY_PARAM = "zip";
             final String FORMAT_PARAM = "mode";
             final String UNITS_PARAM = "units";
             final String DAYS_PARAM = "cnt";
             final String APPID_PARAM = "APPID";
 
-            Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
-                    .appendQueryParameter(QUERY_PARAM, locationQuery)
-                    .appendQueryParameter(FORMAT_PARAM, format)
-                    .appendQueryParameter(UNITS_PARAM, units)
-                    .appendQueryParameter(DAYS_PARAM, Integer.toString(numDays))
-                    .appendQueryParameter(APPID_PARAM, BuildConfig.OPEN_WEATHER_MAP_API_KEY)
-                    .build();
+//            Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
+//                    .appendQueryParameter(QUERY_PARAM, locationQuery)
+//                    .appendQueryParameter(FORMAT_PARAM, format)
+//                    .appendQueryParameter(UNITS_PARAM, units)
+//                    .appendQueryParameter(DAYS_PARAM, Integer.toString(numDays))
+//                    .appendQueryParameter(APPID_PARAM, BuildConfig.OPEN_WEATHER_MAP_API_KEY)
+//                    .build();
 
-            URL url = new URL(FORECAST_BASE_URL);
+            Uri builtUri = Uri.parse(FORECAST_BASE_URL);
+
+
+            URL url = new URL(builtUri.toString());
+//            URL url = new URL(FORECAST_BASE_URL);
 //            Log.d(LOG_TAG, "URL is: " + url);
             MyLogger.d("sunshine", "dog URL is: " + url);
 
@@ -141,7 +145,7 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
                 // buffer for debugging.
                 buffer.append(line + "\n");
 //                Log.d("sunshine", "line is: " + line);
-                MyLogger.d("sunshine", "dog line is: " + line);
+//                MyLogger.d("sunshine", "dog line is: " + line);
 
             }
 
@@ -232,19 +236,20 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
         final String OWM_WEATHER_ID = "id";
 
         try {
-            JSONObject dogJsonObject = new JSONObject(dogJsonStr);
-            JSONArray dogArray = dogJsonObject.getJSONArray(LIST);
+            MyLogger.d("sunshine", "dog dogJsonStr type: " + dogJsonStr.getClass());
+            JSONArray dogArray = new JSONArray(dogJsonStr);
+//            JSONArray dogArray = dogJsonObject.getJSONArray(LIST);
 
 //            JSONObject dogJson = dogJsonObject.getJSONObject(DOG);
-            String dogName = dogJson.getString(DOG_NAME);
-
-            String dogBreed = dogJson.getString(DOG_BREED);
-            int dogWalkAM = dogJson.getInt(DOG_WALK_AM);
-            int dogWalkPM = dogJson.getInt(DOG_WALK_PM);
-            int dogOffice = dogJson.getInt(DOG_OFFICE);
-            int dogVisitor = dogJson.getInt(DOG_VISITOR);
-            int dogVolunteerRoom = dogJson.getInt(DOG_VOLUNTEER_ROOM);
-            int dogAdventureTails = dogJson.getInt(DOG_ADVENTURE_TAILS);
+//            String dogName = dogJson.getString(DOG_NAME);
+//
+//            String dogBreed = dogJson.getString(DOG_BREED);
+//            int dogWalkAM = dogJson.getInt(DOG_WALK_AM);
+//            int dogWalkPM = dogJson.getInt(DOG_WALK_PM);
+//            int dogOffice = dogJson.getInt(DOG_OFFICE);
+//            int dogVisitor = dogJson.getInt(DOG_VISITOR);
+//            int dogVolunteerRoom = dogJson.getInt(DOG_VOLUNTEER_ROOM);
+//            int dogAdventureTails = dogJson.getInt(DOG_ADVENTURE_TAILS);
 
 
 //            JSONObject cityCoord = cityJson.getJSONObject(OWM_COORD);
@@ -289,10 +294,19 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
                 String description;
                 int weatherId;
                 String name;
+                String breed;
+                String gender;
+                Integer walkAM;
+                Integer walkPM;
+                Integer office;
+                Integer visitor;
+                Integer volunteerRoom;
+                Integer adventureTails;
+
 
                 // Get the JSON object representing the day
                 JSONObject dogDetails = dogArray.getJSONObject(i);
-                JSONObject dogJson = dogJsonObject.getJSONObject(DOG);
+                JSONObject dogJson = dogDetails.getJSONObject(DOG);
 
 //                JSONObject outerObject = new JSONObject(jsonString);
 
@@ -311,10 +325,36 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
 //                    Log.d("sunshine", "Json object does not have pressure");
 //                }
 
-                name = dogJson.getString(DOG_NAME); // Assuming "inner" is a key to another JSON object
+                name = dogJson.getString(DOG_NAME);
+                MyLogger.d("sunshine", "dog json name value: " + name);
+
+                breed = dogJson.getString(DOG_BREED);
+                MyLogger.d("sunshine", "dog json breed value: " + breed);
+
+                gender = dogJson.getString(DOG_GENDER);
+                MyLogger.d("sunshine", "dog json gender value: " + gender);
+
+                walkAM = dogJson.getInt(DOG_WALK_AM);
+                MyLogger.d("sunshine", "dog json walk AM value: " + walkAM);
+
+                walkPM = dogJson.getInt(DOG_WALK_PM);
+                MyLogger.d("sunshine", "dog json walk PM value: " + walkPM);
+
+                office = dogJson.getInt(DOG_OFFICE);
+                MyLogger.d("sunshine", "dog json office value: " + office);
+
+                visitor = dogJson.getInt(DOG_VISITOR);
+                MyLogger.d("sunshine", "dog json visitor value: " + visitor);
+
+                volunteerRoom = dogJson.getInt(DOG_VOLUNTEER_ROOM);
+                MyLogger.d("sunshine", "dog json volunteer room value: " + volunteerRoom);
+
+                adventureTails = dogJson.getInt(DOG_ADVENTURE_TAILS);
+                MyLogger.d("sunshine", "dog json adventure tails value: " + adventureTails);
+
 //                String innerValue = innerObject.getString(OWM_PRESSURE);
 //                Log.d("sunshine", "json pressure value: " + pressure);
-                MyLogger.d("sunshine", "dog json name value: " + name);
+//                MyLogger.d("sunshine", "dog json name value: " + name);
 //                pressure = dayForecast.getDouble(OWM_PRESSURE);
 
 //                humidity = dayForecast.getJSONObject(OWM_DESCRIPTION).getInt(OWM_HUMIDITY);
@@ -350,15 +390,14 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
                 ContentValues dogValues = new ContentValues();
 
                 dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_NAME, name);
-//                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DATE, dateTime);
-//                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_HUMIDITY, humidity);
-//                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_PRESSURE, pressure);
-//                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_WIND_SPEED, windSpeed);
-//                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DEGREES, windDirection);
-//                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_MAX_TEMP, high);
-//                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_MIN_TEMP, low);
-//                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_SHORT_DESC, description);
-//                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_WEATHER_ID, weatherId);
+                dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_BREED, breed);
+                dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_GENDER, gender);
+                dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_WALK_AM, walkAM);
+                dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_WALK_PM, walkPM);
+                dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_OFFICE, office);
+                dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_VISITOR, visitor);
+                dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_VOLUNTEER_ROOM, volunteerRoom);
+                dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_ADVENTURE_TAILS, adventureTails);
 
                 cVVector.add(dogValues);
             }
@@ -368,12 +407,12 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
             if ( cVVector.size() > 0 ) {
                 ContentValues[] cvArray = new ContentValues[cVVector.size()];
                 cVVector.toArray(cvArray);
-                getContext().getContentResolver().bulkInsert(WeatherContract.WeatherEntry.CONTENT_URI, cvArray);
+                getContext().getContentResolver().bulkInsert(WeatherContract.DogEntry.CONTENT_URI, cvArray);
 
                 // delete old data so we don't build up an endless history
-                getContext().getContentResolver().delete(WeatherContract.WeatherEntry.CONTENT_URI,
-                        WeatherContract.WeatherEntry.COLUMN_DATE + " <= ?",
-                        new String[] {Long.toString(dayTime.setJulianDay(julianStartDay-1))});
+//                getContext().getContentResolver().delete(WeatherContract.DogEntry.CONTENT_URI,
+//                        WeatherContract.WeatherEntry.COLUMN_DATE + " <= ?",
+//                        new String[] {Long.toString(dayTime.setJulianDay(julianStartDay-1))});
 
                 notifyWeather();
             }

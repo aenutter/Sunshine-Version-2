@@ -217,6 +217,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
         final String OWM_WEATHER_ID = "id";
 
         try {
+            MyLogger.d("sunshine", "SunshineSyncAdapter forecast JsonStr: " + forecastJsonStr);
             JSONObject forecastJson = new JSONObject(forecastJsonStr);
             JSONArray weatherArray = forecastJson.getJSONArray(OWM_LIST);
 

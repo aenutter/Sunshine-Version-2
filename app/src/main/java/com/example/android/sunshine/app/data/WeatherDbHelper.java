@@ -29,7 +29,7 @@ import com.example.android.sunshine.app.data.WeatherContract.DogEntry;
 public class WeatherDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 5;
 
     static final String DATABASE_NAME = "weather.db";
 
@@ -111,6 +111,7 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
         // should be your top priority before modifying this method.
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + LocationEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + WeatherEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DogEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 }

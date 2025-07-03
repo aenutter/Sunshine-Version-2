@@ -11,12 +11,12 @@
          "name":"Refried Beans",
          "breed":"German Shepherd",
          "gender":"Male",
-         "walk_AM":true,
-         "walk_PM":false,
-         "office":true,
-         "visitor":true,
-         "volunteer_room":true,
-         "adventure_tails":true
+         "walk_AM":1,
+         "walk_PM":0,
+         "office":1,
+         "visitor":0,
+         "volunteer_room":1,
+         "adventure_tails":0
          }
       },
    
@@ -26,12 +26,12 @@
          "name":"Captain Nincompoop",
          "breed":"Chocolate Lab",
          "gender":"Male",
-         "walk_AM":true,
-         "walk_PM":false,
-         "office":true,
-         "visitor":true,
-         "volunteer_room":true,
-         "adventure_tails":true
+         "walk_AM":1,
+         "walk_PM":0,
+         "office":1,
+         "visitor":0,
+         "volunteer_room":1,
+         "adventure_tails":0
          }
       },
    
@@ -40,13 +40,13 @@
          {
          "name":"Tapioca",
          "breed":"German Shepherd",
-         "gender":"female",
-         "walk_AM":true,
-         "walk_PM":false,
-         "office":true,
-         "visitor":true,
-         "volunteer_room":true,
-         "adventure_tails":false
+         "gender":"Female",
+         "walk_AM":1,
+         "walk_PM":0,
+         "office":1,
+         "visitor":0,
+         "volunteer_room":1,
+         "adventure_tails":0
          }
       }
    ]

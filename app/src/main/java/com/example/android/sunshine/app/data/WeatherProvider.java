@@ -37,6 +37,7 @@ public class WeatherProvider extends ContentProvider {
     static final int WEATHER_WITH_LOCATION = 101;
     static final int WEATHER_WITH_LOCATION_AND_DATE = 102;
     static final int LOCATION = 300;
+    static final int DOGS = 400;
 
     private static final SQLiteQueryBuilder sWeatherByLocationSettingQueryBuilder;
 
@@ -133,6 +134,7 @@ public class WeatherProvider extends ContentProvider {
         matcher.addURI(authority, WeatherContract.PATH_WEATHER + "/*/#", WEATHER_WITH_LOCATION_AND_DATE);
 
         matcher.addURI(authority, WeatherContract.PATH_LOCATION, LOCATION);
+        matcher.addURI(authority, WeatherContract.PATH_DOG, DOGS);
         return matcher;
     }
 
@@ -262,6 +264,18 @@ public class WeatherProvider extends ContentProvider {
                     returnUri = WeatherContract.LocationEntry.buildLocationUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
+            case DOGS: {
+                MyLogger.d("sunshine", "dog content values: " + values.toString());
+                long _id = db.insert(WeatherContract.DogEntry.TABLE_NAME, null, values);
+                if ( _id > 0 )
+                    returnUri = WeatherContract.DogEntry.buildDogUri(_id);
+                else {
+                    MyLogger.d("sunshine", "Failed to insert row into " + uri);
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                }
+
                 break;
             }
             default:
