@@ -9,13 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import static android.R.attr.button;
-
 /**
- * {@link ForecastAdapter} exposes a list of weather forecasts
+ * {@link DogAdapter} exposes a list of weather forecasts
  * from a {@link Cursor} to a {@link android.widget.ListView}.
  */
-public class ForecastAdapter extends CursorAdapter {
+public class DogAdapter extends CursorAdapter {
 
     private static final int VIEW_TYPE_COUNT = 2;
     private static final int VIEW_TYPE_TODAY = 0;
@@ -45,7 +43,7 @@ public class ForecastAdapter extends CursorAdapter {
         }
     }
 
-    public ForecastAdapter(Context context, Cursor c, int flags) {
+    public DogAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
 
