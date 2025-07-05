@@ -11,14 +11,14 @@
     android:background="@drawable/touch_selector">
 
     <FrameLayout
-        android:layout_width="80dp"
+        android:layout_width="10dp"
         android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/list_item_icon"
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
 
         <TextView
             android:id="@+id/list_item_playgroup"
@@ -33,22 +33,24 @@
     <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="0dp"
-        android:layout_weight="7"
+        android:layout_weight="5"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/list_item_date_textview"
+            android:id="@+id/list_item_dog_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:text=""/>
 
         <TextView
-            android:id="@+id/list_item_forecast_textview"
+            android:id="@+id/list_item_dog_gender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed"
-            android:textAppearance="?android:textAppearanceSmall"/>
+            android:textAppearance="?android:textAppearanceSmall"
+            android:text=""/>
     </LinearLayout>
 
     <LinearLayout
@@ -59,19 +61,90 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/list_item_high_textview"
+            android:id="@+id/list_item_dog_walk_am"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="sans-serif-condensed"
-            android:textAppearance="?android:textAppearanceLarge"/>
+            android:textAppearance="?android:textAppearanceSmall"
+            android:text=""/>
 
         <TextView
-            android:id="@+id/list_item_low_textview"
+            android:id="@+id/list_item_dog_walk_pm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="sans-serif-condensed"
-            android:textAppearance="?android:textAppearanceSmall"/>
+            android:text=""
+            android:textAppearance="?android:textAppearanceSmall" />
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="5"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/list_item_dog_office"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-condensed"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:text=""/>
+
+        <TextView
+            android:id="@+id/list_item_dog_visitor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-condensed"
+            android:text=""
+            android:textAppearance="?android:textAppearanceSmall" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="5"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/list_item_dog_volunteer_room"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-condensed"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:text=""/>
+
+        <TextView
+            android:id="@+id/list_item_dog_adventure_tails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-condensed"
+            android:text=""
+            android:textAppearance="?android:textAppearanceSmall" />
+    </LinearLayout>
+    <FrameLayout
+        android:layout_width="10dp"
+        android:layout_height="wrap_content">
+
+<!--        <ImageView
+            android:id="@+id/list_item_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/list_item_playgroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:textSize="20sp" />-->
+
+    </FrameLayout>
 </LinearLayout>

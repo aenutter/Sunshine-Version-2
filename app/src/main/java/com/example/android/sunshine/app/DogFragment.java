@@ -44,6 +44,8 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
     public static final String LOG_TAG = DogFragment.class.getSimpleName();
     private DogAdapter mDogAdapter;
 
+    static final String DETAIL_URI = "URI";
+
     private ListView mListView;
     private int mPosition = ListView.INVALID_POSITION;
     private boolean mUseTodayLayout;
@@ -60,7 +62,8 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
             // On the one hand, that's annoying.  On the other, you can search the weather table
             // using the location set by the user, which is only in the Location table.
             // So the convenience is worth it.
-            WeatherContract.DogEntry.TABLE_NAME + "." + WeatherContract.DogEntry._ID,
+//            WeatherContract.DogEntry.TABLE_NAME,
+            WeatherContract.DogEntry._ID,
             WeatherContract.DogEntry.COLUMN_DOG_NAME,
             WeatherContract.DogEntry.COLUMN_DOG_BREED,
             WeatherContract.DogEntry.COLUMN_DOG_GENDER,
@@ -74,15 +77,16 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
 
     // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
     // must change.
-    static final int COL_DOG_NAME = 0;
-    static final int COL_DOG_BREED = 1;
-    static final int COL_DOG_GENDER = 2;
-    static final int COL_DOG_WALK_AM = 3;
-    static final int COL_DOG_WALK_PM = 4;
-    static final int COL_DOG_OFFICE = 5;
-    static final int COL_DOG_VISITOR = 6;
-    static final int COL_DOG_VISITOR_ROOM = 7;
-    static final int COL_DOS_ADVENTURE_TAILS = 8;
+    static final int COL_DOG_ID = 0;
+    static final int COL_DOG_NAME = 1;
+    static final int COL_DOG_BREED = 2;
+    static final int COL_DOG_GENDER = 3;
+    static final int COL_DOG_WALK_AM = 4;
+    static final int COL_DOG_WALK_PM = 5;
+    static final int COL_DOG_OFFICE = 6;
+    static final int COL_DOG_VISITOR = 7;
+    static final int COL_DOG_VOLUNTEER_ROOM = 8;
+    static final int COL_DOS_ADVENTURE_TAILS = 9;
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -238,11 +242,13 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
         // dates after or including today.
 
         // Sort order:  Ascending, by date.
-        String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
+        String sortOrder = WeatherContract.DogEntry._ID + " ASC";
 
-        String locationSetting = Utility.getPreferredLocation(getActivity());
-        Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(
-                locationSetting, System.currentTimeMillis());
+//        String locationSetting = Utility.getPreferredLocation(getActivity());
+//        Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(
+//                locationSetting, System.currentTimeMillis());
+        Uri weatherForLocationUri = WeatherContract.DogEntry.buildDogUri(i);
+        MyLogger.d("sunshine", "uri: " + weatherForLocationUri);
 
         return new CursorLoader(getActivity(),
                 weatherForLocationUri,

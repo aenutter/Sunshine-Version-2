@@ -21,6 +21,8 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import android.text.format.Time;
 
+import static android.R.attr.id;
+
 /**
  * Defines table and column names for the weather database.
  */
@@ -43,7 +45,7 @@ public class WeatherContract {
     // At least, let's hope not.  Don't be that dev, reader.  Don't be that dev.
     public static final String PATH_WEATHER = "weather";
     public static final String PATH_LOCATION = "location";
-    public static final String PATH_DOG = "dog";
+    public static final String PATH_DOG = "dogs";
 
     // To make it easy to query for the exact date, we normalize all dates that go into
     // the database to the start of the the Julian day at UTC.
@@ -69,6 +71,7 @@ public class WeatherContract {
         // Table name
         public static final String TABLE_NAME = "dogs";
 
+//        public static final String COLUMN_DOG_ID = "_id";
         // The location setting string is what will be sent to openweathermap
         // as the location query.
         public static final String COLUMN_DOG_NAME = "name";

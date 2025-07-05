@@ -134,7 +134,8 @@ public class WeatherProvider extends ContentProvider {
         matcher.addURI(authority, WeatherContract.PATH_WEATHER + "/*/#", WEATHER_WITH_LOCATION_AND_DATE);
 
         matcher.addURI(authority, WeatherContract.PATH_LOCATION, LOCATION);
-        matcher.addURI(authority, WeatherContract.PATH_DOG, DOGS);
+        matcher.addURI(authority, WeatherContract.PATH_DOG + "/*", DOGS);
+        matcher.addURI(authority, WeatherContract.PATH_DOG , DOGS);
         return matcher;
     }
 
@@ -169,6 +170,8 @@ public class WeatherProvider extends ContentProvider {
                 return WeatherContract.WeatherEntry.CONTENT_TYPE;
             case LOCATION:
                 return WeatherContract.LocationEntry.CONTENT_TYPE;
+            case DOGS:
+                return WeatherContract.DogEntry.CONTENT_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -219,6 +222,22 @@ public class WeatherProvider extends ContentProvider {
             case LOCATION: {
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         WeatherContract.LocationEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+//                Log.d("sunshine", "projection: " + projection);
+//                System.out.println("projection" + projection);
+                MyLogger.d("sunshine", "projection: " + projection[0]);
+                break;
+            }
+            // "location"
+            case DOGS: {
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        WeatherContract.DogEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,

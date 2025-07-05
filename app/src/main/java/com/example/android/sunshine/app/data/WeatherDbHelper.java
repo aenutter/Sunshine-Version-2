@@ -29,7 +29,7 @@ import com.example.android.sunshine.app.data.WeatherContract.DogEntry;
 public class WeatherDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
     static final String DATABASE_NAME = "weather.db";
 
@@ -43,7 +43,7 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
         // Create a table to hold locations.  A location consists of the string supplied in the
         // location setting, the city name, and the latitude and longitude
         final String SQL_CREATE_DOG_TABLE = "CREATE TABLE " + DogEntry.TABLE_NAME + " (" +
-                DogEntry._ID + " INTEGER PRIMARY KEY," +
+                DogEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 DogEntry.COLUMN_DOG_NAME + " TEXT NOT NULL, " +
                 DogEntry.COLUMN_DOG_BREED + " TEXT NOT NULL, " +
                 DogEntry.COLUMN_DOG_GENDER + " TEXT NOT NULL, " +
@@ -52,8 +52,9 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
                 DogEntry.COLUMN_DOG_OFFICE + " INTEGER NOT NULL, " +
                 DogEntry.COLUMN_DOG_VISITOR + " INTEGER NOT NULL, " +
                 DogEntry.COLUMN_DOG_VOLUNTEER_ROOM + " INTEGER NOT NULL, " +
-                DogEntry.COLUMN_DOG_ADVENTURE_TAILS + " INTEGER NOT NULL " +
-                " );";
+                DogEntry.COLUMN_DOG_ADVENTURE_TAILS + " INTEGER NOT NULL, " +
+                " UNIQUE (" + DogEntry.COLUMN_DOG_NAME + ", " +
+                DogEntry.COLUMN_DOG_NAME + ") ON CONFLICT REPLACE);";
 
         // Create a table to hold locations.  A location consists of the string supplied in the
         // location setting, the city name, and the latitude and longitude

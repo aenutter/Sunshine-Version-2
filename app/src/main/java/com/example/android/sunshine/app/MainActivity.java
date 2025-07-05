@@ -57,11 +57,11 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
             getSupportActionBar().setElevation(0f);
         }
 
-        ForecastFragment forecastFragment =  ((ForecastFragment)getSupportFragmentManager()
+        DogFragment dogFragment =  ((DogFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_forecast));
-        forecastFragment.setUseTodayLayout(!mTwoPane);
+        dogFragment.setUseTodayLayout(!mTwoPane);
 
-        SunshineSyncAdapter.initializeSyncAdapter(this);
+//        SunshineSyncAdapter.initializeSyncAdapter(this);
         DogSyncAdapter.initializeSyncAdapter(this);
     }
 
