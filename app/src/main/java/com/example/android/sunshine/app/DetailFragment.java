@@ -54,43 +54,41 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private static final int DETAIL_LOADER = 0;
 
     private static final String[] DETAIL_COLUMNS = {
-            WeatherEntry.TABLE_NAME + "." + WeatherEntry._ID,
-            WeatherEntry.COLUMN_DATE,
-            WeatherEntry.COLUMN_SHORT_DESC,
-            WeatherEntry.COLUMN_MAX_TEMP,
-            WeatherEntry.COLUMN_MIN_TEMP,
-            WeatherEntry.COLUMN_HUMIDITY,
-            WeatherEntry.COLUMN_PRESSURE,
-            WeatherEntry.COLUMN_WIND_SPEED,
-            WeatherEntry.COLUMN_DEGREES,
-            WeatherEntry.COLUMN_WEATHER_ID,
-            // This works because the WeatherProvider returns location data joined with
-            // weather data, even though they're stored in two different tables.
-            WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING
+            WeatherContract.DogEntry._ID,
+            WeatherContract.DogEntry.COLUMN_DOG_NAME,
+            WeatherContract.DogEntry.COLUMN_DOG_BREED,
+            WeatherContract.DogEntry.COLUMN_DOG_GENDER,
+            WeatherContract.DogEntry.COLUMN_DOG_WALK_AM,
+            WeatherContract.DogEntry.COLUMN_DOG_WALK_PM,
+            WeatherContract.DogEntry.COLUMN_DOG_OFFICE,
+            WeatherContract.DogEntry.COLUMN_DOG_VISITOR,
+            WeatherContract.DogEntry.COLUMN_DOG_VOLUNTEER_ROOM,
+            WeatherContract.DogEntry.COLUMN_DOG_ADVENTURE_TAILS
     };
 
     // These indices are tied to DETAIL_COLUMNS.  If DETAIL_COLUMNS changes, these
     // must change.
-    public static final int COL_WEATHER_ID = 0;
-    public static final int COL_WEATHER_DATE = 1;
-    public static final int COL_WEATHER_DESC = 2;
-    public static final int COL_WEATHER_MAX_TEMP = 3;
-    public static final int COL_WEATHER_MIN_TEMP = 4;
-    public static final int COL_WEATHER_HUMIDITY = 5;
-    public static final int COL_WEATHER_PRESSURE = 6;
-    public static final int COL_WEATHER_WIND_SPEED = 7;
-    public static final int COL_WEATHER_DEGREES = 8;
-    public static final int COL_WEATHER_CONDITION_ID = 9;
+    public static final int COL_DOG_ID = 0;
+    public static final int COL_DOG_NAME = 1;
+    public static final int COL_DOG_BREED = 2;
+    public static final int COL_DOG_GENDER = 3;
+    public static final int COL_DOG_WALK_AM= 4;
+    public static final int COL_DOG_WALK_PM = 5;
+    public static final int COL_DOG_OFFICE = 6;
+    public static final int COL_DOG_VISITOR = 7;
+    public static final int COL_DOG_VOLUNTEER_ROOM = 8;
+    public static final int COL_DOG_ADVENTURE_TAILS = 9;
 
     private ImageView mIconView;
-    private TextView mFriendlyDateView;
-    private TextView mDateView;
-    private TextView mDescriptionView;
-    private TextView mHighTempView;
-    private TextView mLowTempView;
-    private TextView mHumidityView;
-    private TextView mWindView;
-    private TextView mPressureView;
+    private TextView mNameView;
+    private TextView mBreedView;
+    private TextView mGenderView;
+    private TextView mWalkAMView;
+    private TextView mWalkPMView;
+    private TextView mOfficeView;
+    private TextView mVisitorView;
+    private TextView mVolunteerView;
+    private TextView mAdventureTailsView;
 
     public DetailFragment() {
         setHasOptionsMenu(true);

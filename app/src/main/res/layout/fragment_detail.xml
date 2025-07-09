@@ -13,20 +13,20 @@
 
         <!-- Header: Day, Date -->
         <TextView
-            android:fontFamily="sans-serif-condensed"
-            android:id="@+id/detail_day_textview"
-            android:layout_height="wrap_content"
+            android:id="@+id/detail_dog_name_text_view"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
             android:textColor="@color/black"
-            android:textSize="24sp" />
+            android:textSize="96sp" />
 
         <TextView
-            android:fontFamily="sans-serif-condensed"
-            android:id="@+id/detail_date_textview"
-            android:layout_height="wrap_content"
+            android:id="@+id/detail_dog_gender_textview"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
             android:textColor="@color/grey_700"
-            android:textSize="16sp" />
+            android:textSize="48sp" />
 
         <!-- Main content: high, low, art, weather state -->
         <LinearLayout
@@ -86,6 +86,48 @@
             android:layout_marginTop="16dp"
             android:layout_width="match_parent"
             android:orientation="vertical">
+
+            <CheckedTextView
+                android:id="@+id/walk_AM_checked_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checkMark="@android:drawable/checkbox_on_background"
+                android:text="Walk AM" />
+
+            <CheckedTextView
+                android:id="@+id/walk_PM_checked_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checkMark="@android:drawable/checkbox_on_background"
+                android:text="Walk PM" />
+
+            <CheckedTextView
+                android:id="@+id/office_checked_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checkMark="@android:drawable/checkbox_on_background"
+                android:text="Office" />
+
+            <CheckedTextView
+                android:id="@+id/visitor_checked_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checkMark="@android:drawable/checkbox_on_background"
+                android:text="Visitor Room" />
+
+            <CheckedTextView
+                android:id="@+id/volunteer_room_checked_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checkMark="@android:drawable/checkbox_on_background"
+                android:text="Volunteer Room" />
+
+            <CheckedTextView
+                android:id="@+id/adventure_tails_checked_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checkMark="@android:drawable/checkbox_on_background"
+                android:text="Adventure Tails" />
 
             <TextView
                 android:id="@+id/detail_humidity_textview"

@@ -1,0 +1,3 @@
+cmd
+cd Downloads
+json-server dogs.json

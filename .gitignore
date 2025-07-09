@@ -41,3 +41,5 @@ project.properties
 ##Gradle-based build
 .gradle
 build/
+weather.db
+com.example.android.sunshine.app_preferences.xml

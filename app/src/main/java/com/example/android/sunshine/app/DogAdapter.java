@@ -94,7 +94,7 @@ public class DogAdapter extends CursorAdapter {
 
         String gender = cursor.getString(DogFragment.COL_DOG_GENDER);
         // For accessibility, add a content description to the icon field
-        viewHolder.genderView.setContentDescription(gender);
+        viewHolder.genderView.setText(gender);
 
         Boolean walkAM = (cursor.getInt(DogFragment.COL_DOG_WALK_AM) == 1);
         if (walkAM) viewHolder.walkAMView.setText("Walk AM"); else viewHolder.walkAMView.setText("");
