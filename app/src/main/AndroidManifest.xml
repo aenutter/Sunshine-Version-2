@@ -28,14 +28,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DetailActivity"
-            android:label="@string/title_activity_detail"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.android.sunshine.app.MainActivity" />
-        </activity>
-        <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".MainActivity"
@@ -61,17 +53,6 @@
         </service>
 
         <!-- The SyncAdapter service -->
-        <service
-            android:name=".sync.SunshineSyncService"
-            android:exported="true"
-            >
-            <intent-filter>
-                <action android:name="android.content.SyncAdapter" />
-            </intent-filter>
-            <meta-data
-                android:name="android.content.SyncAdapter"
-                android:resource="@xml/syncadapter" />
-        </service>
 
         <!-- The SyncAdapter service -->
         <service

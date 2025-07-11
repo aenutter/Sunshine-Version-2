@@ -47,8 +47,8 @@ import java.net.URL;
 import java.util.Vector;
 
 public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
-//    public final String LOG_TAG = SunshineSyncAdapter.class.getSimpleName();
-    String LOG_TAG = MainActivity.class.getSimpleName();
+    public final String LOG_TAG = DogSyncAdapter.class.getSimpleName();
+//    String LOG_TAG = MainActivity.class.getSimpleName();
     // Interval at which to sync with the weather, in seconds.
     // 60 seconds (1 minute) * 180 = 3 hours
     public static final int SYNC_INTERVAL = 60 * 180;
@@ -407,7 +407,7 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
             if ( cVVector.size() > 0 ) {
                 ContentValues[] cvArray = new ContentValues[cVVector.size()];
                 cVVector.toArray(cvArray);
-                getContext().getContentResolver().bulkInsert(WeatherContract.DogEntry.CONTENT_URI, cvArray);
+//                getContext().getContentResolver().bulkInsert(WeatherContract.DogEntry.CONTENT_URI, cvArray);
 
                 // delete old data so we don't build up an endless history
 //                getContext().getContentResolver().delete(WeatherContract.DogEntry.CONTENT_URI,

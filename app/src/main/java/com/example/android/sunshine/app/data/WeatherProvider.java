@@ -135,7 +135,6 @@ public class WeatherProvider extends ContentProvider {
 
         matcher.addURI(authority, WeatherContract.PATH_LOCATION, LOCATION);
         matcher.addURI(authority, WeatherContract.PATH_DOG + "/*", DOGS);
-        matcher.addURI(authority, WeatherContract.PATH_DOG , DOGS);
         return matcher;
     }
 

@@ -35,7 +35,6 @@ import android.widget.ListView;
 
 import com.example.android.sunshine.app.data.WeatherContract;
 import com.example.android.sunshine.app.sync.DogSyncAdapter;
-import com.example.android.sunshine.app.sync.SunshineSyncAdapter;
 
 /**
  * Encapsulates fetching the forecast and displaying it as a {@link ListView} layout.
@@ -137,7 +136,7 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // The ForecastAdapter will take data from a source and
+        // The DogAdapter will take data from a source and
         // use it to populate the ListView it's attached to.
         mDogAdapter = new DogAdapter(getActivity(), null, 0);
 
@@ -193,7 +192,6 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
     }
 
     private void updateDog() {
-//        SunshineSyncAdapter.syncImmediately(getActivity());
         DogSyncAdapter.syncImmediately(getActivity());
     }
 
