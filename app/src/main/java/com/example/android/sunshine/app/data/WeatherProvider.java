@@ -247,7 +247,10 @@ public class WeatherProvider extends ContentProvider {
                 );
 //                Log.d("sunshine", "projection: " + projection);
 //                System.out.println("projection" + projection);
-                MyLogger.d("sunshine", "projection: " + projection[0]);
+                MyLogger.d("sunshine", "projection[0]: " + projection[0]);
+                MyLogger.d("sunshine", "selection: " + selection);
+//                MyLogger.d("sunshine", "selectionArg[0]: " + selectionArgs[0]);
+                MyLogger.d("sunshine", "sortOrder: " + sortOrder);
                 break;
             }
 

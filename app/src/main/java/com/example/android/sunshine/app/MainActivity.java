@@ -23,12 +23,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.android.sunshine.app.sync.DogSyncAdapter;
-import com.example.android.sunshine.app.sync.SunshineSyncAdapter;
 
 public class MainActivity extends ActionBarActivity implements DogFragment.Callback {
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
+    private static final String DETAILFRAGMENT2_TAG = "DF2TAG";
 
     private boolean mTwoPane;
     private String mLocation;
@@ -52,7 +52,22 @@ public class MainActivity extends ActionBarActivity implements DogFragment.Callb
                         .replace(R.id.weather_detail_container, new DetailFragment(), DETAILFRAGMENT_TAG)
                         .commit();
             }
-        } else {
+        }
+//        } else if (findViewById(R.id.dog_detail_container) != null) {
+//            // The detail container view will be present only in the large-screen layouts
+//            // (res/layout-sw600dp). If this view is present, then the activity should be
+//            // in two-pane mode.
+//            mTwoPane = true;
+//            // In two-pane mode, show the detail view in this activity by
+//            // adding or replacing the detail fragment using a
+//            // fragment transaction.
+//            if (savedInstanceState == null) {
+//                getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.dog_detail_container, new DetailFragment(), DETAILFRAGMENT2_TAG)
+//                        .commit();
+//            }
+//        }
+        else {
             mTwoPane = false;
             getSupportActionBar().setElevation(0f);
         }
@@ -61,7 +76,6 @@ public class MainActivity extends ActionBarActivity implements DogFragment.Callb
                 .findFragmentById(R.id.fragment_forecast));
         dogFragment.setUseTodayLayout(!mTwoPane);
 
-//        SunshineSyncAdapter.initializeSyncAdapter(this);
         DogSyncAdapter.initializeSyncAdapter(this);
     }
 
@@ -91,10 +105,11 @@ public class MainActivity extends ActionBarActivity implements DogFragment.Callb
     @Override
     protected void onResume() {
         super.onResume();
+        MyLogger.d("sunshine", "inside onResume() ");
         String location = Utility.getPreferredLocation( this );
-        // update the location in our second pane using the fragment manager
+//         update the location in our second pane using the fragment manager
             if (location != null && !location.equals(mLocation)) {
-            ForecastFragment ff = (ForecastFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_forecast);
+            DogFragment ff = (DogFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_forecast);
             if ( null != ff ) {
                 ff.onLocationChanged();
             }
@@ -108,6 +123,7 @@ public class MainActivity extends ActionBarActivity implements DogFragment.Callb
 
     @Override
     public void onItemSelected(Uri contentUri) {
+        MyLogger.d("sunshine", "inside onItemSelected ");
         if (mTwoPane) {
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a
