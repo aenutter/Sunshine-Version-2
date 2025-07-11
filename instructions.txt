@@ -1,7 +1,0 @@
-cmd
-cd Downloads
-json-server dogs.json
-
-cd C:\Users\aenut\AppData\Local\Android\Sdk\emulator
-emulator -list-avds
-emulator -avd Nexus_9_API_22

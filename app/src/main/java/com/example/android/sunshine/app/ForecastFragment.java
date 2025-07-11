@@ -40,11 +40,9 @@ import com.example.android.sunshine.app.sync.SunshineSyncAdapter;
 /**
  * Encapsulates fetching the forecast and displaying it as a {@link ListView} layout.
  */
-public class DogFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    public static final String LOG_TAG = DogFragment.class.getSimpleName();
-    private DogAdapter mDogAdapter;
-
-    static final String DETAIL_URI = "URI";
+public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    public static final String LOG_TAG = ForecastFragment.class.getSimpleName();
+    private ForecastAdapter mForecastAdapter;
 
     private ListView mListView;
     private int mPosition = ListView.INVALID_POSITION;
@@ -52,41 +50,39 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
 
     private static final String SELECTED_KEY = "selected_position";
 
-    private static final int DOG_LOADER = 0;
+    private static final int FORECAST_LOADER = 0;
     // For the forecast view we're showing only a small subset of the stored data.
     // Specify the columns we need.
-    private static final String[] DOG_COLUMNS = {
+    private static final String[] FORECAST_COLUMNS = {
             // In this case the id needs to be fully qualified with a table name, since
             // the content provider joins the location & weather tables in the background
             // (both have an _id column)
             // On the one hand, that's annoying.  On the other, you can search the weather table
             // using the location set by the user, which is only in the Location table.
             // So the convenience is worth it.
-//            WeatherContract.DogEntry.TABLE_NAME,
-            WeatherContract.DogEntry._ID,
-            WeatherContract.DogEntry.COLUMN_DOG_NAME,
-            WeatherContract.DogEntry.COLUMN_DOG_BREED,
-            WeatherContract.DogEntry.COLUMN_DOG_GENDER,
-            WeatherContract.DogEntry.COLUMN_DOG_WALK_AM,
-            WeatherContract.DogEntry.COLUMN_DOG_WALK_PM,
-            WeatherContract.DogEntry.COLUMN_DOG_OFFICE,
-            WeatherContract.DogEntry.COLUMN_DOG_VISITOR,
-            WeatherContract.DogEntry.COLUMN_DOG_VOLUNTEER_ROOM,
-            WeatherContract.DogEntry.COLUMN_DOG_ADVENTURE_TAILS
+            WeatherContract.WeatherEntry.TABLE_NAME + "." + WeatherContract.WeatherEntry._ID,
+            WeatherContract.WeatherEntry.COLUMN_DATE,
+            WeatherContract.WeatherEntry.COLUMN_SHORT_DESC,
+            WeatherContract.WeatherEntry.COLUMN_MAX_TEMP,
+            WeatherContract.WeatherEntry.COLUMN_MIN_TEMP,
+            WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING,
+            WeatherContract.WeatherEntry.COLUMN_WEATHER_ID,
+            WeatherContract.LocationEntry.COLUMN_COORD_LAT,
+            WeatherContract.LocationEntry.COLUMN_COORD_LONG
     };
 
     // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
     // must change.
-    static final int COL_DOG_ID = 0;
-    static final int COL_DOG_NAME = 1;
-    static final int COL_DOG_BREED = 2;
-    static final int COL_DOG_GENDER = 3;
-    static final int COL_DOG_WALK_AM = 4;
-    static final int COL_DOG_WALK_PM = 5;
-    static final int COL_DOG_OFFICE = 6;
-    static final int COL_DOG_VISITOR = 7;
-    static final int COL_DOG_VOLUNTEER_ROOM = 8;
-    static final int COL_DOS_ADVENTURE_TAILS = 9;
+    static final int COL_WEATHER_ID = 0;
+    static final int COL_WEATHER_DATE = 1;
+    static final int COL_WEATHER_DESC = 2;
+    static final int COL_WEATHER_MAX_TEMP = 3;
+    static final int COL_WEATHER_MIN_TEMP = 4;
+    static final int COL_LOCATION_SETTING = 5;
+    static final int COL_WEATHER_CONDITION_ID = 6;
+    static final int COL_COORD_LAT = 7;
+    static final int COL_COORD_LONG = 8;
+//    static final int COL_PLAYGROUP = 9;
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -100,7 +96,7 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
         public void onItemSelected(Uri dateUri);
     }
 
-    public DogFragment() {
+    public ForecastFragment() {
     }
 
     @Override
@@ -126,7 +122,7 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
 //            return true;
 //        }
         if (id == R.id.action_map) {
-//            openPreferredLocationInMap();
+            openPreferredLocationInMap();
             return true;
         }
 
@@ -139,13 +135,13 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
 
         // The ForecastAdapter will take data from a source and
         // use it to populate the ListView it's attached to.
-        mDogAdapter = new DogAdapter(getActivity(), null, 0);
+        mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         // Get a reference to the ListView, and attach this adapter to it.
         mListView = (ListView) rootView.findViewById(R.id.listview_forecast);
-        mListView.setAdapter(mDogAdapter);
+        mListView.setAdapter(mForecastAdapter);
         // We'll call our MainActivity
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -157,8 +153,9 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
                 if (cursor != null) {
                     String locationSetting = Utility.getPreferredLocation(getActivity());
                     ((Callback) getActivity())
-                            .onItemSelected(WeatherContract.DogEntry.buildDogUri(position)
-                            );
+                            .onItemSelected(WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
+                                    locationSetting, cursor.getLong(COL_WEATHER_DATE)
+                            ));
                 }
                 mPosition = position;
             }
@@ -175,29 +172,29 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
             mPosition = savedInstanceState.getInt(SELECTED_KEY);
         }
 
-        mDogAdapter.setUseTodayLayout(mUseTodayLayout);
+        mForecastAdapter.setUseTodayLayout(mUseTodayLayout);
 
         return rootView;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        getLoaderManager().initLoader(DOG_LOADER, null, this);
+        getLoaderManager().initLoader(FORECAST_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }
 
     // since we read the location when we create the loader, all we need to do is restart things
     void onLocationChanged( ) {
-        updateDog();
-        getLoaderManager().restartLoader(DOG_LOADER, null, this);
+        updateWeather();
+        getLoaderManager().restartLoader(FORECAST_LOADER, null, this);
     }
 
-    private void updateDog() {
-//        SunshineSyncAdapter.syncImmediately(getActivity());
+    private void updateWeather() {
+        SunshineSyncAdapter.syncImmediately(getActivity());
         DogSyncAdapter.syncImmediately(getActivity());
     }
 
-/*    private void openPreferredLocationInMap() {
+    private void openPreferredLocationInMap() {
         // Using the URI scheme for showing a location found on a map.  This super-handy
         // intent can is detailed in the "Common Intents" page of Android's developer site:
         // http://developer.android.com/guide/components/intents-common.html#Maps
@@ -220,7 +217,7 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
             }
 
         }
-    }*/
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -242,17 +239,15 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
         // dates after or including today.
 
         // Sort order:  Ascending, by date.
-        String sortOrder = WeatherContract.DogEntry._ID + " ASC";
+        String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
 
-//        String locationSetting = Utility.getPreferredLocation(getActivity());
-//        Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(
-//                locationSetting, System.currentTimeMillis());
-        Uri weatherForLocationUri = WeatherContract.DogEntry.buildDogUri(i);
-        MyLogger.d("sunshine", "uri: " + weatherForLocationUri);
+        String locationSetting = Utility.getPreferredLocation(getActivity());
+        Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(
+                locationSetting, System.currentTimeMillis());
 
         return new CursorLoader(getActivity(),
                 weatherForLocationUri,
-                DOG_COLUMNS,
+                FORECAST_COLUMNS,
                 null,
                 null,
                 sortOrder);
@@ -260,7 +255,7 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mDogAdapter.swapCursor(data);
+        mForecastAdapter.swapCursor(data);
         if (mPosition != ListView.INVALID_POSITION) {
             // If we don't need to restart the loader, and there's a desired position to restore
             // to, do so now.
@@ -270,13 +265,13 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mDogAdapter.swapCursor(null);
+        mForecastAdapter.swapCursor(null);
     }
 
     public void setUseTodayLayout(boolean useTodayLayout) {
         mUseTodayLayout = useTodayLayout;
-        if (mDogAdapter != null) {
-            mDogAdapter.setUseTodayLayout(mUseTodayLayout);
+        if (mForecastAdapter != null) {
+            mForecastAdapter.setUseTodayLayout(mUseTodayLayout);
         }
     }
 }
