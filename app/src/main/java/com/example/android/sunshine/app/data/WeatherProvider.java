@@ -38,6 +38,7 @@ public class WeatherProvider extends ContentProvider {
     static final int WEATHER_WITH_LOCATION_AND_DATE = 102;
     static final int LOCATION = 300;
     static final int DOGS = 400;
+    static final int ALL_PATH_SEGMENTS = 401;
 
     private static final SQLiteQueryBuilder sWeatherByLocationSettingQueryBuilder;
 
@@ -134,8 +135,10 @@ public class WeatherProvider extends ContentProvider {
         matcher.addURI(authority, WeatherContract.PATH_WEATHER + "/*/#", WEATHER_WITH_LOCATION_AND_DATE);
 
         matcher.addURI(authority, WeatherContract.PATH_LOCATION, LOCATION);
+        matcher.addURI(authority, WeatherContract.PATH_DOG, DOGS);
+        matcher.addURI(authority, WeatherContract.PATH_DOG + "/#", DOGS);
         matcher.addURI(authority, WeatherContract.PATH_DOG + "/*", DOGS);
-        matcher.addURI(authority, WeatherContract.PATH_DOG , DOGS);
+        matcher.addURI(authority, "*" + WeatherContract.PATH_DOG, ALL_PATH_SEGMENTS);
         return matcher;
     }
 
@@ -236,15 +239,40 @@ public class WeatherProvider extends ContentProvider {
             }
             // "location"
             case DOGS: {
-                retCursor = mOpenHelper.getReadableDatabase().query(
-                        WeatherContract.DogEntry.TABLE_NAME,
-                        projection,
-                        selection,
-                        selectionArgs,
-                        null,
-                        null,
-                        sortOrder
-                );
+                String DogID = WeatherContract.DogEntry.getIDFromUri(uri);
+                if (DogID != null) {
+                    String[] mySelectionArgs = new String[]{DogID};;
+                    String mySelection =  WeatherContract.DogEntry._ID + "=?";
+                    MyLogger.d("sunshine", "before query projection[0]: " + projection[0]);
+                    MyLogger.d("sunshine", "before query selection: " + selection);
+                    MyLogger.d("sunshine", "before query selectionArg[0]: " + mySelectionArgs[0]);
+                    MyLogger.d("sunshine", "before query sortOrder: " + sortOrder);
+
+                    retCursor = mOpenHelper.getReadableDatabase().query(
+                            WeatherContract.DogEntry.TABLE_NAME,
+                            projection,
+                            mySelection,
+                            mySelectionArgs,
+                            null,
+                            null,
+                            sortOrder
+                    );
+                    MyLogger.d("sunshine", "projection[0]: " + projection[0]);
+                    MyLogger.d("sunshine", "selection: " + selection);
+                    MyLogger.d("sunshine", "selectionArg[0]: " + mySelectionArgs[0]);
+                    MyLogger.d("sunshine", "sortOrder: " + sortOrder);
+                } else {
+                    retCursor = mOpenHelper.getReadableDatabase().query(
+                            WeatherContract.DogEntry.TABLE_NAME,
+                            projection,
+                            selection,
+                            selectionArgs,
+                            null,
+                            null,
+                            sortOrder
+                    );
+                }
+
 //                Log.d("sunshine", "projection: " + projection);
 //                System.out.println("projection" + projection);
                 MyLogger.d("sunshine", "projection[0]: " + projection[0]);

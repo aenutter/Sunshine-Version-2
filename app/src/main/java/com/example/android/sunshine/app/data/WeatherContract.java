@@ -46,6 +46,7 @@ public class WeatherContract {
     public static final String PATH_WEATHER = "weather";
     public static final String PATH_LOCATION = "location";
     public static final String PATH_DOG = "dogs";
+    public static final String PATH_ALL_DOGS = "";
 
     // To make it easy to query for the exact date, we normalize all dates that go into
     // the database to the start of the the Julian day at UTC.
@@ -92,6 +93,10 @@ public class WeatherContract {
 
         public static Uri buildDogUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        public static String getIDFromUri(Uri uri) {
+            return uri.getPathSegments().get(1);
         }
     }
 

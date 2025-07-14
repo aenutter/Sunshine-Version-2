@@ -245,7 +245,7 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
 //        String locationSetting = Utility.getPreferredLocation(getActivity());
 //        Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(
 //                locationSetting, System.currentTimeMillis());
-        Uri weatherForLocationUri = WeatherContract.DogEntry.buildDogUri(i);
+        Uri weatherForLocationUri = WeatherContract.DogEntry.buildDogsUri();
         MyLogger.d("sunshine", "uri: " + weatherForLocationUri);
 
         return new CursorLoader(getActivity(),

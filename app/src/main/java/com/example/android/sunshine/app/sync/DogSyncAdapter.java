@@ -158,15 +158,16 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
             dogJsonStr = buffer.toString();
 //            Log.d("sunshine", "buffer is: " + forecastJsonStr);
             MyLogger.d("sunshine", "dog buffer is: " + dogJsonStr);
-            getDogDataFromJson(dogJsonStr);
+//            getDogDataFromJson(dogJsonStr);
         } catch (IOException e) {
             Log.e(LOG_TAG, "IOException ", e);
             // If the code didn't successfully get the weather data, there's no point in attempting
             // to parse it.
-        } catch (JSONException e) {
-            Log.e(LOG_TAG, "JSONException ", e);
-            MyLogger.d("sunshine", "dog JSONException: " + e);
-            e.printStackTrace();
+//        } catch (JSONException e) {
+//            Log.e(LOG_TAG, "JSONException ", e);
+//            MyLogger.d("sunshine", "dog JSONException: " + e);
+//            e.printStackTrace();
+//        } finally {
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();

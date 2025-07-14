@@ -1,3 +1,13 @@
 cmd
 cd Downloads
 json-server dogs.json
+
+cd C:\Users\aenut\AppData\Local\Android\Sdk\emulator
+emulator -list-avds
+emulator -avd Nexus_9_API_22
+
+adb shell
+cd /data/data/com.example.android.sunshine.app/databases
+sqlite3 weather.db
+select * from dogs;
+update dogs set _id = 1 where _id = 1004;
