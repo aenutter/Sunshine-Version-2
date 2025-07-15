@@ -60,12 +60,12 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             WeatherContract.DogEntry.COLUMN_DOG_NAME,
             WeatherContract.DogEntry.COLUMN_DOG_BREED,
             WeatherContract.DogEntry.COLUMN_DOG_GENDER,
-            WeatherContract.DogEntry.COLUMN_DOG_WALK_AM,
-            WeatherContract.DogEntry.COLUMN_DOG_WALK_PM,
-            WeatherContract.DogEntry.COLUMN_DOG_OFFICE,
-            WeatherContract.DogEntry.COLUMN_DOG_VISITOR,
-            WeatherContract.DogEntry.COLUMN_DOG_VOLUNTEER_ROOM,
-            WeatherContract.DogEntry.COLUMN_DOG_ADVENTURE_TAILS
+            WeatherContract.DogActivitiesEntry.COLUMN_DOG_WALK_AM,
+            WeatherContract.DogActivitiesEntry.COLUMN_DOG_WALK_PM,
+            WeatherContract.DogActivitiesEntry.COLUMN_DOG_OFFICE,
+            WeatherContract.DogActivitiesEntry.COLUMN_DOG_VISITOR,
+            WeatherContract.DogActivitiesEntry.COLUMN_DOG_VOLUNTEER_ROOM,
+            WeatherContract.DogActivitiesEntry.COLUMN_DOG_ADVENTURE_TAILS
     };
 
     // These indices are tied to DETAIL_COLUMNS.  If DETAIL_COLUMNS changes, these

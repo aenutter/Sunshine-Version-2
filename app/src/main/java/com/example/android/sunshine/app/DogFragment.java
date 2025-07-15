@@ -65,13 +65,7 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
             WeatherContract.DogEntry._ID,
             WeatherContract.DogEntry.COLUMN_DOG_NAME,
             WeatherContract.DogEntry.COLUMN_DOG_BREED,
-            WeatherContract.DogEntry.COLUMN_DOG_GENDER,
-            WeatherContract.DogEntry.COLUMN_DOG_WALK_AM,
-            WeatherContract.DogEntry.COLUMN_DOG_WALK_PM,
-            WeatherContract.DogEntry.COLUMN_DOG_OFFICE,
-            WeatherContract.DogEntry.COLUMN_DOG_VISITOR,
-            WeatherContract.DogEntry.COLUMN_DOG_VOLUNTEER_ROOM,
-            WeatherContract.DogEntry.COLUMN_DOG_ADVENTURE_TAILS
+            WeatherContract.DogEntry.COLUMN_DOG_GENDER
     };
 
     // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
@@ -156,7 +150,7 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
                 if (cursor != null) {
                     String locationSetting = Utility.getPreferredLocation(getActivity());
                     ((Callback) getActivity())
-                            .onItemSelected(WeatherContract.DogEntry.buildDogUri(position)
+                            .onItemSelected(WeatherContract.DogEntry.buildDogsUri(position)
                             );
                 }
                 mPosition = position;
@@ -245,7 +239,7 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
 //        String locationSetting = Utility.getPreferredLocation(getActivity());
 //        Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(
 //                locationSetting, System.currentTimeMillis());
-        Uri weatherForLocationUri = WeatherContract.DogEntry.buildDogsUri();
+        Uri weatherForLocationUri = WeatherContract.DogEntry.buildDogsUri(i);
         MyLogger.d("sunshine", "uri: " + weatherForLocationUri);
 
         return new CursorLoader(getActivity(),

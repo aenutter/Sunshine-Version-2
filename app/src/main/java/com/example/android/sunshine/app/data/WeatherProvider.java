@@ -138,7 +138,7 @@ public class WeatherProvider extends ContentProvider {
         matcher.addURI(authority, WeatherContract.PATH_DOG, DOGS);
         matcher.addURI(authority, WeatherContract.PATH_DOG + "/#", DOGS);
         matcher.addURI(authority, WeatherContract.PATH_DOG + "/*", DOGS);
-        matcher.addURI(authority, "*" + WeatherContract.PATH_DOG, ALL_PATH_SEGMENTS);
+//        matcher.addURI(authority, "*" + WeatherContract.PATH_DOG, ALL_PATH_SEGMENTS);
         return matcher;
     }
 
@@ -320,7 +320,7 @@ public class WeatherProvider extends ContentProvider {
                 MyLogger.d("sunshine", "dog content values: " + values.toString());
                 long _id = db.insert(WeatherContract.DogEntry.TABLE_NAME, null, values);
                 if ( _id > 0 )
-                    returnUri = WeatherContract.DogEntry.buildDogUri(_id);
+                    returnUri = WeatherContract.DogEntry.buildDogsUri(_id);
                 else {
                     MyLogger.d("sunshine", "Failed to insert row into " + uri);
                     throw new android.database.SQLException("Failed to insert row into " + uri);

@@ -158,15 +158,15 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
             dogJsonStr = buffer.toString();
 //            Log.d("sunshine", "buffer is: " + forecastJsonStr);
             MyLogger.d("sunshine", "dog buffer is: " + dogJsonStr);
-//            getDogDataFromJson(dogJsonStr);
+            getDogDataFromJson(dogJsonStr);
         } catch (IOException e) {
             Log.e(LOG_TAG, "IOException ", e);
             // If the code didn't successfully get the weather data, there's no point in attempting
             // to parse it.
-//        } catch (JSONException e) {
-//            Log.e(LOG_TAG, "JSONException ", e);
-//            MyLogger.d("sunshine", "dog JSONException: " + e);
-//            e.printStackTrace();
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, "JSONException ", e);
+            MyLogger.d("sunshine", "dog JSONException: " + e);
+            e.printStackTrace();
 //        } finally {
         } finally {
             if (urlConnection != null) {
@@ -222,45 +222,14 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
         // Weather information.  Each day's forecast info is an element of the "list" array.
         final String LIST = "list";
 
-        final String OWM_PRESSURE = "pressure";
-        final String OWM_HUMIDITY = "humidity";
-        final String OWM_WINDSPEED = "speed";
-        final String OWM_WIND_DIRECTION = "deg";
-
-        // All temperatures are children of the "temp" object.
-        final String OWM_TEMPERATURE = "temp";
-        final String OWM_MAX = "temp_max";
-        final String OWM_MIN = "temp_min";
-
-        final String OWM_WEATHER = "weather";
-        final String OWM_DESCRIPTION = "main";
-        final String OWM_WEATHER_ID = "id";
 
         try {
             MyLogger.d("sunshine", "dog dogJsonStr type: " + dogJsonStr.getClass());
             JSONArray dogArray = new JSONArray(dogJsonStr);
-//            JSONArray dogArray = dogJsonObject.getJSONArray(LIST);
-
-//            JSONObject dogJson = dogJsonObject.getJSONObject(DOG);
-//            String dogName = dogJson.getString(DOG_NAME);
-//
-//            String dogBreed = dogJson.getString(DOG_BREED);
-//            int dogWalkAM = dogJson.getInt(DOG_WALK_AM);
-//            int dogWalkPM = dogJson.getInt(DOG_WALK_PM);
-//            int dogOffice = dogJson.getInt(DOG_OFFICE);
-//            int dogVisitor = dogJson.getInt(DOG_VISITOR);
-//            int dogVolunteerRoom = dogJson.getInt(DOG_VOLUNTEER_ROOM);
-//            int dogAdventureTails = dogJson.getInt(DOG_ADVENTURE_TAILS);
-
-
-//            JSONObject cityCoord = cityJson.getJSONObject(OWM_COORD);
-//            double cityLatitude = cityCoord.getDouble(OWM_LATITUDE);
-//            double cityLongitude = cityCoord.getDouble(OWM_LONGITUDE);
-
-//            long locationId = addLocation(locationSetting, cityName, cityLatitude, cityLongitude);
 
             // Insert the new weather information into the database
             Vector<ContentValues> cVVector = new Vector<ContentValues>(dogArray.length());
+            Vector<ContentValues> cVVector2 = new Vector<ContentValues>(dogArray.length());
 
             // OWM returns daily forecasts based upon the local time of the city that is being
             // asked for, which means that we need to know the GMT offset to translate this data
@@ -274,7 +243,7 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
             dayTime.setToNow();
 
             // we start at the day returned by local time. Otherwise this is a mess.
-            int julianStartDay = Time.getJulianDay(System.currentTimeMillis(), dayTime.gmtoff);
+//            int julianStartDay = Time.getJulianDay(System.currentTimeMillis(), dayTime.gmtoff);
 
             // now we work exclusively in UTC
             dayTime = new Time();
@@ -283,17 +252,7 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
 
             for(int i = 0; i < dogArray.length(); i++) {
                 // These are the values that will be collected.
-                long dateTime;
-                double pressure;
-                int humidity;
-                double windSpeed;
-                double windDirection;
 
-                double high;
-                double low;
-
-                String description;
-                int weatherId;
                 String name;
                 String breed;
                 String gender;
@@ -308,23 +267,6 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
                 // Get the JSON object representing the day
                 JSONObject dogDetails = dogArray.getJSONObject(i);
                 JSONObject dogJson = dogDetails.getJSONObject(DOG);
-
-//                JSONObject outerObject = new JSONObject(jsonString);
-
-//                JSONArray jsonArray = dayForecast.names();
-//                for(int j = 0; j < jsonArray.length(); j++) {
-//                    Log.d("sunshine", "json array at index: " + jsonArray.get(j).toString());
-//
-//                }
-                // Cheating to convert this to UTC time, which is what we want anyhow
-                dateTime = dayTime.setJulianDay(julianStartDay+i);
-//                if (dayForecast.has(OWM_PRESSURE)) {
-//                    String name = dayForecast.getString(OWM_PRESSURE);
-//                    Log.d("sunshine", "Json object has pressure");
-//
-//                } else {
-//                    Log.d("sunshine", "Json object does not have pressure");
-//                }
 
                 name = dogJson.getString(DOG_NAME);
                 MyLogger.d("sunshine", "dog json name value: " + name);
@@ -353,54 +295,24 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
                 adventureTails = dogJson.getInt(DOG_ADVENTURE_TAILS);
                 MyLogger.d("sunshine", "dog json adventure tails value: " + adventureTails);
 
-//                String innerValue = innerObject.getString(OWM_PRESSURE);
-//                Log.d("sunshine", "json pressure value: " + pressure);
-//                MyLogger.d("sunshine", "dog json name value: " + name);
-//                pressure = dayForecast.getDouble(OWM_PRESSURE);
-
-//                humidity = dayForecast.getJSONObject(OWM_DESCRIPTION).getInt(OWM_HUMIDITY);
-//                Log.d("sunshine", "json humidity value: " + humidity);
-//                humidity = dayForecast.getInt(OWM_HUMIDITY);
-
-//                windSpeed = dayForecast.getJSONObject("wind").getInt(OWM_WINDSPEED);
-//                Log.d("sunshine", "json windspeed value: " + windSpeed);
-//                windSpeed = dayForecast.getDouble(OWM_WINDSPEED);
-
-//                windDirection = dayForecast.getJSONObject("wind").getDouble(OWM_WIND_DIRECTION);
-//                Log.d("sunshine", "json wind Direction value: " + windDirection);
-//                windDirection = dayForecast.getDouble(OWM_WIND_DIRECTION);
-
-                // Description is in a child array called "weather", which is 1 element long.
-                // That element also contains a weather code.
-//                JSONObject weatherObject =
-//                        dayForecast.getJSONArray(OWM_WEATHER).getJSONObject(0);
-//                description = weatherObject.getString(OWM_DESCRIPTION);
-//                weatherId = weatherObject.getInt(OWM_WEATHER_ID);
-
-                // Temperatures are in a child object called "temp".  Try not to name variables
-                // "temp" when working with temperature.  It confuses everybody.
-//                high = dayForecast.getJSONObject(OWM_DESCRIPTION).getDouble(OWM_MAX);
-//                Log.d("sunshine", "json high temp value: " + high);
-
-//                JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
-//                high = temperatureObject.getDouble(OWM_MAX);
-//                low = dayForecast.getJSONObject(OWM_DESCRIPTION).getDouble(OWM_MIN);
-//                Log.d("sunshine", "json low temp value: " + low);
-//                low = temperatureObject.getDouble(OWM_MIN);
-
                 ContentValues dogValues = new ContentValues();
 
                 dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_NAME, name);
                 dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_BREED, breed);
                 dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_GENDER, gender);
-                dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_WALK_AM, walkAM);
-                dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_WALK_PM, walkPM);
-                dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_OFFICE, office);
-                dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_VISITOR, visitor);
-                dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_VOLUNTEER_ROOM, volunteerRoom);
-                dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_ADVENTURE_TAILS, adventureTails);
 
                 cVVector.add(dogValues);
+
+                ContentValues dogActivityValues = new ContentValues();
+
+                dogActivityValues.put(WeatherContract.DogActivitiesEntry.COLUMN_DOG_WALK_AM, walkAM);
+                dogActivityValues.put(WeatherContract.DogActivitiesEntry.COLUMN_DOG_WALK_PM, walkPM);
+                dogActivityValues.put(WeatherContract.DogActivitiesEntry.COLUMN_DOG_OFFICE, office);
+                dogActivityValues.put(WeatherContract.DogActivitiesEntry.COLUMN_DOG_VISITOR, visitor);
+                dogActivityValues.put(WeatherContract.DogActivitiesEntry.COLUMN_DOG_VOLUNTEER_ROOM, volunteerRoom);
+                dogActivityValues.put(WeatherContract.DogActivitiesEntry.COLUMN_DOG_ADVENTURE_TAILS, office);
+
+                cVVector2.add(dogActivityValues);
             }
 
             int inserted = 0;
@@ -415,10 +327,29 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
 //                        WeatherContract.WeatherEntry.COLUMN_DATE + " <= ?",
 //                        new String[] {Long.toString(dayTime.setJulianDay(julianStartDay-1))});
 
-                notifyWeather();
+//                notifyWeather();
             }
 
-            Log.d(LOG_TAG, "Sync Complete. " + cVVector.size() + " Inserted");
+
+            Log.d(LOG_TAG, "Sync Complete Dog Entries " + cVVector.size() + " Inserted");
+
+            inserted = 0;
+            // add to database
+            if ( cVVector2.size() > 0 ) {
+                ContentValues[] cvArray2 = new ContentValues[cVVector2.size()];
+                cVVector2.toArray(cvArray2);
+                getContext().getContentResolver().bulkInsert(WeatherContract.DogActivitiesEntry.CONTENT_URI, cvArray2);
+
+                // delete old data so we don't build up an endless history
+//                getContext().getContentResolver().delete(WeatherContract.DogEntry.CONTENT_URI,
+//                        WeatherContract.WeatherEntry.COLUMN_DATE + " <= ?",
+//                        new String[] {Long.toString(dayTime.setJulianDay(julianStartDay-1))});
+
+//                notifyWeather();
+            }
+
+
+            Log.d(LOG_TAG, "Sync Complete Dog Activities " + cVVector2.size() + " Inserted");
 
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);

@@ -19,9 +19,11 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.android.sunshine.app.MyLogger;
 import com.example.android.sunshine.app.data.WeatherContract.LocationEntry;
 import com.example.android.sunshine.app.data.WeatherContract.WeatherEntry;
 import com.example.android.sunshine.app.data.WeatherContract.DogEntry;
+import com.example.android.sunshine.app.data.WeatherContract.DogActivitiesEntry;
 
 /**
  * Manages a local database for weather data.
@@ -29,7 +31,7 @@ import com.example.android.sunshine.app.data.WeatherContract.DogEntry;
 public class WeatherDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7;
 
     static final String DATABASE_NAME = "weather.db";
 
@@ -42,19 +44,31 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
 
         // Create a table to hold locations.  A location consists of the string supplied in the
         // location setting, the city name, and the latitude and longitude
+        final String SQL_CREATE_DOG_ACTIVITIES_TABLE = "CREATE TABLE " + DogActivitiesEntry.TABLE_NAME + " (" +
+                DogActivitiesEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                DogActivitiesEntry.COLUMN_DOG_WALK_AM + " INTEGER NOT NULL, " +
+                DogActivitiesEntry.COLUMN_DOG_WALK_PM + " INTEGER NOT NULL, " +
+                DogActivitiesEntry.COLUMN_DOG_OFFICE + " INTEGER NOT NULL, " +
+                DogActivitiesEntry.COLUMN_DOG_VISITOR + " INTEGER NOT NULL, " +
+                DogActivitiesEntry.COLUMN_DOG_VOLUNTEER_ROOM + " INTEGER NOT NULL, " +
+                DogActivitiesEntry.COLUMN_DOG_ADVENTURE_TAILS + " INTEGER NOT NULL" + ");";
+
+        // Create a table to hold locations.  A location consists of the string supplied in the
+        // location setting, the city name, and the latitude and longitude
         final String SQL_CREATE_DOG_TABLE = "CREATE TABLE " + DogEntry.TABLE_NAME + " (" +
                 DogEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                DogEntry.DOG_ID  + " INTEGER NOT NULL, " +
                 DogEntry.COLUMN_DOG_NAME + " TEXT NOT NULL, " +
                 DogEntry.COLUMN_DOG_BREED + " TEXT NOT NULL, " +
                 DogEntry.COLUMN_DOG_GENDER + " TEXT NOT NULL, " +
-                DogEntry.COLUMN_DOG_WALK_AM + " INTEGER NOT NULL, " +
-                DogEntry.COLUMN_DOG_WALK_PM + " INTEGER NOT NULL, " +
-                DogEntry.COLUMN_DOG_OFFICE + " INTEGER NOT NULL, " +
-                DogEntry.COLUMN_DOG_VISITOR + " INTEGER NOT NULL, " +
-                DogEntry.COLUMN_DOG_VOLUNTEER_ROOM + " INTEGER NOT NULL, " +
-                DogEntry.COLUMN_DOG_ADVENTURE_TAILS + " INTEGER NOT NULL, " +
-                " UNIQUE (" + DogEntry.COLUMN_DOG_NAME + ", " +
-                DogEntry.COLUMN_DOG_NAME + ") ON CONFLICT REPLACE);";
+
+                // Set up the location column as a foreign key to location table.
+                " FOREIGN KEY (" + DogEntry.DOG_ID + ") REFERENCES " +
+                DogActivitiesEntry.TABLE_NAME + " (" + DogActivitiesEntry._ID + "), " +
+
+                // To assure the application have just one weather entry per day
+                // per location, it's created a UNIQUE constraint with REPLACE strategy
+                " UNIQUE (" + DogEntry.COLUMN_DOG_NAME + ") ON CONFLICT REPLACE);";
 
         // Create a table to hold locations.  A location consists of the string supplied in the
         // location setting, the city name, and the latitude and longitude
@@ -89,7 +103,7 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
                 WeatherEntry.COLUMN_DEGREES + " REAL NOT NULL, " +
 
                 // Set up the location column as a foreign key to location table.
-                " FOREIGN KEY (" + WeatherEntry.COLUMN_LOC_KEY + ") REFERENCES " +
+        " FOREIGN KEY (" + WeatherEntry.COLUMN_LOC_KEY + ") REFERENCES " +
                 LocationEntry.TABLE_NAME + " (" + LocationEntry._ID + "), " +
 
                 // To assure the application have just one weather entry per day
@@ -97,9 +111,14 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
                 " UNIQUE (" + WeatherEntry.COLUMN_DATE + ", " +
                 WeatherEntry.COLUMN_LOC_KEY + ") ON CONFLICT REPLACE);";
 
-        sqLiteDatabase.execSQL(SQL_CREATE_LOCATION_TABLE);
-        sqLiteDatabase.execSQL(SQL_CREATE_WEATHER_TABLE);
+//        sqLiteDatabase.execSQL(SQL_CREATE_LOCATION_TABLE);
+//        MyLogger.d("sunshine", "created location table");
+//        sqLiteDatabase.execSQL(SQL_CREATE_WEATHER_TABLE);
+//        MyLogger.d("sunshine", "created weather table");
         sqLiteDatabase.execSQL(SQL_CREATE_DOG_TABLE);
+        MyLogger.d("sunshine", "created dog table");
+        sqLiteDatabase.execSQL(SQL_CREATE_DOG_ACTIVITIES_TABLE);
+        MyLogger.d("sunshine", "created activities table");
     }
 
     @Override
@@ -110,9 +129,11 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
         // It does NOT depend on the version number for your application.
         // If you want to update the schema without wiping data, commenting out the next 2 lines
         // should be your top priority before modifying this method.
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + LocationEntry.TABLE_NAME);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + WeatherEntry.TABLE_NAME);
+//        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + LocationEntry.TABLE_NAME);
+//        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + WeatherEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DogActivitiesEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DogEntry.TABLE_NAME);
+
         onCreate(sqLiteDatabase);
     }
 }
