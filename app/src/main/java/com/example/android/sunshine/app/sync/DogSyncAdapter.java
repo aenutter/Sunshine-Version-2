@@ -316,11 +316,31 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
             }
 
             int inserted = 0;
+            // add to activities first database
+            if ( cVVector2.size() > 0 ) {
+                ContentValues[] cvArray2 = new ContentValues[cVVector2.size()];
+                cVVector2.toArray(cvArray2);
+                getContext().getContentResolver().bulkInsert(WeatherContract.DogActivitiesEntry.CONTENT_URI, cvArray2);
+                MyLogger.d("sunshine", "inside cVVector2 cvArray2[0] value: " + cvArray2[0]);
+                // delete old data so we don't build up an endless history
+//                getContext().getContentResolver().delete(WeatherContract.DogEntry.CONTENT_URI,
+//                        WeatherContract.WeatherEntry.COLUMN_DATE + " <= ?",
+//                        new String[] {Long.toString(dayTime.setJulianDay(julianStartDay-1))});
+
+//                notifyWeather();
+            }
+
+
+            Log.d(LOG_TAG, "Sync Complete Dog Activities " + cVVector2.size() + " Inserted");
+
+            inserted = 0;
             // add to database
             if ( cVVector.size() > 0 ) {
                 ContentValues[] cvArray = new ContentValues[cVVector.size()];
                 cVVector.toArray(cvArray);
                 getContext().getContentResolver().bulkInsert(WeatherContract.DogEntry.CONTENT_URI, cvArray);
+                MyLogger.d("sunshine", "inside cVVector cvArray[0] value: " + cvArray[0]);
+
 
                 // delete old data so we don't build up an endless history
 //                getContext().getContentResolver().delete(WeatherContract.DogEntry.CONTENT_URI,
@@ -333,23 +353,7 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
 
             Log.d(LOG_TAG, "Sync Complete Dog Entries " + cVVector.size() + " Inserted");
 
-            inserted = 0;
-            // add to database
-            if ( cVVector2.size() > 0 ) {
-                ContentValues[] cvArray2 = new ContentValues[cVVector2.size()];
-                cVVector2.toArray(cvArray2);
-                getContext().getContentResolver().bulkInsert(WeatherContract.DogActivitiesEntry.CONTENT_URI, cvArray2);
 
-                // delete old data so we don't build up an endless history
-//                getContext().getContentResolver().delete(WeatherContract.DogEntry.CONTENT_URI,
-//                        WeatherContract.WeatherEntry.COLUMN_DATE + " <= ?",
-//                        new String[] {Long.toString(dayTime.setJulianDay(julianStartDay-1))});
-
-//                notifyWeather();
-            }
-
-
-            Log.d(LOG_TAG, "Sync Complete Dog Activities " + cVVector2.size() + " Inserted");
 
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
