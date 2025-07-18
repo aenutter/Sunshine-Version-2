@@ -96,6 +96,8 @@ public class DogAdapter extends CursorAdapter {
         // For accessibility, add a content description to the icon field
         viewHolder.genderView.setText(gender);
 
+        MyLogger.d("sunshine", "inside DogAdapter cursor column names: " + cursor.getColumnCount());
+
         Boolean walkAM = (cursor.getInt(DogFragment.COL_DOG_WALK_AM) == 1);
         if (walkAM) viewHolder.walkAMView.setText("Walk AM"); else viewHolder.walkAMView.setText("");
 //        (walkAM) ? viewHolder.walkAMView.setText("Walk AM") : viewHolder.walkAMView.setText("Walk AM");

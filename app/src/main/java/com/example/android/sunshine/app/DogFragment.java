@@ -63,6 +63,7 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
             // So the convenience is worth it.
 //            WeatherContract.DogEntry.TABLE_NAME,
             WeatherContract.DogEntry._ID,
+            WeatherContract.DogEntry.DOG_ID,
             WeatherContract.DogEntry.COLUMN_DOG_NAME,
             WeatherContract.DogEntry.COLUMN_DOG_BREED,
             WeatherContract.DogEntry.COLUMN_DOG_GENDER
@@ -71,15 +72,16 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
     // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
     // must change.
     static final int COL_DOG_ID = 0;
-    static final int COL_DOG_NAME = 1;
-    static final int COL_DOG_BREED = 2;
-    static final int COL_DOG_GENDER = 3;
-    static final int COL_DOG_WALK_AM = 4;
-    static final int COL_DOG_WALK_PM = 5;
-    static final int COL_DOG_OFFICE = 6;
-    static final int COL_DOG_VISITOR = 7;
-    static final int COL_DOG_VOLUNTEER_ROOM = 8;
-    static final int COL_DOS_ADVENTURE_TAILS = 9;
+    static final int COL_DOG_DOG_ID = 1;
+    static final int COL_DOG_NAME = 2;
+    static final int COL_DOG_BREED = 3;
+    static final int COL_DOG_GENDER = 4;
+    static final int COL_DOG_WALK_AM = 5;
+    static final int COL_DOG_WALK_PM = 6;
+    static final int COL_DOG_OFFICE = 7;
+    static final int COL_DOG_VISITOR = 8;
+    static final int COL_DOG_VOLUNTEER_ROOM = 9;
+    static final int COL_DOS_ADVENTURE_TAILS = 10;
 
     /**
      * A callback interface that all activities containing this fragment must

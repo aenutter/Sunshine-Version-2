@@ -51,48 +51,54 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checkMark="@android:drawable/checkbox_on_background"
+                android:checked="false"
                 android:text="Walk AM"
-                android:checked="false"/>
+                android:visibility="invisible" />
 
             <CheckedTextView
                 android:id="@+id/walk_PM_checked_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checkMark="@android:drawable/checkbox_on_background"
+                android:checked="false"
                 android:text="Walk PM"
-                android:checked="false"/>
+                android:visibility="invisible" />
 
             <CheckedTextView
                 android:id="@+id/office_checked_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checkMark="@android:drawable/checkbox_on_background"
+                android:checked="false"
                 android:text="Office"
-                android:checked="false"/>
+                android:visibility="invisible" />
 
             <CheckedTextView
                 android:id="@+id/visitor_checked_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checkMark="@android:drawable/checkbox_on_background"
+                android:checked="false"
                 android:text="Visitor Room"
-                android:checked="false"/>
+                android:visibility="invisible" />
 
             <CheckedTextView
                 android:id="@+id/volunteer_room_checked_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checkMark="@android:drawable/checkbox_on_background"
+                android:checked="false"
                 android:text="Volunteer Room"
-                android:checked="false"/>
+                android:visibility="invisible" />
 
             <CheckedTextView
                 android:id="@+id/adventure_tails_checked_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checkMark="@android:drawable/checkbox_on_background"
+                android:checked="false"
                 android:text="Adventure Tails"
-                android:checked="false"/>
+                android:visibility="invisible" />
 
         </LinearLayout>
     </LinearLayout>

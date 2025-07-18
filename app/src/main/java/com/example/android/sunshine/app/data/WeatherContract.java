@@ -72,7 +72,7 @@ public class WeatherContract {
 
         // Table name
         public static final String TABLE_NAME = "dogs";
-
+        public static final String _ID = "_id";
         public static final String DOG_ID = "dog_id";
         // The location setting string is what will be sent to openweathermap
         // as the location query.
@@ -110,7 +110,7 @@ public class WeatherContract {
         // Table name
         public static final String TABLE_NAME = "activities";
 
-        public static final String ID = "_id";
+        public static final String ACTIVITIES_ID = "activities_id";
         public static final String COLUMN_DOG_WALK_AM = "walk_AM";
         public static final String COLUMN_DOG_WALK_PM = "walk_PM";
         public static final String COLUMN_DOG_OFFICE = "office";

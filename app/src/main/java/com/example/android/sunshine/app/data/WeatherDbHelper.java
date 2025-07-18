@@ -31,7 +31,7 @@ import com.example.android.sunshine.app.data.WeatherContract.DogActivitiesEntry;
 public class WeatherDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 12;
 
     static final String DATABASE_NAME = "weather.db";
 
@@ -45,7 +45,7 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
         // Create a table to hold locations.  A location consists of the string supplied in the
         // location setting, the city name, and the latitude and longitude
         final String SQL_CREATE_DOG_ACTIVITIES_TABLE = "CREATE TABLE " + DogActivitiesEntry.TABLE_NAME + " (" +
-                DogActivitiesEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                DogActivitiesEntry.ACTIVITIES_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 DogActivitiesEntry.COLUMN_DOG_WALK_AM + " INTEGER NOT NULL, " +
                 DogActivitiesEntry.COLUMN_DOG_WALK_PM + " INTEGER NOT NULL, " +
                 DogActivitiesEntry.COLUMN_DOG_OFFICE + " INTEGER NOT NULL, " +
@@ -57,14 +57,14 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
         // location setting, the city name, and the latitude and longitude
         final String SQL_CREATE_DOG_TABLE = "CREATE TABLE " + DogEntry.TABLE_NAME + " (" +
                 DogEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                DogEntry.DOG_ID  + " INTEGER NOT NULL, " +
+                DogEntry.DOG_ID  + " INTEGER, " +
                 DogEntry.COLUMN_DOG_NAME + " TEXT NOT NULL, " +
                 DogEntry.COLUMN_DOG_BREED + " TEXT NOT NULL, " +
                 DogEntry.COLUMN_DOG_GENDER + " TEXT NOT NULL, " +
 
                 // Set up the location column as a foreign key to location table.
                 " FOREIGN KEY (" + DogEntry.DOG_ID + ") REFERENCES " +
-                DogActivitiesEntry.TABLE_NAME + " (" + DogActivitiesEntry._ID + "), " +
+                DogActivitiesEntry.TABLE_NAME + " (" + DogActivitiesEntry.ACTIVITIES_ID + "), " +
 
                 // To assure the application have just one weather entry per day
                 // per location, it's created a UNIQUE constraint with REPLACE strategy

@@ -4,10 +4,18 @@ json-server dogs.json
 
 cd C:\Users\aenut\AppData\Local\Android\Sdk\emulator
 emulator -list-avds
-emulator -avd Nexus_9_API_22
+emulator -avd Nexus_9_API_24
+
 
 adb shell
 cd /data/data/com.example.android.sunshine.app/databases
 sqlite3 weather.db
 select * from dogs;
 update dogs set _id = 1 where _id = 1004;
+
+UPDATE sqlite_sequence SET seq = 0 WHERE name = 'dogs';
+delete from activities;
+
+SELECT dogs.name, activities.activities_id
+FROM dogs
+INNER JOIN activities.activities_id ON dogs.dogs_id = activities.activities_id;
