@@ -46,8 +46,6 @@ public class WeatherContract {
     public static final String PATH_WEATHER = "weather";
     public static final String PATH_LOCATION = "location";
     public static final String PATH_DOG = "dogs";
-    public static final String PATH_DOG_ACTIVITIES = "activities";
-    public static final String PATH_ALL_DOGS = "";
 
     // To make it easy to query for the exact date, we normalize all dates that go into
     // the database to the start of the the Julian day at UTC.
@@ -72,12 +70,11 @@ public class WeatherContract {
 
         // Table name
         public static final String TABLE_NAME = "dogs";
-        public static final String _ID = "_id";
-        public static final String DOG_ID = "dog_id";
+
+        public static final String COLUMN_ID = "_id";
         // The location setting string is what will be sent to openweathermap
         // as the location query.
         public static final String COLUMN_DOG_NAME = "name";
-        public static final String COLUMN_DOG_WALKING_COLOR = "walking_color";
 
         // Human readable location string, provided by the API.  Because for styling,
         // "Mountain View" is more recognizable than 94043.
@@ -86,31 +83,6 @@ public class WeatherContract {
         // In order to uniquely pinpoint the location on the map when we launch the
         // map intent, we store the latitude and longitude as returned by openweathermap.
         public static final String COLUMN_DOG_GENDER = "gender";
-
-        public static Uri buildDogsUri(long id) {
-            return ContentUris.withAppendedId(CONTENT_URI, id);
-        }
-
-        public static String getIDFromUri(Uri uri) {
-            return uri.getPathSegments().get(1);
-        }
-    }
-
-    /* Inner class that defines the table contents of the dogs table */
-    public static final class DogActivitiesEntry implements BaseColumns {
-
-        public static final Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_DOG_ACTIVITIES).build();
-
-        public static final String CONTENT_TYPE =
-                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_DOG_ACTIVITIES;
-        public static final String CONTENT_ITEM_TYPE =
-                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_DOG_ACTIVITIES;
-
-        // Table name
-        public static final String TABLE_NAME = "activities";
-
-        public static final String ACTIVITIES_ID = "activities_id";
         public static final String COLUMN_DOG_WALK_AM = "walk_AM";
         public static final String COLUMN_DOG_WALK_PM = "walk_PM";
         public static final String COLUMN_DOG_OFFICE = "office";
@@ -118,7 +90,7 @@ public class WeatherContract {
         public static final String COLUMN_DOG_VOLUNTEER_ROOM = "volunteer_room";
         public static final String COLUMN_DOG_ADVENTURE_TAILS = "adventure_tails";
 
-        public static Uri buildDogActivitiesUri(long id) {
+        public static Uri buildDogUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 

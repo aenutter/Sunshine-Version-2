@@ -51,7 +51,7 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
     String LOG_TAG = MainActivity.class.getSimpleName();
     // Interval at which to sync with the weather, in seconds.
     // 60 seconds (1 minute) * 180 = 3 hours
-    public static final int SYNC_INTERVAL = 60 * 180;
+    public static final int SYNC_INTERVAL = 3;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL/3;
     private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
     private static final int WEATHER_NOTIFICATION_ID = 3004;
@@ -229,8 +229,7 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
             JSONArray dogArray = new JSONArray(dogJsonStr);
 
             // Insert the new weather information into the database
-//            Vector<ContentValues> cVVector = new Vector<ContentValues>(dogArray.length());
-//            Vector<ContentValues> cVVector2 = new Vector<ContentValues>(dogArray.length());
+            Vector<ContentValues> cVVector = new Vector<ContentValues>(dogArray.length());
 
             // OWM returns daily forecasts based upon the local time of the city that is being
             // asked for, which means that we need to know the GMT offset to translate this data
@@ -252,9 +251,6 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
             MyLogger.d("sunshine", "dog array length: " + dogArray.length());
 
             for(int i = 0; i < dogArray.length(); i++) {
-                // Insert the new weather information into the database
-                Vector<ContentValues> cVVector = new Vector<ContentValues>(dogArray.length());
-                Vector<ContentValues> cVVector2 = new Vector<ContentValues>(dogArray.length());
                 // These are the values that will be collected.
 
                 String name;
@@ -273,131 +269,98 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
                 JSONObject dogJson = dogDetails.getJSONObject(DOG);
 
                 name = dogJson.getString(DOG_NAME);
-//                MyLogger.d("sunshine", "dog json name value: " + name);
+                MyLogger.d("sunshine", "dog json name value: " + name);
 
                 breed = dogJson.getString(DOG_BREED);
-//                MyLogger.d("sunshine", "dog json breed value: " + breed);
+                MyLogger.d("sunshine", "dog json breed value: " + breed);
 
                 gender = dogJson.getString(DOG_GENDER);
-//                MyLogger.d("sunshine", "dog json gender value: " + gender);
+                MyLogger.d("sunshine", "dog json gender value: " + gender);
 
                 walkAM = dogJson.getInt(DOG_WALK_AM);
-//                MyLogger.d("sunshine", "dog json walk AM value: " + walkAM);
+                MyLogger.d("sunshine", "dog json walk AM value: " + walkAM);
 
                 walkPM = dogJson.getInt(DOG_WALK_PM);
-//                MyLogger.d("sunshine", "dog json walk PM value: " + walkPM);
+                MyLogger.d("sunshine", "dog json walk PM value: " + walkPM);
 
                 office = dogJson.getInt(DOG_OFFICE);
-//                MyLogger.d("sunshine", "dog json office value: " + office);
+                MyLogger.d("sunshine", "dog json office value: " + office);
 
                 visitor = dogJson.getInt(DOG_VISITOR);
-//                MyLogger.d("sunshine", "dog json visitor value: " + visitor);
+                MyLogger.d("sunshine", "dog json visitor value: " + visitor);
 
                 volunteerRoom = dogJson.getInt(DOG_VOLUNTEER_ROOM);
-//                MyLogger.d("sunshine", "dog json volunteer room value: " + volunteerRoom);
+                MyLogger.d("sunshine", "dog json volunteer room value: " + volunteerRoom);
 
                 adventureTails = dogJson.getInt(DOG_ADVENTURE_TAILS);
-//                MyLogger.d("sunshine", "dog json adventure tails value: " + adventureTails);
+                MyLogger.d("sunshine", "dog json adventure tails value: " + adventureTails);
+
+//                String innerValue = innerObject.getString(OWM_PRESSURE);
+//                Log.d("sunshine", "json pressure value: " + pressure);
+//                MyLogger.d("sunshine", "dog json name value: " + name);
+//                pressure = dayForecast.getDouble(OWM_PRESSURE);
+
+//                humidity = dayForecast.getJSONObject(OWM_DESCRIPTION).getInt(OWM_HUMIDITY);
+//                Log.d("sunshine", "json humidity value: " + humidity);
+//                humidity = dayForecast.getInt(OWM_HUMIDITY);
+
+//                windSpeed = dayForecast.getJSONObject("wind").getInt(OWM_WINDSPEED);
+//                Log.d("sunshine", "json windspeed value: " + windSpeed);
+//                windSpeed = dayForecast.getDouble(OWM_WINDSPEED);
+
+//                windDirection = dayForecast.getJSONObject("wind").getDouble(OWM_WIND_DIRECTION);
+//                Log.d("sunshine", "json wind Direction value: " + windDirection);
+//                windDirection = dayForecast.getDouble(OWM_WIND_DIRECTION);
+
+                // Description is in a child array called "weather", which is 1 element long.
+                // That element also contains a weather code.
+//                JSONObject weatherObject =
+//                        dayForecast.getJSONArray(OWM_WEATHER).getJSONObject(0);
+//                description = weatherObject.getString(OWM_DESCRIPTION);
+//                weatherId = weatherObject.getInt(OWM_WEATHER_ID);
+
+                // Temperatures are in a child object called "temp".  Try not to name variables
+                // "temp" when working with temperature.  It confuses everybody.
+//                high = dayForecast.getJSONObject(OWM_DESCRIPTION).getDouble(OWM_MAX);
+//                Log.d("sunshine", "json high temp value: " + high);
+
+//                JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
+//                high = temperatureObject.getDouble(OWM_MAX);
+//                low = dayForecast.getJSONObject(OWM_DESCRIPTION).getDouble(OWM_MIN);
+//                Log.d("sunshine", "json low temp value: " + low);
+//                low = temperatureObject.getDouble(OWM_MIN);
 
                 ContentValues dogValues = new ContentValues();
 
                 dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_NAME, name);
                 dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_BREED, breed);
                 dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_GENDER, gender);
+                dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_WALK_AM, walkAM);
+                dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_WALK_PM, walkPM);
+                dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_OFFICE, office);
+                dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_VISITOR, visitor);
+                dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_VOLUNTEER_ROOM, volunteerRoom);
+                dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_ADVENTURE_TAILS, adventureTails);
 
                 cVVector.add(dogValues);
-
-                ContentValues dogActivityValues = new ContentValues();
-
-                dogActivityValues.put(WeatherContract.DogActivitiesEntry.COLUMN_DOG_WALK_AM, walkAM);
-                dogActivityValues.put(WeatherContract.DogActivitiesEntry.COLUMN_DOG_WALK_PM, walkPM);
-                dogActivityValues.put(WeatherContract.DogActivitiesEntry.COLUMN_DOG_OFFICE, office);
-                dogActivityValues.put(WeatherContract.DogActivitiesEntry.COLUMN_DOG_VISITOR, visitor);
-                dogActivityValues.put(WeatherContract.DogActivitiesEntry.COLUMN_DOG_VOLUNTEER_ROOM, volunteerRoom);
-                dogActivityValues.put(WeatherContract.DogActivitiesEntry.COLUMN_DOG_ADVENTURE_TAILS, adventureTails);
-
-                cVVector2.add(dogActivityValues);
-
-                int inserted = 0;
-                // add to activities first database
-                MyLogger.d("sunshine",  "outside cVVector2 cVVector2 size: " + cVVector2.size());
-                if ( cVVector2.size() > 0 ) {
-                    ContentValues[] cvArray2 = new ContentValues[cVVector2.size()];
-                    cVVector2.toArray(cvArray2);
-//
-                    uri = getContext().getContentResolver().insert(WeatherContract.DogActivitiesEntry.CONTENT_URI, cvArray2[0]);
-                    row_id = WeatherContract.DogActivitiesEntry.getDogIDFromUri(uri);
-                    MyLogger.d("sunshine", "row_id: " + row_id + " inside cVVector2 cvArray2[0] value: " + cvArray2[0]);
-                    // delete old data so we don't build up an endless history
-//                getContext().getContentResolver().delete(WeatherContract.DogEntry.CONTENT_URI,
-//                        WeatherContract.WeatherEntry.COLUMN_DATE + " <= ?",
-//                        new String[] {Long.toString(dayTime.setJulianDay(julianStartDay-1))});
-
-//                notifyWeather();
-                }
-                inserted = 0;
-                // add to database
-                MyLogger.d("sunshine",  "outside cVVector cVVector size: " + cVVector.size());
-                if ( cVVector.size() > 0 ) {
-                    dogValues.put(WeatherContract.DogEntry.DOG_ID, row_id);
-                    ContentValues[] cvArray = new ContentValues[cVVector.size()];
-                    cVVector.toArray(cvArray);
-                    uri = getContext().getContentResolver().insert(WeatherContract.DogEntry.CONTENT_URI, cvArray[0]);
-                    row_id = WeatherContract.DogEntry.getIDFromUri(uri);
-                    MyLogger.d("sunshine", "row_id: " + row_id + " inside cVVector cvArray[0] value: " + cvArray[0]);
-
-
-                    // delete old data so we don't build up an endless history
-//                getContext().getContentResolver().delete(WeatherContract.DogEntry.CONTENT_URI,
-//                        WeatherContract.WeatherEntry.COLUMN_DATE + " <= ?",
-//                        new String[] {Long.toString(dayTime.setJulianDay(julianStartDay-1))});
-
-//                notifyWeather();
-                }
             }
 
-//            int inserted = 0;
-//            // add to activities first database
-//            if ( cVVector2.size() > 0 ) {
-//                ContentValues[] cvArray2 = new ContentValues[cVVector2.size()];
-//                cVVector2.toArray(cvArray2);
-//                int rows = getContext().getContentResolver().bulkInsert(WeatherContract.DogActivitiesEntry.CONTENT_URI, cvArray2);
-//                MyLogger.d("sunshine", "Number of rows inserted: " + rows + " inside cVVector2 cvArray2[0] value: " + cvArray2[0]);
-//                // delete old data so we don't build up an endless history
-////                getContext().getContentResolver().delete(WeatherContract.DogEntry.CONTENT_URI,
-////                        WeatherContract.WeatherEntry.COLUMN_DATE + " <= ?",
-////                        new String[] {Long.toString(dayTime.setJulianDay(julianStartDay-1))});
-//
-////                notifyWeather();
-//            }
-
-
-//            Log.d(LOG_TAG, "Sync Complete Dog Activities " + cVVector2.size() + " Inserted");
-//            MyLogger.d("sunshine", "Sync Complete Activity Entries " + cVVector2.size() + " Inserted");
-//
-//            inserted = 0;
-//            // add to database
-//            if ( cVVector.size() > 0 ) {
-//                ContentValues[] cvArray = new ContentValues[cVVector.size()];
-//                cVVector.toArray(cvArray);
-//                int rows = getContext().getContentResolver().bulkInsert(WeatherContract.DogEntry.CONTENT_URI, cvArray);
-//                MyLogger.d("sunshine", "Number of rows inserted: " + rows + " inside cVVector cvArray[0] value: " + cvArray[0]);
-
+            int inserted = 0;
+            // add to database
+            if ( cVVector.size() > 0 ) {
+                ContentValues[] cvArray = new ContentValues[cVVector.size()];
+                cVVector.toArray(cvArray);
+                getContext().getContentResolver().bulkInsert(WeatherContract.DogEntry.CONTENT_URI, cvArray);
 
                 // delete old data so we don't build up an endless history
 //                getContext().getContentResolver().delete(WeatherContract.DogEntry.CONTENT_URI,
 //                        WeatherContract.WeatherEntry.COLUMN_DATE + " <= ?",
 //                        new String[] {Long.toString(dayTime.setJulianDay(julianStartDay-1))});
 
-//                notifyWeather();
-//            }
+                notifyWeather();
+            }
 
-
-//            Log.d(LOG_TAG, "Sync Complete Dog Entries " + cVVector.size() + " Inserted");
-//            MyLogger.d("sunshine", "Sync Complete Dog Entries " + cVVector.size() + " Inserted");
-
-
-
+            Log.d(LOG_TAG, "Sync Complete. " + cVVector.size() + " Inserted");
 
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);

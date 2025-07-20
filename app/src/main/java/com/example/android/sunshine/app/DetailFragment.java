@@ -57,20 +57,22 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     private static final String[] DETAIL_COLUMNS = {
             WeatherContract.DogEntry._ID,
+//            WeatherContract.DogEntry.DOG_ID,
             WeatherContract.DogEntry.COLUMN_DOG_NAME,
             WeatherContract.DogEntry.COLUMN_DOG_BREED,
             WeatherContract.DogEntry.COLUMN_DOG_GENDER,
-            WeatherContract.DogActivitiesEntry.COLUMN_DOG_WALK_AM,
-            WeatherContract.DogActivitiesEntry.COLUMN_DOG_WALK_PM,
-            WeatherContract.DogActivitiesEntry.COLUMN_DOG_OFFICE,
-            WeatherContract.DogActivitiesEntry.COLUMN_DOG_VISITOR,
-            WeatherContract.DogActivitiesEntry.COLUMN_DOG_VOLUNTEER_ROOM,
-            WeatherContract.DogActivitiesEntry.COLUMN_DOG_ADVENTURE_TAILS
+            WeatherContract.DogEntry.COLUMN_DOG_WALK_AM,
+            WeatherContract.DogEntry.COLUMN_DOG_WALK_PM,
+            WeatherContract.DogEntry.COLUMN_DOG_OFFICE,
+            WeatherContract.DogEntry.COLUMN_DOG_VISITOR,
+            WeatherContract.DogEntry.COLUMN_DOG_VOLUNTEER_ROOM,
+            WeatherContract.DogEntry.COLUMN_DOG_ADVENTURE_TAILS
     };
 
     // These indices are tied to DETAIL_COLUMNS.  If DETAIL_COLUMNS changes, these
     // must change.
-    public static final int COL_DOG_ID = 0;
+    public static final int COL_ID = 0;
+//    public static final int COL_DOG_ID = 1;
     public static final int COL_DOG_NAME = 1;
     public static final int COL_DOG_BREED = 2;
     public static final int COL_DOG_GENDER = 3;
@@ -204,7 +206,10 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (data != null && data.moveToFirst()) {
             // Read weather condition ID from cursor
-            int dogId = data.getInt(COL_DOG_ID);
+            int dogId = data.getInt(COL_ID);
+            int i = 0;
+            for (i=0; i< data.getColumnCount(); i++)
+                MyLogger.d("sunshine", "onloadfinished cursor column names: " + data.getColumnName(i) + " column value: " + data.getString(i));
 
             // Use weather art image
 //            mIconView.setImageResource(Utility.getArtResourceForWeatherCondition(weatherId));
@@ -232,29 +237,81 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             MyLogger.d("sunshine", "walk AM value: " + data.getInt(COL_DOG_WALK_AM));
             Boolean walkAM = (data.getInt(COL_DOG_WALK_AM) == 1);
             MyLogger.d("sunshine", "walk AM boolean value: " + walkAM);
-            if (walkAM) mWalkAMView.setChecked(true); mWalkAMView.setChecked(false);
+            if (walkAM) {
+                mWalkAMView.setVisibility(View.VISIBLE);
+                mWalkAMView.setChecked(true);
+//                MyLogger.d("sunshine", "walk AM set after set checked to true: " + mWalkAMView.isChecked());
+            } else {
+                mWalkAMView.setVisibility(View.VISIBLE);
+                mWalkAMView.setChecked(false);
+//                MyLogger.d("sunshine", "walk AM set after set checked to false: " + mWalkAMView.isChecked());
+            }
 
             MyLogger.d("sunshine", "walk PM value: " + data.getInt(COL_DOG_WALK_PM));
             Boolean walkPM = (data.getInt(COL_DOG_WALK_PM) == 1);
             MyLogger.d("sunshine", "walk PM boolean value: " + walkPM);
             if (walkPM) {
+                mWalkPMView.setVisibility(View.VISIBLE);
                 mWalkPMView.setChecked(true);
             }
             else {
+                mWalkPMView.setVisibility(View.VISIBLE);
                 mWalkPMView.setChecked(false);
             }
 
             Boolean office = (data.getInt(COL_DOG_OFFICE) == 1);
-            if (office) mOfficeView.setChecked(true); mOfficeView.setChecked(false);
+            MyLogger.d("sunshine", "Office boolean value: " + office);
+            if (office)
+            {
+                mOfficeView.setVisibility(View.VISIBLE);
+                mOfficeView.setChecked(true);
+            } else {
+                mOfficeView.setVisibility(View.VISIBLE);
+                mOfficeView.setChecked(false);
+            }
+            MyLogger.d("sunshine", "Office is checked: " + mOfficeView.isChecked());
 
             Boolean visitor = (data.getInt(COL_DOG_VISITOR) == 1);
-            if (visitor) mVisitorView.setChecked(true); mVisitorView.setChecked(false);
+            MyLogger.d("sunshine", "Visitor boolean value: " + visitor);
+            if (visitor)
+            {
+                mVisitorView.setVisibility(View.VISIBLE);
+                mVisitorView.setChecked(true);
+            } else {
+                mOfficeView.setVisibility(View.VISIBLE);
+                mOfficeView.setChecked(false);
+            }
 
             Boolean volunteerRoom = (data.getInt(COL_DOG_VOLUNTEER_ROOM) == 1);
-            if (volunteerRoom) mVolunteerView.setChecked(true); mVolunteerView.setChecked(false);
+            MyLogger.d("sunshine", "Volunteer Room boolean value: " + volunteerRoom);
+            if (volunteerRoom)
+            {
+                mVolunteerView.setVisibility(View.VISIBLE);
+                mVolunteerView.setChecked(true);
+            } else {
+                mOfficeView.setVisibility(View.VISIBLE);
+                mOfficeView.setChecked(false);
+            }
 
             Boolean adventureTails = (data.getInt(COL_DOG_ADVENTURE_TAILS) == 1);
-            if (adventureTails) mAdventureTailsView.setChecked(true); mAdventureTailsView.setChecked(false);
+            MyLogger.d("sunshine", "Adventure Tails boolean value: " + adventureTails);
+            if (adventureTails)
+            {
+                mAdventureTailsView.setVisibility(View.VISIBLE);
+                mAdventureTailsView.setChecked(true);
+            } else {
+                mOfficeView.setVisibility(View.VISIBLE);
+                mOfficeView.setChecked(false);
+            }
+
+//            Boolean visitor = (data.getInt(COL_DOG_VISITOR) == 1);
+//            if (visitor) mVisitorView.setChecked(true); mVisitorView.setChecked(false);
+
+//            Boolean volunteerRoom = (data.getInt(COL_DOG_VOLUNTEER_ROOM) == 1);
+//            if (volunteerRoom) mVolunteerView.setChecked(true); mVolunteerView.setChecked(false);
+
+//            Boolean adventureTails = (data.getInt(COL_DOG_ADVENTURE_TAILS) == 1);
+//            if (adventureTails) mAdventureTailsView.setChecked(true); mAdventureTailsView.setChecked(false);
 
             // For accessibility, add a content description to the icon field
 //            mIconView.setContentDescription(description);

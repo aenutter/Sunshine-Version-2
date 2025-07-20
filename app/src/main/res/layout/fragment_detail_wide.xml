@@ -21,6 +21,7 @@
             android:textColor="@color/black"
             android:textSize="96sp" />
 
+        <!-- Main content: high, low, art, weather state -->
         <TextView
             android:id="@+id/detail_dog_gender_textview"
             android:layout_width="wrap_content"
@@ -29,7 +30,6 @@
             android:textColor="@color/grey_700"
             android:textSize="48sp" />
 
-        <!-- Main content: high, low, art, weather state -->
         <TextView
             android:id="@+id/detail_dog_breed_text_view"
             android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
                 android:id="@+id/walk_AM_checked_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:checkMark="@android:drawable/checkbox_on_background"
+                android:checkMark="?android:attr/listChoiceIndicatorMultiple"
                 android:checked="false"
                 android:text="Walk AM"
                 android:visibility="invisible" />
@@ -59,7 +59,7 @@
                 android:id="@+id/walk_PM_checked_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:checkMark="@android:drawable/checkbox_on_background"
+                android:checkMark="?android:attr/listChoiceIndicatorMultiple"
                 android:checked="false"
                 android:text="Walk PM"
                 android:visibility="invisible" />
@@ -68,7 +68,7 @@
                 android:id="@+id/office_checked_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:checkMark="@android:drawable/checkbox_on_background"
+                android:checkMark="?android:attr/listChoiceIndicatorMultiple"
                 android:checked="false"
                 android:text="Office"
                 android:visibility="invisible" />
@@ -77,7 +77,7 @@
                 android:id="@+id/visitor_checked_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:checkMark="@android:drawable/checkbox_on_background"
+                android:checkMark="?android:attr/listChoiceIndicatorMultiple"
                 android:checked="false"
                 android:text="Visitor Room"
                 android:visibility="invisible" />
@@ -86,7 +86,7 @@
                 android:id="@+id/volunteer_room_checked_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:checkMark="@android:drawable/checkbox_on_background"
+                android:checkMark="?android:attr/listChoiceIndicatorMultiple"
                 android:checked="false"
                 android:text="Volunteer Room"
                 android:visibility="invisible" />
@@ -95,7 +95,7 @@
                 android:id="@+id/adventure_tails_checked_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:checkMark="@android:drawable/checkbox_on_background"
+                android:checkMark="?android:attr/listChoiceIndicatorMultiple"
                 android:checked="false"
                 android:text="Adventure Tails"
                 android:visibility="invisible" />
