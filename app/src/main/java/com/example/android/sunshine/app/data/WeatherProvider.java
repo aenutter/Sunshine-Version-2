@@ -40,15 +40,6 @@ public class WeatherProvider extends ContentProvider {
     static final int WEATHER_WITH_LOCATION_AND_DATE = 102;
     static final int LOCATION = 300;
     static final int DOGS = 400;
-    static final int DOG = 401;
-
-    private static final String PATH_ITEMS = "dogs";
-    private static final String PATH_ITEM_ID = "dogs/#"; // Example with ID
-
-    // Define URI patterns (without UriMatcher)
-    private static final Uri URI_ITEMS = Uri.parse("content://"  + WeatherContract.CONTENT_AUTHORITY +  "/" + PATH_ITEMS);
-    private static final Uri URI_ITEM_ID = Uri.parse("content://" + WeatherContract.CONTENT_AUTHORITY + "/" + PATH_ITEMS + "/#"); // Base URI for item ID
-
 
     private static final SQLiteQueryBuilder sWeatherByLocationSettingQueryBuilder;
 
@@ -146,8 +137,8 @@ public class WeatherProvider extends ContentProvider {
 
         matcher.addURI(authority, WeatherContract.PATH_LOCATION, LOCATION);
         matcher.addURI(authority, WeatherContract.PATH_DOG, DOGS);
-//        matcher.addURI(authority, WeatherContract.PATH_DOG + "/#", DOGS);
-//        matcher.addURI(authority, WeatherContract.PATH_DOG + "/*", DOGS);
+        matcher.addURI(authority, WeatherContract.PATH_DOG + "/#", DOGS);
+        matcher.addURI(authority, WeatherContract.PATH_DOG + "/*", DOGS);
 //        matcher.addURI(authority, WeatherContract.PATH_DOG_ACTIVITIES + "/#", ACTIVITIES);
 //        matcher.addURI(authority, WeatherContract.PATH_DOG_ACTIVITIES, ACTIVITIES);
 //        matcher.addURI(authority, WeatherContract.PATH_DOG_ACTIVITIES + "/*", ACTIVITIES);
@@ -188,8 +179,6 @@ public class WeatherProvider extends ContentProvider {
                 return WeatherContract.LocationEntry.CONTENT_TYPE;
             case DOGS:
                 return WeatherContract.DogEntry.CONTENT_TYPE;
-            case DOG:
-                return WeatherContract.DogEntry.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -198,141 +187,82 @@ public class WeatherProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
                         String sortOrder) {
-        Cursor retCursor = null;
-        String id = null;
-        if (uri.toString().startsWith(URI_ITEM_ID.toString())) {
-            // Extract ID from URI (e.g., content://com.example.app.myprovider/items/123)
-            id = uri.getLastPathSegment();
-            SQLiteDatabase db = mOpenHelper.getReadableDatabase();
-
-            // 2. Build the SQL query (replace with your logic)
-            String sqlQuery = "select dogs._id, dogs.name, dogs.breed, dogs.gender, dogs.walk_AM, dogs.walk_PM, " +
-                    "dogs.office, dogs.visitor, dogs.volunteer_room, dogs.adventure_tails from dogs where dogs._id = ?";
-//            String query = "SELECT * FROM mytable WHERE column1 = ?";
-            selectionArgs = new String[]{id};
-            retCursor = db.rawQuery(sqlQuery, selectionArgs);
-//            Log.d("ContentProvider", "Executing SQL: " + sqlQuery);
-            MyLogger.d("sunshine", "DOGS with ID query Executing SQL: " + sqlQuery);
-            MyLogger.d("sunshine", "DOGS with ID query id: " + id);
-
-
-            // 3. Execute the query using rawQuery() and return a Cursor
-//            retCursor = db.rawQuery(sqlQuery, selectionArgs);
-//////                Log.d("sunshine", "projection: " + projection);
-//////                System.out.println("projection" + projection);
-//                MyLogger.d("sunshine", "DOGS query uri: " + uri);
-//                MyLogger.d("sunshine", "DOGS query projection: " + projection[0]);
-//                MyLogger.d("sunshine", "DOGS query selection: " + selection);
-//                if (selectionArgs != null)
-//                    MyLogger.d("sunshine", "DOGS query selectionArgs: " + selectionArgs[0]);
-            // ... your data access logic for the item with the given ID
-//            return null; // Replace with actual cursor
-        } else if (uri.toString().equals(URI_ITEMS.toString())) {
-            // Handle all items
-//            Log.d(TAG, "Querying all items");
-            MyLogger.d("sunshine", "Querying all items");
-            SQLiteDatabase db = mOpenHelper.getReadableDatabase();
-
-            // 2. Build the SQL query (replace with your logic)
-            String sqlQuery = "select dogs._id, dogs.name, dogs.breed, dogs.gender, dogs.walk_AM, dogs.walk_PM, " +
-                    "dogs.office, dogs.visitor, dogs.volunteer_room, dogs.adventure_tails from dogs";
-//            String query = "SELECT * FROM mytable WHERE column1 = ?";
-            selectionArgs = new String[]{""};
-            retCursor = db.rawQuery(sqlQuery, selectionArgs);
-//            Log.d("ContentProvider", "Executing SQL: " + sqlQuery);
-            MyLogger.d("sunshine", "DOGS without ID query Executing SQL: " + sqlQuery);
-//            MyLogger.d("sunshine", "DOGS without ID query id: " + id);
-            // ... your data access logic for all items
-//            return null; // Replace with actual cursor
-        } else {
-            // Handle unknown URI
-//            Log.d(TAG, "Unknown URI: " + uri);
-            MyLogger.d("sunshine", "Unknown URI: " + uri);
-//            return null; // Replace with actual cursor
-        }
-//        retCursor.setNotificationUri(getContext().getContentResolver(), uri);
-        return retCursor;
         // Here's the switch statement that, given a URI, will determine what kind of request it is,
         // and query the database accordingly.
-//        Cursor retCursor;
-//        switch (sUriMatcher.match(uri)) {
-//            // "weather/*/*"
-//            case WEATHER_WITH_LOCATION_AND_DATE:
-//            {
-//                retCursor = getWeatherByLocationSettingAndDate(uri, projection, sortOrder);
-////                Log.d("sunshine", "projection: " + projection[1]);
-////                System.out.println("projection" + projection[1]);
-////                MyLogger.d("sunshine", "projection: " + projection[1]); //instead of Log.d().
-//
-//                break;
-//            }
-//            // "weather/*"
-//            case WEATHER_WITH_LOCATION: {
-//                retCursor = getWeatherByLocationSetting(uri, projection, sortOrder);
-////                Log.d("sunshine", "projection: " + projection);
-////                System.out.println("projection" + projection);
-////                MyLogger.d("sunshine", "projection: " + projection[1]);
-//                break;
-//            }
-//            // "weather"
-//            case WEATHER: {
-//                retCursor = mOpenHelper.getReadableDatabase().query(
-//                        WeatherContract.WeatherEntry.TABLE_NAME,
-//                        projection,
-//                        selection,
-//                        selectionArgs,
-//                        null,
-//                        null,
-//                        sortOrder
-//                );
-////                Log.d("sunshine", "projection: " + projection);
-////                System.out.println("projection" + projection);
-////                MyLogger.d("sunshine", "projection: " + projection[1]);
-//                break;
-//            }
-//            // "location"
-//            case LOCATION: {
-//                retCursor = mOpenHelper.getReadableDatabase().query(
-//                        WeatherContract.LocationEntry.TABLE_NAME,
-//                        projection,
-//                        selection,
-//                        selectionArgs,
-//                        null,
-//                        null,
-//                        sortOrder
-//                );
-////                Log.d("sunshine", "projection: " + projection);
-////                System.out.println("projection" + projection);
-//                MyLogger.d("sunshine", "projection: " + projection[0]);
-//                break;
-//            }
-//            // "location"
-//            case DOGS: {
-//                retCursor = mOpenHelper.getReadableDatabase().query(
-//                        WeatherContract.DogEntry.TABLE_NAME,
-//                        projection,
-//                        selection,
-//                        selectionArgs,
-//                        null,
-//                        null,
-//                        sortOrder
-//                );
-////                Log.d("sunshine", "projection: " + projection);
-////                System.out.println("projection" + projection);
-//                MyLogger.d("sunshine", "DOGS query uri: " + uri);
-//                MyLogger.d("sunshine", "DOGS query projection: " + projection[0]);
-//                MyLogger.d("sunshine", "DOGS query selection: " + selection);
-//                if (selectionArgs != null)
-//                    MyLogger.d("sunshine", "DOGS query selectionArgs: " + selectionArgs[0]);
-////                MyLogger.d("sunshine", "projection: " + projection[0]);
-//                break;
-//            }
-//
-//            default:
-//                throw new UnsupportedOperationException("Unknown uri: " + uri);
-//        }
-//        retCursor.setNotificationUri(getContext().getContentResolver(), uri);
-//        return retCursor;
+        Cursor retCursor;
+        switch (sUriMatcher.match(uri)) {
+            // "weather/*/*"
+            case WEATHER_WITH_LOCATION_AND_DATE:
+            {
+                retCursor = getWeatherByLocationSettingAndDate(uri, projection, sortOrder);
+//                Log.d("sunshine", "projection: " + projection[1]);
+//                System.out.println("projection" + projection[1]);
+//                MyLogger.d("sunshine", "projection: " + projection[1]); //instead of Log.d().
+
+                break;
+            }
+            // "weather/*"
+            case WEATHER_WITH_LOCATION: {
+                retCursor = getWeatherByLocationSetting(uri, projection, sortOrder);
+//                Log.d("sunshine", "projection: " + projection);
+//                System.out.println("projection" + projection);
+//                MyLogger.d("sunshine", "projection: " + projection[1]);
+                break;
+            }
+            // "weather"
+            case WEATHER: {
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        WeatherContract.WeatherEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+//                Log.d("sunshine", "projection: " + projection);
+//                System.out.println("projection" + projection);
+//                MyLogger.d("sunshine", "projection: " + projection[1]);
+                break;
+            }
+            // "location"
+            case LOCATION: {
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        WeatherContract.LocationEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+//                Log.d("sunshine", "projection: " + projection);
+//                System.out.println("projection" + projection);
+                MyLogger.d("sunshine", "projection: " + projection[0]);
+                break;
+            }
+            // "location"
+            case DOGS: {
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        WeatherContract.DogEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+//                Log.d("sunshine", "projection: " + projection);
+//                System.out.println("projection" + projection);
+                MyLogger.d("sunshine", "projection: " + projection[0]);
+                break;
+            }
+
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        retCursor.setNotificationUri(getContext().getContentResolver(), uri);
+        return retCursor;
     }
 
     /*
@@ -366,10 +296,8 @@ public class WeatherProvider extends ContentProvider {
                 MyLogger.d("sunshine", "dog content values: " + values.toString());
                 long _id = db.insert(WeatherContract.DogEntry.TABLE_NAME, null, values);
                 MyLogger.d("sunshine", "dogs insert row _id " + _id + " values: " + values);
-                if ( _id > 0 ) {
+                if ( _id > 0 )
                     returnUri = WeatherContract.DogEntry.buildDogUri(_id);
-                    MyLogger.d("sunshine", "dogs insert row _id " + _id + " uri: " + returnUri);
-                }
                 else {
                     MyLogger.d("sunshine", "Failed to insert row into " + uri);
                     Context context = getContext().getApplicationContext();
