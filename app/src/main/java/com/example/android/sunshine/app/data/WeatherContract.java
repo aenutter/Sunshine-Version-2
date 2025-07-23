@@ -20,6 +20,12 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.text.format.Time;
+import android.content.ContentUris;
+import android.net.Uri;
+
+import com.example.android.sunshine.app.MyLogger;
+
+import java.util.List;
 
 import static android.R.attr.id;
 
@@ -97,6 +103,38 @@ public class WeatherContract {
         public static String getDogIDFromUri(Uri uri) {
             return uri.getPathSegments().get(1);
         }
+
+        public static Uri removeDogIDFromUri() {
+            Uri uriWithLastSegment = Uri.parse(CONTENT_URI.toString());
+            Uri uriWithoutLastSegment = null;
+            // Get the path segments
+            List<String> pathSegments = uriWithLastSegment.getPathSegments();
+
+            // Check if there are segments to remove
+            if (!pathSegments.isEmpty()) {
+                // Build a new URI without the last segment
+                Uri.Builder uriBuilder = uriWithLastSegment.buildUpon();
+                uriBuilder.path(null); // Clear the existing path
+
+                for (int i = 0; i < pathSegments.size() - 1; i++) {
+                    uriBuilder.appendPath(pathSegments.get(i));
+                }
+
+                uriWithoutLastSegment = uriBuilder.build();
+
+                // Print the result
+                MyLogger.d("sunshine", "Original URI: " + uriWithLastSegment.toString());
+                System.out.println("Original URI: " + uriWithLastSegment.toString());
+
+                MyLogger.d("sunshine", "URI without last segment: " + uriWithoutLastSegment.toString());
+                System.out.println("URI without last segment: " + uriWithoutLastSegment.toString());
+
+            }
+            return uriWithoutLastSegment;
+        }
+
+
+
     }
 
 

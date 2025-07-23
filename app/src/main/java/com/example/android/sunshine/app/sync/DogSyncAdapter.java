@@ -269,31 +269,31 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
                 JSONObject dogJson = dogDetails.getJSONObject(DOG);
 
                 name = dogJson.getString(DOG_NAME);
-                MyLogger.d("sunshine", "dog json name value: " + name);
+//                MyLogger.d("sunshine", "dog json name value: " + name);
 
                 breed = dogJson.getString(DOG_BREED);
-                MyLogger.d("sunshine", "dog json breed value: " + breed);
+//                MyLogger.d("sunshine", "dog json breed value: " + breed);
 
                 gender = dogJson.getString(DOG_GENDER);
-                MyLogger.d("sunshine", "dog json gender value: " + gender);
+//                MyLogger.d("sunshine", "dog json gender value: " + gender);
 
                 walkAM = dogJson.getInt(DOG_WALK_AM);
-                MyLogger.d("sunshine", "dog json walk AM value: " + walkAM);
+//                MyLogger.d("sunshine", "dog json walk AM value: " + walkAM);
 
                 walkPM = dogJson.getInt(DOG_WALK_PM);
-                MyLogger.d("sunshine", "dog json walk PM value: " + walkPM);
+//                MyLogger.d("sunshine", "dog json walk PM value: " + walkPM);
 
                 office = dogJson.getInt(DOG_OFFICE);
-                MyLogger.d("sunshine", "dog json office value: " + office);
+//                MyLogger.d("sunshine", "dog json office value: " + office);
 
                 visitor = dogJson.getInt(DOG_VISITOR);
-                MyLogger.d("sunshine", "dog json visitor value: " + visitor);
+//                MyLogger.d("sunshine", "dog json visitor value: " + visitor);
 
                 volunteerRoom = dogJson.getInt(DOG_VOLUNTEER_ROOM);
-                MyLogger.d("sunshine", "dog json volunteer room value: " + volunteerRoom);
+//                MyLogger.d("sunshine", "dog json volunteer room value: " + volunteerRoom);
 
                 adventureTails = dogJson.getInt(DOG_ADVENTURE_TAILS);
-                MyLogger.d("sunshine", "dog json adventure tails value: " + adventureTails);
+//                MyLogger.d("sunshine", "dog json adventure tails value: " + adventureTails);
 
 //                String innerValue = innerObject.getString(OWM_PRESSURE);
 //                Log.d("sunshine", "json pressure value: " + pressure);
@@ -357,7 +357,7 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
 //                        WeatherContract.WeatherEntry.COLUMN_DATE + " <= ?",
 //                        new String[] {Long.toString(dayTime.setJulianDay(julianStartDay-1))});
 
-                notifyWeather();
+//                notifyWeather();
             }
 
             Log.d(LOG_TAG, "Sync Complete. " + cVVector.size() + " Inserted");
