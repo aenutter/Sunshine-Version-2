@@ -243,6 +243,17 @@ public class WeatherProvider extends ContentProvider {
             }
             // "location"
             case DOGS: {
+                String id = null;
+//                id = uri.getLastPathSegment();
+                id = uri.getPathSegments().get(1);
+                if (id.matches("^-?\\d+(\\.\\d+)?$")) {
+                    selection = WeatherContract.DogEntry.TABLE_NAME+
+                            "." + WeatherContract.DogEntry.COLUMN_ID + " >= ? ";
+                    selectionArgs = new String[]{id};
+                } else {
+                    selectionArgs = new String[]{null};
+                    selection = null;
+                }
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         WeatherContract.DogEntry.TABLE_NAME,
                         projection,
@@ -254,7 +265,14 @@ public class WeatherProvider extends ContentProvider {
                 );
 //                Log.d("sunshine", "projection: " + projection);
 //                System.out.println("projection" + projection);
-                MyLogger.d("sunshine", "projection: " + projection[0]);
+                MyLogger.d("sunshine", "DOGS query id: " + id);
+                MyLogger.d("sunshine", "DOGS query projection: " + projection[0]);
+                MyLogger.d("sunshine", "DOGS query uri: " + uri);
+                MyLogger.d("sunshine", "DOGS query projection: " + projection[0]);
+                MyLogger.d("sunshine", "DOGS query selection: " + selection);
+                if (selectionArgs != null)
+                    MyLogger.d("sunshine", "DOGS query selectionArgs: " + selectionArgs[0]);
+//                MyLogger.d("sunshine", "projection: " + projection[0]);
                 break;
             }
 
