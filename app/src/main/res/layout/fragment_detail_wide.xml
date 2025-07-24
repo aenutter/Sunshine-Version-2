@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed"
             android:textColor="@color/black"
-            android:textSize="96sp" />
+            android:textSize="72sp" />
 
         <!-- Main content: high, low, art, weather state -->
         <TextView
@@ -46,58 +46,58 @@
             android:layout_width="match_parent"
             android:orientation="vertical">
 
-            <CheckedTextView
+            <CheckBox
                 android:id="@+id/walk_AM_checked_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checkMark="?android:attr/listChoiceIndicatorMultiple"
                 android:checked="false"
-                android:text="Walk AM"
+                android:text=" Walk AM"
                 android:visibility="invisible" />
 
-            <CheckedTextView
+            <CheckBox
                 android:id="@+id/walk_PM_checked_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checkMark="?android:attr/listChoiceIndicatorMultiple"
                 android:checked="false"
-                android:text="Walk PM"
+                android:text=" Walk PM"
                 android:visibility="invisible" />
 
-            <CheckedTextView
+            <CheckBox
                 android:id="@+id/office_checked_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checkMark="?android:attr/listChoiceIndicatorMultiple"
                 android:checked="false"
-                android:text="Office"
+                android:text=" Office"
                 android:visibility="invisible" />
 
-            <CheckedTextView
+            <CheckBox
                 android:id="@+id/visitor_checked_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checkMark="?android:attr/listChoiceIndicatorMultiple"
                 android:checked="false"
-                android:text="Visitor Room"
+                android:text=" Visitor Room"
                 android:visibility="invisible" />
 
-            <CheckedTextView
+            <CheckBox
                 android:id="@+id/volunteer_room_checked_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checkMark="?android:attr/listChoiceIndicatorMultiple"
                 android:checked="false"
-                android:text="Volunteer Room"
+                android:text=" Volunteer Room"
                 android:visibility="invisible" />
 
-            <CheckedTextView
+            <CheckBox
                 android:id="@+id/adventure_tails_checked_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checkMark="?android:attr/listChoiceIndicatorMultiple"
                 android:checked="false"
-                android:text="Adventure Tails"
+                android:text=" Adventure Tails"
                 android:visibility="invisible" />
 
         </LinearLayout>

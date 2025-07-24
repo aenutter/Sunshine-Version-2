@@ -32,6 +32,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -87,12 +88,12 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private TextView mNameView;
     private TextView mBreedView;
     private TextView mGenderView;
-    private CheckedTextView mWalkAMView;
-    private CheckedTextView mWalkPMView;
-    private CheckedTextView mOfficeView;
-    private CheckedTextView mVisitorView;
-    private CheckedTextView mVolunteerView;
-    private CheckedTextView mAdventureTailsView;
+    private CheckBox mWalkAMView;
+    private CheckBox mWalkPMView;
+    private CheckBox mOfficeView;
+    private CheckBox mVisitorView;
+    private CheckBox mVolunteerView;
+    private CheckBox mAdventureTailsView;
 
     public DetailFragment() {
         setHasOptionsMenu(true);
@@ -135,12 +136,12 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         MyLogger.d("sunshine", "mNameView initialized");
         mGenderView = (TextView) view.findViewById(R.id.detail_dog_gender_textview);
 //        mBreedView = (TextView) view.findViewById(R.id.detail_dog_breed_text_view);
-        mWalkAMView = (CheckedTextView) view.findViewById(R.id.walk_AM_checked_text_view);
-        mWalkPMView = (CheckedTextView) view.findViewById(R.id.walk_PM_checked_text_view);
-        mOfficeView = (CheckedTextView) view.findViewById(R.id.office_checked_text_view);
-        mVisitorView = (CheckedTextView) view.findViewById(R.id.visitor_checked_text_view);
-        mVolunteerView= (CheckedTextView) view.findViewById(R.id.volunteer_room_checked_text_view);
-        mAdventureTailsView = (CheckedTextView) view.findViewById(R.id.adventure_tails_checked_text_view);
+        mWalkAMView = (CheckBox) view.findViewById(R.id.walk_AM_checked_text_view);
+        mWalkPMView = (CheckBox) view.findViewById(R.id.walk_PM_checked_text_view);
+        mOfficeView = (CheckBox) view.findViewById(R.id.office_checked_text_view);
+        mVisitorView = (CheckBox) view.findViewById(R.id.visitor_checked_text_view);
+        mVolunteerView= (CheckBox) view.findViewById(R.id.volunteer_room_checked_text_view);
+        mAdventureTailsView = (CheckBox) view.findViewById(R.id.adventure_tails_checked_text_view);
     }
 
     @Override
@@ -223,7 +224,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
             // Read description from cursor and update view
             String nameView = data.getString(COL_DOG_NAME);
-            MyLogger.d("sunshine", "nameView: " + nameView);
+            MyLogger.d("sunshine", "DetailFragment nameView: " + nameView);
 
             mNameView.setText(nameView);
 
@@ -234,9 +235,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             String breedView = data.getString(COL_DOG_BREED);
 //            mBreedView.setText(breedView);
 
-            MyLogger.d("sunshine", "walk AM value: " + data.getInt(COL_DOG_WALK_AM));
+//            MyLogger.d("sunshine", "DetailFragment walk AM value: " + data.getInt(COL_DOG_WALK_AM));
             Boolean walkAM = (data.getInt(COL_DOG_WALK_AM) == 1);
-            MyLogger.d("sunshine", "walk AM boolean value: " + walkAM);
+            MyLogger.d("sunshine", "DetailFragment walk AM boolean value: " + walkAM);
             if (walkAM) {
                 mWalkAMView.setVisibility(View.VISIBLE);
                 mWalkAMView.setChecked(true);
@@ -247,9 +248,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 //                MyLogger.d("sunshine", "walk AM set after set checked to false: " + mWalkAMView.isChecked());
             }
 
-            MyLogger.d("sunshine", "walk PM value: " + data.getInt(COL_DOG_WALK_PM));
+//            MyLogger.d("sunshine", "DetailFragment walk PM value: " + data.getInt(COL_DOG_WALK_PM));
             Boolean walkPM = (data.getInt(COL_DOG_WALK_PM) == 1);
-            MyLogger.d("sunshine", "walk PM boolean value: " + walkPM);
+            MyLogger.d("sunshine", "DetailFragment walk PM boolean value: " + walkPM);
             if (walkPM) {
                 mWalkPMView.setVisibility(View.VISIBLE);
                 mWalkPMView.setChecked(true);
@@ -260,7 +261,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             }
 
             Boolean office = (data.getInt(COL_DOG_OFFICE) == 1);
-            MyLogger.d("sunshine", "Office boolean value: " + office);
+            MyLogger.d("sunshine", "DetailFragment Office boolean value: " + office);
             if (office)
             {
                 mOfficeView.setVisibility(View.VISIBLE);
@@ -269,10 +270,10 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 mOfficeView.setVisibility(View.VISIBLE);
                 mOfficeView.setChecked(false);
             }
-            MyLogger.d("sunshine", "Office is checked: " + mOfficeView.isChecked());
+            MyLogger.d("sunshine", "DetailFragment Office is checked: " + mOfficeView.isChecked());
 
             Boolean visitor = (data.getInt(COL_DOG_VISITOR) == 1);
-            MyLogger.d("sunshine", "Visitor boolean value: " + visitor);
+            MyLogger.d("sunshine", "DetailFragment Visitor boolean value: " + visitor);
             if (visitor)
             {
                 mVisitorView.setVisibility(View.VISIBLE);
@@ -283,7 +284,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             }
 
             Boolean volunteerRoom = (data.getInt(COL_DOG_VOLUNTEER_ROOM) == 1);
-            MyLogger.d("sunshine", "Volunteer Room boolean value: " + volunteerRoom);
+            MyLogger.d("sunshine", "DetailFragment Volunteer Room boolean value: " + volunteerRoom);
             if (volunteerRoom)
             {
                 mVolunteerView.setVisibility(View.VISIBLE);
@@ -294,7 +295,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             }
 
             Boolean adventureTails = (data.getInt(COL_DOG_ADVENTURE_TAILS) == 1);
-            MyLogger.d("sunshine", "Adventure Tails boolean value: " + adventureTails);
+            MyLogger.d("sunshine", "DetailFragment Adventure Tails boolean value: " + adventureTails);
             if (adventureTails)
             {
                 mAdventureTailsView.setVisibility(View.VISIBLE);

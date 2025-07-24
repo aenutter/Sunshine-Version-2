@@ -103,7 +103,7 @@ public class DogAdapter extends CursorAdapter {
 //        (walkAM) ? viewHolder.walkAMView.setText("Walk AM") : viewHolder.walkAMView.setText("Walk AM");
 
         Boolean walkPM = (cursor.getInt(DogFragment.COL_DOG_WALK_PM) == 1);
-        if (walkPM) viewHolder.walkAMView.setText("Walk PM"); else viewHolder.walkPMView.setText("");
+        if (walkPM) viewHolder.walkPMView.setText("Walk PM"); else viewHolder.walkPMView.setText("");
 
         Boolean office = (cursor.getInt(DogFragment.COL_DOG_OFFICE) == 1);
         if (office) viewHolder.officeView.setText("Office"); else viewHolder.officeView.setText("");
