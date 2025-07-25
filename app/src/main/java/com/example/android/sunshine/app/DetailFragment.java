@@ -19,6 +19,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -53,11 +55,12 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private ShareActionProvider mShareActionProvider;
     private String mForecast;
     private Uri mUri;
+    private Handler uiHandler;
 
     private static final int DETAIL_LOADER = 0;
 
     private static final String[] DETAIL_COLUMNS = {
-            WeatherContract.DogEntry._ID,
+            WeatherContract.DogEntry.COLUMN_ID,
 //            WeatherContract.DogEntry.DOG_ID,
             WeatherContract.DogEntry.COLUMN_DOG_NAME,
             WeatherContract.DogEntry.COLUMN_DOG_BREED,
@@ -107,7 +110,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         if (arguments != null) {
             mUri = arguments.getParcelable(DetailFragment.DETAIL_URI);
         }
-
+        uiHandler = new Handler(Looper.getMainLooper());
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         MyLogger.d("sunshine", "rootView id: " + rootView.getId());
 //        MyLogger.d("sunshine", "container root view id is: " + container.getRootView().getId());
@@ -117,6 +120,15 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 //        mWindView = (TextView) rootView.findViewById(R.id.detail_wind_textview);
 //        mPressureView = (TextView) rootView.findViewById(R.id.detail_pressure_textview);
         return rootView;
+    }
+
+    public void setCheckboxStateDelayed(final CheckBox checkBox, final boolean isChecked, long delayMillis) {
+        uiHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                checkBox.setChecked(isChecked);
+            }
+        }, delayMillis);
     }
 
     @Override
@@ -142,6 +154,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         mVisitorView = (CheckBox) view.findViewById(R.id.visitor_checked_text_view);
         mVolunteerView= (CheckBox) view.findViewById(R.id.volunteer_room_checked_text_view);
         mAdventureTailsView = (CheckBox) view.findViewById(R.id.adventure_tails_checked_text_view);
+        view.requestLayout();
     }
 
     @Override
@@ -236,119 +249,76 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 //            mBreedView.setText(breedView);
 
 //            MyLogger.d("sunshine", "DetailFragment walk AM value: " + data.getInt(COL_DOG_WALK_AM));
+            mWalkAMView.setVisibility(View.VISIBLE);
             Boolean walkAM = (data.getInt(COL_DOG_WALK_AM) == 1);
             MyLogger.d("sunshine", "DetailFragment walk AM boolean value: " + walkAM);
             if (walkAM) {
-                mWalkAMView.setVisibility(View.VISIBLE);
                 mWalkAMView.setChecked(true);
+                setCheckboxStateDelayed(mWalkAMView, walkAM, 100);
 //                MyLogger.d("sunshine", "walk AM set after set checked to true: " + mWalkAMView.isChecked());
             } else {
-                mWalkAMView.setVisibility(View.VISIBLE);
                 mWalkAMView.setChecked(false);
 //                MyLogger.d("sunshine", "walk AM set after set checked to false: " + mWalkAMView.isChecked());
             }
 
 //            MyLogger.d("sunshine", "DetailFragment walk PM value: " + data.getInt(COL_DOG_WALK_PM));
+            mWalkPMView.setVisibility(View.VISIBLE);
             Boolean walkPM = (data.getInt(COL_DOG_WALK_PM) == 1);
             MyLogger.d("sunshine", "DetailFragment walk PM boolean value: " + walkPM);
             if (walkPM) {
-                mWalkPMView.setVisibility(View.VISIBLE);
                 mWalkPMView.setChecked(true);
+                setCheckboxStateDelayed(mWalkPMView, walkPM, 100);
             }
             else {
-                mWalkPMView.setVisibility(View.VISIBLE);
                 mWalkPMView.setChecked(false);
             }
 
-            Boolean office = (data.getInt(COL_DOG_OFFICE) == 1);
+            mOfficeView.setVisibility(View.VISIBLE);
+            final Boolean office = (data.getInt(COL_DOG_OFFICE) == 1);
             MyLogger.d("sunshine", "DetailFragment Office boolean value: " + office);
             if (office)
             {
-                mOfficeView.setVisibility(View.VISIBLE);
                 mOfficeView.setChecked(true);
+                setCheckboxStateDelayed(mOfficeView, office, 100);
             } else {
-                mOfficeView.setVisibility(View.VISIBLE);
                 mOfficeView.setChecked(false);
             }
             MyLogger.d("sunshine", "DetailFragment Office is checked: " + mOfficeView.isChecked());
 
+            mVisitorView.setVisibility(View.VISIBLE);
             Boolean visitor = (data.getInt(COL_DOG_VISITOR) == 1);
             MyLogger.d("sunshine", "DetailFragment Visitor boolean value: " + visitor);
             if (visitor)
             {
-                mVisitorView.setVisibility(View.VISIBLE);
                 mVisitorView.setChecked(true);
+                setCheckboxStateDelayed(mVisitorView, visitor, 100);
             } else {
-                mOfficeView.setVisibility(View.VISIBLE);
                 mOfficeView.setChecked(false);
             }
 
+            mVolunteerView.setVisibility(View.VISIBLE);
             Boolean volunteerRoom = (data.getInt(COL_DOG_VOLUNTEER_ROOM) == 1);
             MyLogger.d("sunshine", "DetailFragment Volunteer Room boolean value: " + volunteerRoom);
             if (volunteerRoom)
             {
-                mVolunteerView.setVisibility(View.VISIBLE);
                 mVolunteerView.setChecked(true);
+                setCheckboxStateDelayed(mVolunteerView, volunteerRoom, 100);
             } else {
-                mOfficeView.setVisibility(View.VISIBLE);
                 mOfficeView.setChecked(false);
             }
 
+            mAdventureTailsView.setVisibility(View.VISIBLE);
             Boolean adventureTails = (data.getInt(COL_DOG_ADVENTURE_TAILS) == 1);
             MyLogger.d("sunshine", "DetailFragment Adventure Tails boolean value: " + adventureTails);
             if (adventureTails)
             {
-                mAdventureTailsView.setVisibility(View.VISIBLE);
                 mAdventureTailsView.setChecked(true);
+                setCheckboxStateDelayed(mAdventureTailsView, adventureTails, 100);
             } else {
-                mOfficeView.setVisibility(View.VISIBLE);
                 mOfficeView.setChecked(false);
             }
 
-//            Boolean visitor = (data.getInt(COL_DOG_VISITOR) == 1);
-//            if (visitor) mVisitorView.setChecked(true); mVisitorView.setChecked(false);
 
-//            Boolean volunteerRoom = (data.getInt(COL_DOG_VOLUNTEER_ROOM) == 1);
-//            if (volunteerRoom) mVolunteerView.setChecked(true); mVolunteerView.setChecked(false);
-
-//            Boolean adventureTails = (data.getInt(COL_DOG_ADVENTURE_TAILS) == 1);
-//            if (adventureTails) mAdventureTailsView.setChecked(true); mAdventureTailsView.setChecked(false);
-
-            // For accessibility, add a content description to the icon field
-//            mIconView.setContentDescription(description);
-
-            // Read high temperature from cursor and update view
-//            boolean isMetric = Utility.isMetric(getActivity());
-
-//            double high = data.getDouble(COL_WEATHER_MAX_TEMP);
-//            String highString = Utility.formatTemperature(getActivity(), high);
-//            mHighTempView.setText(highString);
-
-            // Read low temperature from cursor and update view
-//            double low = data.getDouble(COL_WEATHER_MIN_TEMP);
-//            String lowString = Utility.formatTemperature(getActivity(), low);
-//            mLowTempView.setText(lowString);
-
-            // Read humidity from cursor and update view
-//            float humidity = data.getFloat(COL_WEATHER_HUMIDITY);
-//            mHumidityView.setText(getActivity().getString(R.string.format_humidity, humidity));
-
-            // Read wind speed and direction from cursor and update view
-//            float windSpeedStr = data.getFloat(COL_WEATHER_WIND_SPEED);
-//            float windDirStr = data.getFloat(COL_WEATHER_DEGREES);
-//            mWindView.setText(Utility.getFormattedWind(getActivity(), windSpeedStr, windDirStr));
-
-            // Read pressure from cursor and update view
-//            float pressure = data.getFloat(COL_WEATHER_PRESSURE);
-//            mPressureView.setText(getActivity().getString(R.string.format_pressure, pressure));
-
-            // We still need this for the share intent
-//            mForecast = String.format("%s - %s - %s/%s", dateText, description, high, low);
-
-            // If onCreateOptionsMenu has already happened, we need to update the share intent now.
-//            if (mShareActionProvider != null) {
-//                mShareActionProvider.setShareIntent(createShareForecastIntent());
-//            }
         }
     }
 
