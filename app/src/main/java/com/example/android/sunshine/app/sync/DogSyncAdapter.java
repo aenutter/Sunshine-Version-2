@@ -295,41 +295,6 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
                 adventureTails = dogJson.getInt(DOG_ADVENTURE_TAILS);
 //                MyLogger.d("sunshine", "dog json adventure tails value: " + adventureTails);
 
-//                String innerValue = innerObject.getString(OWM_PRESSURE);
-//                Log.d("sunshine", "json pressure value: " + pressure);
-//                MyLogger.d("sunshine", "dog json name value: " + name);
-//                pressure = dayForecast.getDouble(OWM_PRESSURE);
-
-//                humidity = dayForecast.getJSONObject(OWM_DESCRIPTION).getInt(OWM_HUMIDITY);
-//                Log.d("sunshine", "json humidity value: " + humidity);
-//                humidity = dayForecast.getInt(OWM_HUMIDITY);
-
-//                windSpeed = dayForecast.getJSONObject("wind").getInt(OWM_WINDSPEED);
-//                Log.d("sunshine", "json windspeed value: " + windSpeed);
-//                windSpeed = dayForecast.getDouble(OWM_WINDSPEED);
-
-//                windDirection = dayForecast.getJSONObject("wind").getDouble(OWM_WIND_DIRECTION);
-//                Log.d("sunshine", "json wind Direction value: " + windDirection);
-//                windDirection = dayForecast.getDouble(OWM_WIND_DIRECTION);
-
-                // Description is in a child array called "weather", which is 1 element long.
-                // That element also contains a weather code.
-//                JSONObject weatherObject =
-//                        dayForecast.getJSONArray(OWM_WEATHER).getJSONObject(0);
-//                description = weatherObject.getString(OWM_DESCRIPTION);
-//                weatherId = weatherObject.getInt(OWM_WEATHER_ID);
-
-                // Temperatures are in a child object called "temp".  Try not to name variables
-                // "temp" when working with temperature.  It confuses everybody.
-//                high = dayForecast.getJSONObject(OWM_DESCRIPTION).getDouble(OWM_MAX);
-//                Log.d("sunshine", "json high temp value: " + high);
-
-//                JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
-//                high = temperatureObject.getDouble(OWM_MAX);
-//                low = dayForecast.getJSONObject(OWM_DESCRIPTION).getDouble(OWM_MIN);
-//                Log.d("sunshine", "json low temp value: " + low);
-//                low = temperatureObject.getDouble(OWM_MIN);
-
                 ContentValues dogValues = new ContentValues();
 
                 dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_NAME, name);

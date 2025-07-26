@@ -15,8 +15,10 @@
  */
 package com.example.android.sunshine.app;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -36,11 +38,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CheckedTextView;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.sunshine.app.data.WeatherContract;
 import com.example.android.sunshine.app.data.WeatherContract.WeatherEntry;
+import com.example.android.sunshine.app.data.WeatherDbHelper;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -56,6 +60,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private String mForecast;
     private Uri mUri;
     private Handler uiHandler;
+    WeatherDbHelper mOpenHelper;
+    int dogId;
 
     private static final int DETAIL_LOADER = 0;
 
@@ -115,7 +121,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         MyLogger.d("sunshine", "rootView id: " + rootView.getId());
 //        MyLogger.d("sunshine", "container root view id is: " + container.getRootView().getId());
         rootView.requestLayout();
-
+        mOpenHelper = new WeatherDbHelper(getContext());
 
 //        mWindView = (TextView) rootView.findViewById(R.id.detail_wind_textview);
 //        mPressureView = (TextView) rootView.findViewById(R.id.detail_pressure_textview);
@@ -220,7 +226,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (data != null && data.moveToFirst()) {
             // Read weather condition ID from cursor
-            int dogId = data.getInt(COL_ID);
+            dogId = data.getInt(COL_ID);
             int i = 0;
             for (i=0; i< data.getColumnCount(); i++)
                 MyLogger.d("sunshine", "onloadfinished cursor column names: " + data.getColumnName(i) + " column value: " + data.getString(i));
@@ -317,7 +323,144 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             } else {
                 mOfficeView.setChecked(false);
             }
+            mWalkAMView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+                    ContentValues values = new ContentValues();
+                    int completedStatus = isChecked ? 1 : 0; // 1 for checked, 0 for unchecked
+                    values.put(WeatherContract.DogEntry.COLUMN_DOG_WALK_AM, completedStatus);
 
+
+                    // Assuming you have a unique ID for the item associated with the checkbox
+                    String whereClause = WeatherContract.DogEntry.COLUMN_ID+ " = ?";
+                    String[] whereArgs = {String.valueOf(dogId)}; // Replace itemId with the actual ID
+//                    getContext().getContentResolver().update(WeatherContract.DogEntry.CONTENT_URI, values, whereClause, whereArgs);
+                    if (db.update(WeatherContract.DogEntry.TABLE_NAME, values, whereClause, whereArgs) == 1) {
+                        getContext().getContentResolver().notify();
+                    }
+                    db.close();
+                    MyLogger.d("sunshine", "setOnCheckedChangeListener dog id: " + dogId);
+                    MyLogger.d("sunshine", "setOnCheckedChangeListener completed status: " + completedStatus);
+                    MyLogger.d("sunshine", "setOnCheckedChangeListener whereClause: " + whereClause);
+                    MyLogger.d("sunshine", "setOnCheckedChangeListener whereArgs: " + whereArgs);
+                }
+            });
+            mWalkPMView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+                    ContentValues values = new ContentValues();
+                    int completedStatus = isChecked ? 1 : 0; // 1 for checked, 0 for unchecked
+                    values.put(WeatherContract.DogEntry.COLUMN_DOG_WALK_PM, completedStatus);
+
+
+                    // Assuming you have a unique ID for the item associated with the checkbox
+                    String whereClause = WeatherContract.DogEntry.COLUMN_ID+ " = ?";
+                    String[] whereArgs = {String.valueOf(dogId)}; // Replace itemId with the actual ID
+//                    getContext().getContentResolver().update(WeatherContract.DogEntry.CONTENT_URI, values, whereClause, whereArgs);
+                    if (db.update(WeatherContract.DogEntry.TABLE_NAME, values, whereClause, whereArgs) == 1) {
+                        getContext().getContentResolver().notify();
+                    }
+                    db.close();
+                    MyLogger.d("sunshine", "setOnCheckedChangeListener dog id: " + dogId);
+                    MyLogger.d("sunshine", "setOnCheckedChangeListener completed status: " + completedStatus);
+                    MyLogger.d("sunshine", "setOnCheckedChangeListener whereClause: " + whereClause);
+                    MyLogger.d("sunshine", "setOnCheckedChangeListener whereArgs: " + whereArgs[0]);
+                }
+            });
+            mOfficeView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+                    ContentValues values = new ContentValues();
+                    int completedStatus = isChecked ? 1 : 0; // 1 for checked, 0 for unchecked
+                    values.put(WeatherContract.DogEntry.COLUMN_DOG_OFFICE, completedStatus);
+
+
+                    // Assuming you have a unique ID for the item associated with the checkbox
+                    String whereClause = WeatherContract.DogEntry.COLUMN_ID+ " = ?";
+                    String[] whereArgs = {String.valueOf(dogId)}; // Replace itemId with the actual ID
+//                    getContext().getContentResolver().update(WeatherContract.DogEntry.CONTENT_URI, values, whereClause, whereArgs);
+                    if (db.update(WeatherContract.DogEntry.TABLE_NAME, values, whereClause, whereArgs) == 1) {
+                        getContext().getContentResolver().notify();
+                    }
+                    db.close();
+                    MyLogger.d("sunshine", "setOnCheckedChangeListener dog id: " + dogId);
+                    MyLogger.d("sunshine", "setOnCheckedChangeListener completed status: " + completedStatus);
+                    MyLogger.d("sunshine", "setOnCheckedChangeListener whereClause: " + whereClause);
+                    MyLogger.d("sunshine", "setOnCheckedChangeListener whereArgs: " + whereArgs[0]);
+                }
+            });
+            mVisitorView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+                    ContentValues values = new ContentValues();
+                    int completedStatus = isChecked ? 1 : 0; // 1 for checked, 0 for unchecked
+                    values.put(WeatherContract.DogEntry.COLUMN_DOG_VISITOR, completedStatus);
+
+
+                    // Assuming you have a unique ID for the item associated with the checkbox
+                    String whereClause = WeatherContract.DogEntry.COLUMN_ID+ " = ?";
+                    String[] whereArgs = {String.valueOf(dogId)}; // Replace itemId with the actual ID
+//                    getContext().getContentResolver().update(WeatherContract.DogEntry.CONTENT_URI, values, whereClause, whereArgs);
+                    if (db.update(WeatherContract.DogEntry.TABLE_NAME, values, whereClause, whereArgs) == 1) {
+                        getContext().getContentResolver().notify();
+                    }
+                    db.close();
+                    MyLogger.d("sunshine", "setOnCheckedChangeListener dog id: " + dogId);
+                    MyLogger.d("sunshine", "setOnCheckedChangeListener completed status: " + completedStatus);
+                    MyLogger.d("sunshine", "setOnCheckedChangeListener whereClause: " + whereClause);
+                    MyLogger.d("sunshine", "setOnCheckedChangeListener whereArgs: " + whereArgs[0]);
+                }
+            });
+            mVolunteerView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+                    ContentValues values = new ContentValues();
+                    int completedStatus = isChecked ? 1 : 0; // 1 for checked, 0 for unchecked
+                    values.put(WeatherContract.DogEntry.COLUMN_DOG_VOLUNTEER_ROOM, completedStatus);
+
+
+                    // Assuming you have a unique ID for the item associated with the checkbox
+                    String whereClause = WeatherContract.DogEntry.COLUMN_ID+ " = ?";
+                    String[] whereArgs = {String.valueOf(dogId)}; // Replace itemId with the actual ID
+//                    getContext().getContentResolver().update(WeatherContract.DogEntry.CONTENT_URI, values, whereClause, whereArgs);
+                    if (db.update(WeatherContract.DogEntry.TABLE_NAME, values, whereClause, whereArgs) == 1) {
+                        getContext().getContentResolver().notify();
+                    }
+                    db.close();
+                    MyLogger.d("sunshine", "setOnCheckedChangeListener dog id: " + dogId);
+                    MyLogger.d("sunshine", "setOnCheckedChangeListener completed status: " + completedStatus);
+                    MyLogger.d("sunshine", "setOnCheckedChangeListener whereClause: " + whereClause);
+                    MyLogger.d("sunshine", "setOnCheckedChangeListener whereArgs: " + whereArgs[0]);
+                }
+            });
+            mAdventureTailsView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+                    ContentValues values = new ContentValues();
+                    int completedStatus = isChecked ? 1 : 0; // 1 for checked, 0 for unchecked
+                    values.put(WeatherContract.DogEntry.COLUMN_DOG_ADVENTURE_TAILS, completedStatus);
+
+
+                    // Assuming you have a unique ID for the item associated with the checkbox
+                    String whereClause = WeatherContract.DogEntry.COLUMN_ID+ " = ?";
+                    String[] whereArgs = {String.valueOf(dogId)}; // Replace itemId with the actual ID
+//                    getContext().getContentResolver().update(WeatherContract.DogEntry.CONTENT_URI, values, whereClause, whereArgs);
+                    if (db.update(WeatherContract.DogEntry.TABLE_NAME, values, whereClause, whereArgs) == 1) {
+                        getContext().getContentResolver().notifyChange(WeatherContract.DogEntry.CONTENT_URI, null);
+                    }
+                    db.close();
+                    MyLogger.d("sunshine", "setOnCheckedChangeListener dog id: " + dogId);
+                    MyLogger.d("sunshine", "setOnCheckedChangeListener completed status: " + completedStatus);
+                    MyLogger.d("sunshine", "setOnCheckedChangeListener whereClause: " + whereClause);
+                    MyLogger.d("sunshine", "setOnCheckedChangeListener whereArgs: " + whereArgs[0]);
+                }
+            });
 
         }
     }

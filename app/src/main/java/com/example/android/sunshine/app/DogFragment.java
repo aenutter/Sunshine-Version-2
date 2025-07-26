@@ -44,7 +44,7 @@ import com.example.android.sunshine.app.sync.DogSyncAdapter;
 public class DogFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     public static final String LOG_TAG = DogFragment.class.getSimpleName();
     private DogAdapter mDogAdapter;
-    WeatherDbHelper mOpenHelper;
+//    WeatherDbHelper mOpenHelper;
     Cursor cursor;
 
     static final String DETAIL_URI = "URI";

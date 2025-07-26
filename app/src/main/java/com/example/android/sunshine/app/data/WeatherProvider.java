@@ -383,6 +383,37 @@ public class WeatherProvider extends ContentProvider {
                 rowsUpdated = db.update(WeatherContract.LocationEntry.TABLE_NAME, values, selection,
                         selectionArgs);
                 break;
+            case DOGS: {
+                String id = null;
+                id = uri.getLastPathSegment();
+                MyLogger.d("sunshine", "DOGS update uri: " + uri);
+//                id = uri.getPathSegments().get(1);
+                if (id.matches("^-?\\d+(\\.\\d+)?$")) {
+                    selection = WeatherContract.DogEntry.TABLE_NAME+
+                            "." + WeatherContract.DogEntry.COLUMN_ID + " >= ? ";
+                    selectionArgs = new String[]{id};
+                } else {
+                    selectionArgs = new String[]{null};
+                    selection = null;
+                }
+                rowsUpdated = mOpenHelper.getReadableDatabase().update(
+                        WeatherContract.DogEntry.TABLE_NAME,
+                        values,
+                        selection,
+                        selectionArgs
+                );
+//                Log.d("sunshine", "projection: " + projection);
+//                System.out.println("projection" + projection);
+                MyLogger.d("sunshine", "DOGS update id: " + id);
+//                MyLogger.d("sunshine", "DOGS query projection: " + projection[0]);
+                MyLogger.d("sunshine", "DOGS update uri: " + uri);
+                MyLogger.d("sunshine", "DOGS update selection: " + selection);
+//                MyLogger.d("sunshine", "DOGS update selectionArg: " + selectionArgs);
+                if (selectionArgs != null)
+                    MyLogger.d("sunshine", "DOGS update selectionArgs: " + selectionArgs[0]);
+//                MyLogger.d("sunshine", "projection: " + projection[0]);
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
