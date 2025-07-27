@@ -41,6 +41,7 @@ import android.widget.CheckedTextView;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.sunshine.app.data.WeatherContract;
 import com.example.android.sunshine.app.data.WeatherContract.WeatherEntry;
@@ -117,7 +118,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             mUri = arguments.getParcelable(DetailFragment.DETAIL_URI);
         }
         uiHandler = new Handler(Looper.getMainLooper());
-        View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_detail_wide, container, false);
         MyLogger.d("sunshine", "rootView id: " + rootView.getId());
 //        MyLogger.d("sunshine", "container root view id is: " + container.getRootView().getId());
         rootView.requestLayout();
@@ -128,11 +129,20 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         return rootView;
     }
 
-    public void setCheckboxStateDelayed(final CheckBox checkBox, final boolean isChecked, long delayMillis) {
-        uiHandler.postDelayed(new Runnable() {
+//    public void setCheckboxStateDelayed(final CheckBox checkBox, final boolean isChecked, long delayMillis) {
+//        uiHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                checkBox.setChecked(isChecked);
+//            }
+//        }, delayMillis);
+//    }
+
+    public void setCheckboxStateDelayed(final CheckBox checkBox, final boolean checked, long delayMillis) {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                checkBox.setChecked(isChecked);
+                checkBox.setChecked(checked);
             }
         }, delayMillis);
     }
@@ -260,10 +270,10 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             MyLogger.d("sunshine", "DetailFragment walk AM boolean value: " + walkAM);
             if (walkAM) {
                 mWalkAMView.setChecked(true);
-                setCheckboxStateDelayed(mWalkAMView, walkAM, 100);
+//                setCheckboxStateDelayed(mWalkAMView, walkAM, 100);
 //                MyLogger.d("sunshine", "walk AM set after set checked to true: " + mWalkAMView.isChecked());
             } else {
-                mWalkAMView.setChecked(false);
+//                mWalkAMView.setChecked(false);
 //                MyLogger.d("sunshine", "walk AM set after set checked to false: " + mWalkAMView.isChecked());
             }
 
@@ -273,10 +283,10 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             MyLogger.d("sunshine", "DetailFragment walk PM boolean value: " + walkPM);
             if (walkPM) {
                 mWalkPMView.setChecked(true);
-                setCheckboxStateDelayed(mWalkPMView, walkPM, 100);
+//                setCheckboxStateDelayed(mWalkPMView, walkPM, 100);
             }
             else {
-                mWalkPMView.setChecked(false);
+//                mWalkPMView.setChecked(false);
             }
 
             mOfficeView.setVisibility(View.VISIBLE);
@@ -285,9 +295,10 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             if (office)
             {
                 mOfficeView.setChecked(true);
-                setCheckboxStateDelayed(mOfficeView, office, 100);
+//                mOfficeView.setOnCheckedChangeListener(null);
+//                setCheckboxStateDelayed(mOfficeView, office, 100);
             } else {
-                mOfficeView.setChecked(false);
+//                mOfficeView.setChecked(false);
             }
             MyLogger.d("sunshine", "DetailFragment Office is checked: " + mOfficeView.isChecked());
 
@@ -297,9 +308,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             if (visitor)
             {
                 mVisitorView.setChecked(true);
-                setCheckboxStateDelayed(mVisitorView, visitor, 100);
+//                setCheckboxStateDelayed(mVisitorView, visitor, 100);
             } else {
-                mOfficeView.setChecked(false);
+//                mOfficeView.setChecked(false);
             }
 
             mVolunteerView.setVisibility(View.VISIBLE);
@@ -308,9 +319,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             if (volunteerRoom)
             {
                 mVolunteerView.setChecked(true);
-                setCheckboxStateDelayed(mVolunteerView, volunteerRoom, 100);
+//                setCheckboxStateDelayed(mVolunteerView, volunteerRoom, 100);
             } else {
-                mOfficeView.setChecked(false);
+//                mVolunteerView.setChecked(false);
             }
 
             mAdventureTailsView.setVisibility(View.VISIBLE);
@@ -319,10 +330,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             if (adventureTails)
             {
                 mAdventureTailsView.setChecked(true);
-                setCheckboxStateDelayed(mAdventureTailsView, adventureTails, 100);
+//                setCheckboxStateDelayed(mAdventureTailsView, adventureTails, 100);
             } else {
-                mOfficeView.setChecked(false);
+//                mAdventureTailsView.setChecked(false);
             }
+            // setup on Check Change Listeners for all six check boxes
             mWalkAMView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -337,7 +349,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                     String[] whereArgs = {String.valueOf(dogId)}; // Replace itemId with the actual ID
 //                    getContext().getContentResolver().update(WeatherContract.DogEntry.CONTENT_URI, values, whereClause, whereArgs);
                     if (db.update(WeatherContract.DogEntry.TABLE_NAME, values, whereClause, whereArgs) == 1) {
-                        getContext().getContentResolver().notify();
+                        getContext().getContentResolver().notifyChange(WeatherContract.DogEntry.CONTENT_URI, null);
                     }
                     db.close();
                     MyLogger.d("sunshine", "setOnCheckedChangeListener dog id: " + dogId);
@@ -360,7 +372,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                     String[] whereArgs = {String.valueOf(dogId)}; // Replace itemId with the actual ID
 //                    getContext().getContentResolver().update(WeatherContract.DogEntry.CONTENT_URI, values, whereClause, whereArgs);
                     if (db.update(WeatherContract.DogEntry.TABLE_NAME, values, whereClause, whereArgs) == 1) {
-                        getContext().getContentResolver().notify();
+                        getContext().getContentResolver().notifyChange(WeatherContract.DogEntry.CONTENT_URI, null);
                     }
                     db.close();
                     MyLogger.d("sunshine", "setOnCheckedChangeListener dog id: " + dogId);
@@ -369,12 +381,21 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                     MyLogger.d("sunshine", "setOnCheckedChangeListener whereArgs: " + whereArgs[0]);
                 }
             });
+
             mOfficeView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
                     ContentValues values = new ContentValues();
                     int completedStatus = isChecked ? 1 : 0; // 1 for checked, 0 for unchecked
+
+                    if (mOfficeView.isPressed()) {
+                        // CheckBox is checked
+                        Toast.makeText(getActivity(), "Checkbox is pressed!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // CheckBox is unchecked
+                        Toast.makeText(getActivity(), "Checkbox is not pressed!", Toast.LENGTH_SHORT).show();
+                    }
                     values.put(WeatherContract.DogEntry.COLUMN_DOG_OFFICE, completedStatus);
 
 
@@ -383,13 +404,15 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                     String[] whereArgs = {String.valueOf(dogId)}; // Replace itemId with the actual ID
 //                    getContext().getContentResolver().update(WeatherContract.DogEntry.CONTENT_URI, values, whereClause, whereArgs);
                     if (db.update(WeatherContract.DogEntry.TABLE_NAME, values, whereClause, whereArgs) == 1) {
-                        getContext().getContentResolver().notify();
+//                        getContext().getContentResolver().notifyChange(WeatherContract.DogEntry.CONTENT_URI, null);
+                        getContext().getContentResolver().notifyChange(WeatherContract.DogEntry.CONTENT_URI, null);
+
                     }
                     db.close();
-                    MyLogger.d("sunshine", "setOnCheckedChangeListener dog id: " + dogId);
-                    MyLogger.d("sunshine", "setOnCheckedChangeListener completed status: " + completedStatus);
-                    MyLogger.d("sunshine", "setOnCheckedChangeListener whereClause: " + whereClause);
-                    MyLogger.d("sunshine", "setOnCheckedChangeListener whereArgs: " + whereArgs[0]);
+                    MyLogger.d("sunshine", "mOfficeView setOnCheckedChangeListener dog id: " + dogId);
+                    MyLogger.d("sunshine", "mOfficeView setOnCheckedChangeListener completed status: " + completedStatus);
+                    MyLogger.d("sunshine", "mOfficeView setOnCheckedChangeListener whereClause: " + whereClause);
+                    MyLogger.d("sunshine", "mOfficeView setOnCheckedChangeListener whereArgs: " + whereArgs[0]);
                 }
             });
             mVisitorView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -406,7 +429,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                     String[] whereArgs = {String.valueOf(dogId)}; // Replace itemId with the actual ID
 //                    getContext().getContentResolver().update(WeatherContract.DogEntry.CONTENT_URI, values, whereClause, whereArgs);
                     if (db.update(WeatherContract.DogEntry.TABLE_NAME, values, whereClause, whereArgs) == 1) {
-                        getContext().getContentResolver().notify();
+                        getContext().getContentResolver().notifyChange(WeatherContract.DogEntry.CONTENT_URI, null);
                     }
                     db.close();
                     MyLogger.d("sunshine", "setOnCheckedChangeListener dog id: " + dogId);
@@ -429,7 +452,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                     String[] whereArgs = {String.valueOf(dogId)}; // Replace itemId with the actual ID
 //                    getContext().getContentResolver().update(WeatherContract.DogEntry.CONTENT_URI, values, whereClause, whereArgs);
                     if (db.update(WeatherContract.DogEntry.TABLE_NAME, values, whereClause, whereArgs) == 1) {
-                        getContext().getContentResolver().notify();
+                        getContext().getContentResolver().notifyChange(WeatherContract.DogEntry.CONTENT_URI, null);
                     }
                     db.close();
                     MyLogger.d("sunshine", "setOnCheckedChangeListener dog id: " + dogId);

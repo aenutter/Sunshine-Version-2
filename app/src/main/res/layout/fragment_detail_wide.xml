@@ -1,5 +1,5 @@
 <!-- Master layout. -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -21,7 +21,6 @@
             android:textColor="@color/black"
             android:textSize="72sp" />
 
-        <!-- Main content: high, low, art, weather state -->
         <TextView
             android:id="@+id/detail_dog_gender_textview"
             android:layout_width="wrap_content"
@@ -102,4 +101,4 @@
 
         </LinearLayout>
     </LinearLayout>
-</ScrollView>
+</LinearLayout>
