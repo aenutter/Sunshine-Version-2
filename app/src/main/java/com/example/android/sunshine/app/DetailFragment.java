@@ -389,13 +389,13 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                     ContentValues values = new ContentValues();
                     int completedStatus = isChecked ? 1 : 0; // 1 for checked, 0 for unchecked
 
-                    if (mOfficeView.isPressed()) {
-                        // CheckBox is checked
-                        Toast.makeText(getActivity(), "Checkbox is pressed!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        // CheckBox is unchecked
-                        Toast.makeText(getActivity(), "Checkbox is not pressed!", Toast.LENGTH_SHORT).show();
-                    }
+//                    if (mOfficeView.isPressed()) {
+//                        // CheckBox is checked
+//                        Toast.makeText(getActivity(), "Checkbox is pressed!", Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        // CheckBox is unchecked
+//                        Toast.makeText(getActivity(), "Checkbox is not pressed!", Toast.LENGTH_SHORT).show();
+//                    }
                     values.put(WeatherContract.DogEntry.COLUMN_DOG_OFFICE, completedStatus);
 
 
