@@ -6,10 +6,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:gravity="center_vertical"
+        android:layout_gravity="center_horizontal"
         android:orientation="vertical"
         android:padding="16dp"
+        android:paddingLeft="5dp"
         android:weightSum="1">
 
         <!-- Header: Day, Date -->
@@ -40,42 +40,163 @@
 
         <RadioGroup
             android:id="@+id/my_radio_group"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.29"
             android:orientation="horizontal">
             <!-- RadioButtons will go here -->
-
-            <RadioButton
-                android:id="@+id/radio_blue"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="invisible"/>
-            <!-- Set button to null if you want to use your custom background for the entire radio button -->
+                android:layout_weight="2"
+                android:gravity="center_horizontal">
 
-            <RadioButton
-                android:id="@+id/radio_pink"
+                <RadioButton
+                    android:id="@+id/radio_blue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:drawablePadding="10dp"
+                    android:drawableTop="@drawable/circle"
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:id="@+id/text_blue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/radio_blue"
+                    android:layout_alignStart="@+id/radio_blue"
+                    android:layout_below="@+id/radio_blue"
+                    android:paddingLeft="3dp"
+                    android:text="Blue"
+                    android:textColor="@color/blue"
+                    android:textStyle="bold"
+                    android:visibility="invisible" />
+                <!-- Set button to null if you want to use your custom background for the entire radio button -->
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="invisible"/>
+                android:layout_weight="2"
+                android:gravity="center_horizontal">
 
-            <RadioButton
-                android:id="@+id/radio_yellow"
+                <RadioButton
+                    android:id="@+id/radio_pink"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:drawablePadding="10dp"
+                    android:drawableTop="@drawable/circle"
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:id="@+id/text_pink"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/radio_pink"
+                    android:layout_centerHorizontal="false"
+                    android:paddingLeft="4dp"
+                    android:text="Pink"
+                    android:textColor="@color/pink"
+                    android:textStyle="bold"
+                    android:visibility="invisible" />
+                <!-- Set button to null if you want to use your custom background for the entire radio button -->
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="invisible"/>
+                android:layout_weight="2"
+                android:gravity="center_horizontal">
 
-            <RadioButton
-                android:id="@+id/radio_orange"
+                <RadioButton
+                    android:id="@+id/radio_yellow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:drawablePadding="10dp"
+                    android:drawableTop="@drawable/circle"
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:id="@+id/text_yellow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/radio_yellow"
+                    android:layout_centerHorizontal="false"
+                    android:gravity="center_horizontal"
+                    android:text="Yellow"
+                    android:textColor="@color/yellow"
+                    android:textStyle="bold"
+                    android:visibility="invisible" />
+                <!-- Set button to null if you want to use your custom background for the entire radio button -->
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="invisible"/>
+                android:layout_weight="2"
+                android:gravity="center_horizontal">
 
-            <RadioButton
-                android:id="@+id/radio_red"
+                <RadioButton
+                    android:id="@+id/radio_orange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:drawablePadding="10dp"
+                    android:drawableTop="@drawable/circle"
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:id="@+id/text_orange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/radio_orange"
+                    android:text="Orange"
+                    android:textColor="@color/orange"
+                    android:textStyle="bold"
+                    android:visibility="invisible" />
+                <!-- Set button to null if you want to use your custom background for the entire radio button -->
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="invisible"/>
+                android:layout_weight="2"
+                android:gravity="center_horizontal">
+
+                <RadioButton
+                    android:id="@+id/radio_red"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:drawablePadding="10dp"
+                    android:drawableTop="@drawable/circle"
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:id="@+id/text_red"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/radio_red"
+                    android:paddingLeft="5dp"
+                    android:text="Red"
+                    android:textColor="@color/red"
+                    android:visibility="invisible" />
+                <!-- Set button to null if you want to use your custom background for the entire radio button -->
+            </RelativeLayout>
         </RadioGroup>
 
         <!-- Humidity, wind, pressure -->

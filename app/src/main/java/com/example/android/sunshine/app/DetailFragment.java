@@ -100,6 +100,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private TextView mNameView;
     private TextView mWalkingColorView;
     private TextView mGenderView;
+    private TextView mTextViewBlue;
+    private TextView mTextViewPink;
+    private TextView mTextViewYellow;
+    private TextView mTextViewOrange;
+    private TextView mTextViewRed;
     private CheckBox mWalkAMView;
     private CheckBox mWalkPMView;
     private CheckBox mOfficeView;
@@ -171,6 +176,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         MyLogger.d("sunshine", "mNameView initialized");
         mGenderView = (TextView) view.findViewById(R.id.detail_dog_gender_textview);
+        mTextViewBlue = (TextView) view.findViewById(R.id.text_blue);
+        mTextViewPink = (TextView) view.findViewById(R.id.text_pink);
+        mTextViewYellow = (TextView) view.findViewById(R.id.text_yellow);
+        mTextViewOrange = (TextView) view.findViewById(R.id.text_orange);
+        mTextViewRed = (TextView) view.findViewById(R.id.text_red);
 //        mWalkingColorView = (ImageView) view.findViewById(R.id.detail_dog);
         mWalkAMView = (CheckBox) view.findViewById(R.id.walk_AM_checked_text_view);
         mWalkPMView = (CheckBox) view.findViewById(R.id.walk_PM_checked_text_view);
@@ -263,15 +273,32 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 //            String dateText = Utility.getFormattedMonthDay(getActivity(), date);
 //            mFriendlyDateView.setText(friendlyDateText);
 //            mDateView.setText(dateText);
-            mRadioButtonBlue.setBackgroundResource(R.drawable.blue_circle);
+            mTextViewBlue.setVisibility(View.VISIBLE);
+            mTextViewPink.setVisibility(View.VISIBLE);
+            mTextViewYellow.setVisibility(View.VISIBLE);
+            mTextViewOrange.setVisibility(View.VISIBLE);
+            mTextViewRed.setVisibility(View.VISIBLE);
+
+            String walkingColor  = data.getString(DogFragment.COL_DOG_WALKING_COLOR);
+
+            if (walkingColor.equals("blue"))
+                mRadioButtonBlue.setBackgroundResource(R.drawable.blue_circle);
             mRadioButtonBlue.setVisibility(View.VISIBLE);
-            mRadioButtonPink.setBackgroundResource(R.drawable.pink_circle);
+
+            if (walkingColor.equals("pink"))
+                mRadioButtonPink.setBackgroundResource(R.drawable.pink_circle);
             mRadioButtonPink.setVisibility(View.VISIBLE);
-            mRadioButtonYellow.setBackgroundResource(R.drawable.yellow_circle);
+
+            if (walkingColor.equals("yellow"))
+                mRadioButtonYellow.setBackgroundResource(R.drawable.yellow_circle);
             mRadioButtonYellow.setVisibility(View.VISIBLE);
-            mRadioButtonOrange.setBackgroundResource(R.drawable.orange_circle);
+
+            if (walkingColor.equals("orange"))
+                mRadioButtonOrange.setBackgroundResource(R.drawable.orange_circle);
             mRadioButtonOrange.setVisibility(View.VISIBLE);
-            mRadioButtonRed.setBackgroundResource(R.drawable.red_x);
+
+            if (walkingColor.equals("red"))
+                mRadioButtonRed.setBackgroundResource(R.drawable.red_x);
             mRadioButtonRed.setVisibility(View.VISIBLE);
 
             // Read description from cursor and update view
@@ -284,7 +311,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             String genderView = data.getString(COL_DOG_GENDER);
             mGenderView.setText(genderView);
 
-            String breedView = data.getString(COL_DOG_WALKING_COLOR);
+//            String breedView = data.getString(COL_DOG_WALKING_COLOR);
 //            mBreedView.setText(breedView);
 
 //            MyLogger.d("sunshine", "DetailFragment walk AM value: " + data.getInt(COL_DOG_WALK_AM));

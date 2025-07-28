@@ -160,7 +160,7 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
                 if (cursor != null) {
                     String locationSetting = Utility.getPreferredLocation(getActivity());
                     ((Callback) getActivity())
-                            .onItemSelected(WeatherContract.DogEntry.buildDogUri(position + 4)
+                            .onItemSelected(WeatherContract.DogEntry.buildDogUri(position + 6)
                             );
                 }
                 mPosition = position;
