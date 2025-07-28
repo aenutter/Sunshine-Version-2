@@ -65,6 +65,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private Handler uiHandler;
     WeatherDbHelper mOpenHelper;
     int dogId;
+    private View view;
 
     private static final int DETAIL_LOADER = 0;
 
@@ -117,6 +118,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private RadioButton mRadioButtonYellow;
     private RadioButton mRadioButtonOrange;
     private RadioButton mRadioButtonRed;
+    private RadioGroup radioGroupWalkingColors;
 
     public DetailFragment() {
         setHasOptionsMenu(true);
@@ -176,11 +178,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         MyLogger.d("sunshine", "mNameView initialized");
         mGenderView = (TextView) view.findViewById(R.id.detail_dog_gender_textview);
-        mTextViewBlue = (TextView) view.findViewById(R.id.text_blue);
-        mTextViewPink = (TextView) view.findViewById(R.id.text_pink);
-        mTextViewYellow = (TextView) view.findViewById(R.id.text_yellow);
-        mTextViewOrange = (TextView) view.findViewById(R.id.text_orange);
-        mTextViewRed = (TextView) view.findViewById(R.id.text_red);
+//        mTextViewBlue = (TextView) view.findViewById(R.id.text_blue);
+//        mTextViewPink = (TextView) view.findViewById(R.id.text_pink);
+//        mTextViewYellow = (TextView) view.findViewById(R.id.text_yellow);
+//        mTextViewOrange = (TextView) view.findViewById(R.id.text_orange);
+//        mTextViewRed = (TextView) view.findViewById(R.id.text_red);
 //        mWalkingColorView = (ImageView) view.findViewById(R.id.detail_dog);
         mWalkAMView = (CheckBox) view.findViewById(R.id.walk_AM_checked_text_view);
         mWalkPMView = (CheckBox) view.findViewById(R.id.walk_PM_checked_text_view);
@@ -193,6 +195,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         mRadioButtonYellow = (RadioButton) view.findViewById(R.id.radio_yellow);
         mRadioButtonOrange = (RadioButton) view.findViewById(R.id.radio_orange);
         mRadioButtonRed = (RadioButton) view.findViewById(R.id.radio_red);
+        radioGroupWalkingColors = (RadioGroup) view.findViewById(R.id.walking_color_radio_group);
         view.requestLayout();
     }
 
@@ -273,32 +276,32 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 //            String dateText = Utility.getFormattedMonthDay(getActivity(), date);
 //            mFriendlyDateView.setText(friendlyDateText);
 //            mDateView.setText(dateText);
-            mTextViewBlue.setVisibility(View.VISIBLE);
-            mTextViewPink.setVisibility(View.VISIBLE);
-            mTextViewYellow.setVisibility(View.VISIBLE);
-            mTextViewOrange.setVisibility(View.VISIBLE);
-            mTextViewRed.setVisibility(View.VISIBLE);
+//            mTextViewBlue.setVisibility(View.VISIBLE);
+//            mTextViewPink.setVisibility(View.VISIBLE);
+//            mTextViewYellow.setVisibility(View.VISIBLE);
+//            mTextViewOrange.setVisibility(View.VISIBLE);
+//            mTextViewRed.setVisibility(View.VISIBLE);
 
             String walkingColor  = data.getString(DogFragment.COL_DOG_WALKING_COLOR);
 
             if (walkingColor.equals("blue"))
-                mRadioButtonBlue.setBackgroundResource(R.drawable.blue_circle);
+                mRadioButtonBlue.setChecked(true);
             mRadioButtonBlue.setVisibility(View.VISIBLE);
 
             if (walkingColor.equals("pink"))
-                mRadioButtonPink.setBackgroundResource(R.drawable.pink_circle);
+                mRadioButtonPink.setChecked(true);
             mRadioButtonPink.setVisibility(View.VISIBLE);
 
             if (walkingColor.equals("yellow"))
-                mRadioButtonYellow.setBackgroundResource(R.drawable.yellow_circle);
+                mRadioButtonYellow.setChecked(true);
             mRadioButtonYellow.setVisibility(View.VISIBLE);
 
             if (walkingColor.equals("orange"))
-                mRadioButtonOrange.setBackgroundResource(R.drawable.orange_circle);
+                mRadioButtonOrange.setChecked(true);
             mRadioButtonOrange.setVisibility(View.VISIBLE);
 
             if (walkingColor.equals("red"))
-                mRadioButtonRed.setBackgroundResource(R.drawable.red_x);
+                mRadioButtonRed.setChecked(true);
             mRadioButtonRed.setVisibility(View.VISIBLE);
 
             // Read description from cursor and update view
@@ -384,6 +387,106 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             } else {
 //                mAdventureTailsView.setChecked(false);
             }
+
+            radioGroupWalkingColors.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    // checkedId is the ID of the newly selected RadioButton
+//                    Toast.makeText(getActivity(), "Inside onCheckedChanged", Toast.LENGTH_SHORT).show();
+                    if (checkedId == R.id.radio_blue) {
+                        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+                        ContentValues values = new ContentValues();
+                        String walkingStatus = "blue"; // 1 for checked, 0 for unchecked
+                        values.put(WeatherContract.DogEntry.COLUMN_DOG_WALKING_COLOR, walkingStatus);
+
+
+                        // Assuming you have a unique ID for the item associated with the checkbox
+                        String whereClause = WeatherContract.DogEntry.COLUMN_ID+ " = ?";
+                        String[] whereArgs = {String.valueOf(dogId)}; // Replace itemId with the actual ID
+//                    getContext().getContentResolver().update(WeatherContract.DogEntry.CONTENT_URI, values, whereClause, whereArgs);
+                        if (db.update(WeatherContract.DogEntry.TABLE_NAME, values, whereClause, whereArgs) == 1) {
+                            getContext().getContentResolver().notifyChange(WeatherContract.DogEntry.CONTENT_URI, null);
+                        }
+                        db.close();
+                        MyLogger.d("sunshine", "setOnCheckedChangeListener dog id: " + dogId);
+                        MyLogger.d("sunshine", "setOnCheckedChangeListener completed status: " + walkingStatus);
+                        MyLogger.d("sunshine", "setOnCheckedChangeListener whereClause: " + whereClause);
+                        MyLogger.d("sunshine", "setOnCheckedChangeListener whereArgs: " + whereArgs);
+                        // Handle selection of Option 1
+                        Toast.makeText(getActivity(), "Blue button is pressed", Toast.LENGTH_SHORT).show();
+                    } else if (checkedId == R.id.radio_pink) {
+                        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+                        ContentValues values = new ContentValues();
+                        String walkingStatus = "pink"; // 1 for checked, 0 for unchecked
+                        values.put(WeatherContract.DogEntry.COLUMN_DOG_WALKING_COLOR, walkingStatus);
+
+
+                        // Assuming you have a unique ID for the item associated with the checkbox
+                        String whereClause = WeatherContract.DogEntry.COLUMN_ID+ " = ?";
+                        String[] whereArgs = {String.valueOf(dogId)}; // Replace itemId with the actual ID
+//                    getContext().getContentResolver().update(WeatherContract.DogEntry.CONTENT_URI, values, whereClause, whereArgs);
+                        if (db.update(WeatherContract.DogEntry.TABLE_NAME, values, whereClause, whereArgs) == 1) {
+                            getContext().getContentResolver().notifyChange(WeatherContract.DogEntry.CONTENT_URI, null);
+                        }
+                        db.close();
+                        // Handle selection of Option 2
+                        Toast.makeText(getActivity(), "Pink button is pressed", Toast.LENGTH_SHORT).show();
+                    } else if (checkedId == R.id.radio_yellow) {
+                        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+                        ContentValues values = new ContentValues();
+                        String walkingStatus = "yellow"; // 1 for checked, 0 for unchecked
+                        values.put(WeatherContract.DogEntry.COLUMN_DOG_WALKING_COLOR, walkingStatus);
+
+
+                        // Assuming you have a unique ID for the item associated with the checkbox
+                        String whereClause = WeatherContract.DogEntry.COLUMN_ID+ " = ?";
+                        String[] whereArgs = {String.valueOf(dogId)}; // Replace itemId with the actual ID
+//                    getContext().getContentResolver().update(WeatherContract.DogEntry.CONTENT_URI, values, whereClause, whereArgs);
+                        if (db.update(WeatherContract.DogEntry.TABLE_NAME, values, whereClause, whereArgs) == 1) {
+                            getContext().getContentResolver().notifyChange(WeatherContract.DogEntry.CONTENT_URI, null);
+                        }
+                        db.close();
+                        // Handle selection of Option 2
+                        Toast.makeText(getActivity(), "Yellow button is pressed", Toast.LENGTH_SHORT).show();
+                    }
+                    else if (checkedId == R.id.radio_orange) {
+                        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+                        ContentValues values = new ContentValues();
+                        String walkingStatus = "orange"; // 1 for checked, 0 for unchecked
+                        values.put(WeatherContract.DogEntry.COLUMN_DOG_WALKING_COLOR, walkingStatus);
+
+
+                        // Assuming you have a unique ID for the item associated with the checkbox
+                        String whereClause = WeatherContract.DogEntry.COLUMN_ID+ " = ?";
+                        String[] whereArgs = {String.valueOf(dogId)}; // Replace itemId with the actual ID
+//                    getContext().getContentResolver().update(WeatherContract.DogEntry.CONTENT_URI, values, whereClause, whereArgs);
+                        if (db.update(WeatherContract.DogEntry.TABLE_NAME, values, whereClause, whereArgs) == 1) {
+                            getContext().getContentResolver().notifyChange(WeatherContract.DogEntry.CONTENT_URI, null);
+                        }
+                        db.close();
+                        // Handle selection of Option 2
+                        Toast.makeText(getActivity(), "Orange button is pressed", Toast.LENGTH_SHORT).show();
+                    } else if (checkedId == R.id.radio_red) {
+                        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+                        ContentValues values = new ContentValues();
+                        String walkingStatus = "red"; // 1 for checked, 0 for unchecked
+                        values.put(WeatherContract.DogEntry.COLUMN_DOG_WALKING_COLOR, walkingStatus);
+
+
+                        // Assuming you have a unique ID for the item associated with the checkbox
+                        String whereClause = WeatherContract.DogEntry.COLUMN_ID+ " = ?";
+                        String[] whereArgs = {String.valueOf(dogId)}; // Replace itemId with the actual ID
+//                    getContext().getContentResolver().update(WeatherContract.DogEntry.CONTENT_URI, values, whereClause, whereArgs);
+                        if (db.update(WeatherContract.DogEntry.TABLE_NAME, values, whereClause, whereArgs) == 1) {
+                            getContext().getContentResolver().notifyChange(WeatherContract.DogEntry.CONTENT_URI, null);
+                        }
+                        db.close();
+                        // Handle selection of Option 2
+                        Toast.makeText(getActivity(), "Red button is pressed", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
             // setup on Check Change Listeners for all six check boxes
             mWalkAMView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override

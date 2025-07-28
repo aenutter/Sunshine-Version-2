@@ -116,7 +116,7 @@ public class DogAdapter extends CursorAdapter {
             viewHolder.walkingColorView.setBackgroundResource(R.drawable.orange_circle);
 
         if (walkingColor.equals("red"))
-            viewHolder.walkingColorView.setBackgroundResource(R.drawable.red_x);
+            viewHolder.walkingColorView.setBackgroundResource(R.drawable.red_circle);
 
         String gender = cursor.getString(DogFragment.COL_DOG_GENDER);
         // For accessibility, add a content description to the icon field
