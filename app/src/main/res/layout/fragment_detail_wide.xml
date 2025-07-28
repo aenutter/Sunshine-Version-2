@@ -4,12 +4,13 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:gravity="center_vertical"
-        android:layout_gravity="left"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:gravity="center_vertical"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:weightSum="1">
 
         <!-- Header: Day, Date -->
 
@@ -37,12 +38,52 @@
             android:textColor="@color/grey_700"
             android:textSize="48sp" />
 
+        <RadioGroup
+            android:id="@+id/my_radio_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.29"
+            android:orientation="horizontal">
+            <!-- RadioButtons will go here -->
+
+            <RadioButton
+                android:id="@+id/radio_blue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"/>
+            <!-- Set button to null if you want to use your custom background for the entire radio button -->
+
+            <RadioButton
+                android:id="@+id/radio_pink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"/>
+
+            <RadioButton
+                android:id="@+id/radio_yellow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"/>
+
+            <RadioButton
+                android:id="@+id/radio_orange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"/>
+
+            <RadioButton
+                android:id="@+id/radio_red"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"/>
+        </RadioGroup>
+
         <!-- Humidity, wind, pressure -->
         <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginRight="0dp"
             android:layout_marginTop="16dp"
-            android:layout_width="match_parent"
             android:orientation="vertical">
 
             <CheckBox

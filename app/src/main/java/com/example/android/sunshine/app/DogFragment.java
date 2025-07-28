@@ -67,7 +67,7 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
             // So the convenience is worth it.
             WeatherContract.DogEntry.TABLE_NAME + "." + WeatherContract.DogEntry._ID,
             WeatherContract.DogEntry.COLUMN_DOG_NAME,
-            WeatherContract.DogEntry.COLUMN_DOG_BREED,
+            WeatherContract.DogEntry.COLUMN_DOG_WALKING_COLOR,
             WeatherContract.DogEntry.COLUMN_DOG_GENDER,
             WeatherContract.DogEntry.COLUMN_DOG_WALK_AM,
             WeatherContract.DogEntry.COLUMN_DOG_WALK_PM,
@@ -82,7 +82,7 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
     static final int COL_DOG_ID = 0;
 //    static final int COL_DOG_DOG_ID = 1;
     static final int COL_DOG_NAME = 1;
-    static final int COL_DOG_BREED = 2;
+    static final int COL_DOG_WALKING_COLOR = 2;
     static final int COL_DOG_GENDER = 3;
     static final int COL_DOG_WALK_AM = 4;
     static final int COL_DOG_WALK_PM = 5;

@@ -28,6 +28,7 @@ public class DogAdapter extends CursorAdapter {
      */
     public static class ViewHolder {
 //        public final ImageView iconView;
+        public final ImageView walkingColorView;
         public final TextView nameView;
         public final TextView genderView;
         public final TextView walkAMView;
@@ -40,7 +41,7 @@ public class DogAdapter extends CursorAdapter {
 
         public ViewHolder(View view) {
 //            playGroupView = (TextView) view.findViewById(R.id.list_item_playgroup);
-//            iconView = (ImageView) view.findViewById(R.id.list_item_icon);
+            walkingColorView = (ImageView) view.findViewById(R.id.list_item_icon);
             nameView = (TextView) view.findViewById(R.id.list_item_dog_name);
             genderView = (TextView) view.findViewById(R.id.list_item_dog_gender);
             walkAMView = (TextView) view.findViewById(R.id.list_item_dog_walk_am);
@@ -91,13 +92,31 @@ public class DogAdapter extends CursorAdapter {
         String[] stringArray = context.getResources().getStringArray(R.array.kennel_array);
         // Now you can access elements: stringArray[0], stringArray[1], etc.
         MyLogger.d("sunshine", "inside DogAdapter cursor kennel number: " + stringArray[cursor.getPosition()]);
-        Toast.makeText(context, "kennel number: " + stringArray[cursor.getPosition()], Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, "kennel number: " + stringArray[cursor.getPosition()], Toast.LENGTH_SHORT).show();
 
         int viewType = getItemViewType(cursor.getPosition());
         // Read weather forecast from cursor
         String name = cursor.getString(DogFragment.COL_DOG_NAME);
         // Find TextView and set weather forecast on it
         viewHolder.nameView.setText(name);
+
+        String walkingColor  = cursor.getString(DogFragment.COL_DOG_WALKING_COLOR);
+//        MyLogger.d("sunshine", "inside DogAdapter cursor walking color: " + walkingColor);
+        // Find TextView and set weather forecast on it
+        if (walkingColor.equals("blue"))
+            viewHolder.walkingColorView.setBackgroundResource(R.drawable.blue_circle);
+
+        if (walkingColor.equals("pink"))
+            viewHolder.walkingColorView.setBackgroundResource(R.drawable.pink_circle);
+
+        if (walkingColor.equals("yellow"))
+            viewHolder.walkingColorView.setBackgroundResource(R.drawable.yellow_circle);
+
+        if (walkingColor.equals("orange"))
+            viewHolder.walkingColorView.setBackgroundResource(R.drawable.orange_circle);
+
+        if (walkingColor.equals("red"))
+            viewHolder.walkingColorView.setBackgroundResource(R.drawable.red_x);
 
         String gender = cursor.getString(DogFragment.COL_DOG_GENDER);
         // For accessibility, add a content description to the icon field

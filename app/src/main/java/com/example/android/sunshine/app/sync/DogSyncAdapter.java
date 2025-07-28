@@ -206,7 +206,7 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
         // Location information
         final String DOG = "dog";
         final String DOG_NAME = "name";
-        final String DOG_BREED = "breed";
+        final String DOG_WALKING_COLOR = "walking_color";
         final String DOG_GENDER = "gender";
         final String DOG_WALK_AM = "walk_AM";
         final String DOG_WALK_PM = "walk_PM";
@@ -254,7 +254,7 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
                 // These are the values that will be collected.
 
                 String name;
-                String breed;
+                String walking_color;
                 String gender;
                 Integer walkAM;
                 Integer walkPM;
@@ -271,7 +271,7 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
                 name = dogJson.getString(DOG_NAME);
 //                MyLogger.d("sunshine", "dog json name value: " + name);
 
-                breed = dogJson.getString(DOG_BREED);
+                walking_color = dogJson.getString(DOG_WALKING_COLOR);
 //                MyLogger.d("sunshine", "dog json breed value: " + breed);
 
                 gender = dogJson.getString(DOG_GENDER);
@@ -298,7 +298,7 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
                 ContentValues dogValues = new ContentValues();
 
                 dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_NAME, name);
-                dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_BREED, breed);
+                dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_WALKING_COLOR, walking_color);
                 dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_GENDER, gender);
                 dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_WALK_AM, walkAM);
                 dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_WALK_PM, walkPM);

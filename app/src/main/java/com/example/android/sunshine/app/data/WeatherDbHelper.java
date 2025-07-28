@@ -47,7 +47,7 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_DOG_TABLE = "CREATE TABLE " + DogEntry.TABLE_NAME + " (" +
                 DogEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 DogEntry.COLUMN_DOG_NAME + " TEXT NOT NULL, " +
-                DogEntry.COLUMN_DOG_BREED + " TEXT NOT NULL, " +
+                DogEntry.COLUMN_DOG_WALKING_COLOR + " TEXT NOT NULL, " +
                 DogEntry.COLUMN_DOG_GENDER + " TEXT NOT NULL, " +
                 DogEntry.COLUMN_DOG_WALK_AM + " INTEGER NOT NULL, " +
                 DogEntry.COLUMN_DOG_WALK_PM + " INTEGER NOT NULL, " +
