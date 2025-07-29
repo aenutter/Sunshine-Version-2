@@ -79,9 +79,13 @@ public class WeatherContract {
         // Human readable location string, provided by the API.  Because for styling,
         // "Mountain View" is more recognizable than 94043.
         public static final String COLUMN_DOG_WALKING_COLOR = "walking_color";
+        public static final String COLUMN_DOG_LOCATION = "location";
+        public static final String COLUMN_DOG_KENNEL_NUMBER = "kennel_number";
+
 
         // In order to uniquely pinpoint the location on the map when we launch the
         // map intent, we store the latitude and longitude as returned by openweathermap.
+        public static final String COLUMN_DOG_PLAYGROUP = "playgroup";
         public static final String COLUMN_DOG_GENDER = "gender";
         public static final String COLUMN_DOG_WALK_AM = "walk_AM";
         public static final String COLUMN_DOG_WALK_PM = "walk_PM";

@@ -207,6 +207,9 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
         final String DOG = "dog";
         final String DOG_NAME = "name";
         final String DOG_WALKING_COLOR = "walking_color";
+        final String DOG_LOCATION = "location";
+        final String DOG_KENNEL_NUMBER = "kennel_number";
+        final String DOG_PLAYGROUP = "playgroup";
         final String DOG_GENDER = "gender";
         final String DOG_WALK_AM = "walk_AM";
         final String DOG_WALK_PM = "walk_PM";
@@ -255,6 +258,9 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
 
                 String name;
                 String walking_color;
+                String location;
+                String kennelNumber;
+                Integer playgroup;
                 String gender;
                 Integer walkAM;
                 Integer walkPM;
@@ -273,6 +279,15 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
 
                 walking_color = dogJson.getString(DOG_WALKING_COLOR);
 //                MyLogger.d("sunshine", "dog json breed value: " + breed);
+
+                location = dogJson.getString(DOG_LOCATION);
+//                MyLogger.d("sunshine", "dog json location value: " + location);
+
+                kennelNumber = dogJson.getString(DOG_KENNEL_NUMBER);
+//                MyLogger.d("sunshine", "dog json kennel number value: " + kennelNumber);
+
+                playgroup = dogJson.getInt(DOG_PLAYGROUP);
+//                MyLogger.d("sunshine", "dog json kennel number value: " + kennelNumber);
 
                 gender = dogJson.getString(DOG_GENDER);
 //                MyLogger.d("sunshine", "dog json gender value: " + gender);
@@ -299,6 +314,9 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
 
                 dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_NAME, name);
                 dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_WALKING_COLOR, walking_color);
+                dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_LOCATION, location);
+                dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_KENNEL_NUMBER, kennelNumber);
+                dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_PLAYGROUP, playgroup);
                 dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_GENDER, gender);
                 dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_WALK_AM, walkAM);
                 dogValues.put(WeatherContract.DogEntry.COLUMN_DOG_WALK_PM, walkPM);

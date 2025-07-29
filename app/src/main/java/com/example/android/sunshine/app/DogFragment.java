@@ -74,7 +74,9 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
             WeatherContract.DogEntry.COLUMN_DOG_OFFICE,
             WeatherContract.DogEntry.COLUMN_DOG_VISITOR,
             WeatherContract.DogEntry.COLUMN_DOG_VOLUNTEER_ROOM,
-            WeatherContract.DogEntry.COLUMN_DOG_ADVENTURE_TAILS
+            WeatherContract.DogEntry.COLUMN_DOG_ADVENTURE_TAILS,
+            WeatherContract.DogEntry.COLUMN_DOG_LOCATION,
+            WeatherContract.DogEntry.COLUMN_DOG_KENNEL_NUMBER
     };
 
     // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
@@ -90,6 +92,8 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
     static final int COL_DOG_VISITOR = 7;
     static final int COL_DOG_VOLUNTEER_ROOM = 8;
     static final int COL_DOS_ADVENTURE_TAILS = 9;
+    static final int COL_DOG_LOCATION = 10;
+    static final int COL_DOS_KENNEL_NUMBER = 11;
 
     /**
      * A callback interface that all activities containing this fragment must

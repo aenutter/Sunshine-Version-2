@@ -29,6 +29,7 @@ public class DogAdapter extends CursorAdapter {
     public static class ViewHolder {
 //        public final ImageView iconView;
         public final ImageView walkingColorView;
+        public final TextView kennelView;
         public final TextView nameView;
         public final TextView genderView;
         public final TextView walkAMView;
@@ -37,10 +38,11 @@ public class DogAdapter extends CursorAdapter {
         public final TextView visitorView;
         public final TextView volunteerView;
         public final TextView adventureTailsView;
-//        public final TextView playGroupView;
+        public final TextView playGroupView;
 
         public ViewHolder(View view) {
-//            playGroupView = (TextView) view.findViewById(R.id.list_item_playgroup);
+            kennelView = (TextView) view.findViewById(R.id.list_item_kennel);
+            playGroupView = (TextView) view.findViewById(R.id.list_item_playgroup);
             walkingColorView = (ImageView) view.findViewById(R.id.list_item_icon);
             nameView = (TextView) view.findViewById(R.id.list_item_dog_name);
             genderView = (TextView) view.findViewById(R.id.list_item_dog_gender);
@@ -99,6 +101,10 @@ public class DogAdapter extends CursorAdapter {
         String name = cursor.getString(DogFragment.COL_DOG_NAME);
         // Find TextView and set weather forecast on it
         viewHolder.nameView.setText(name);
+
+        String location  = cursor.getString(DogFragment.COL_DOG_LOCATION);
+        String kennel = cursor.getString(DogFragment.COL_DOS_KENNEL_NUMBER);
+        viewHolder.kennelView.setText(location + "-" + kennel);
 
         String walkingColor  = cursor.getString(DogFragment.COL_DOG_WALKING_COLOR);
 //        MyLogger.d("sunshine", "inside DogAdapter cursor walking color: " + walkingColor);

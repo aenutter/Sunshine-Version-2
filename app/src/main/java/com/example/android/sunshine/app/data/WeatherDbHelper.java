@@ -31,7 +31,7 @@ import com.example.android.sunshine.app.data.WeatherContract.DogEntry;
 public class WeatherDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 13;
+    private static final int DATABASE_VERSION = 14;
 
     static final String DATABASE_NAME = "weather.db";
 
@@ -48,6 +48,9 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
                 DogEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 DogEntry.COLUMN_DOG_NAME + " TEXT NOT NULL, " +
                 DogEntry.COLUMN_DOG_WALKING_COLOR + " TEXT NOT NULL, " +
+                DogEntry.COLUMN_DOG_LOCATION + " TEXT NOT NULL, " +
+                DogEntry.COLUMN_DOG_KENNEL_NUMBER + " INTEGER NOT NULL, " +
+                DogEntry.COLUMN_DOG_PLAYGROUP + " INTEGER NOT NULL, " +
                 DogEntry.COLUMN_DOG_GENDER + " TEXT NOT NULL, " +
                 DogEntry.COLUMN_DOG_WALK_AM + " INTEGER NOT NULL, " +
                 DogEntry.COLUMN_DOG_WALK_PM + " INTEGER NOT NULL, " +
@@ -100,10 +103,11 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
                 WeatherEntry.COLUMN_LOC_KEY + ") ON CONFLICT REPLACE);";
 
         sqLiteDatabase.execSQL(SQL_CREATE_LOCATION_TABLE);
-        MyLogger.d("sunshine", "created location table");
+//        MyLogger.d("sunshine", "created location table");
         sqLiteDatabase.execSQL(SQL_CREATE_WEATHER_TABLE);
-        MyLogger.d("sunshine", "created weather table");
+//        MyLogger.d("sunshine", "created weather table");
         sqLiteDatabase.execSQL(SQL_CREATE_DOG_TABLE);
+        MyLogger.d("sunshine", "created dogs table");
     }
 
     @Override
