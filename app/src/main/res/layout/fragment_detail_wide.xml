@@ -123,6 +123,15 @@
             android:orientation="vertical">
 
             <CheckBox
+                android:id="@+id/playgroup_check_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+                android:checked="false"
+                android:text=" Playgroup"
+                android:visibility="invisible" />
+
+            <CheckBox
                 android:id="@+id/walk_AM_checked_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

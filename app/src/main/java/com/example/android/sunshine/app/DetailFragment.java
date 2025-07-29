@@ -80,7 +80,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             WeatherContract.DogEntry.COLUMN_DOG_OFFICE,
             WeatherContract.DogEntry.COLUMN_DOG_VISITOR,
             WeatherContract.DogEntry.COLUMN_DOG_VOLUNTEER_ROOM,
-            WeatherContract.DogEntry.COLUMN_DOG_ADVENTURE_TAILS
+            WeatherContract.DogEntry.COLUMN_DOG_ADVENTURE_TAILS,
+            WeatherContract.DogEntry.COLUMN_DOG_PLAYGROUP
     };
 
     // These indices are tied to DETAIL_COLUMNS.  If DETAIL_COLUMNS changes, these
@@ -96,6 +97,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     public static final int COL_DOG_VISITOR = 7;
     public static final int COL_DOG_VOLUNTEER_ROOM = 8;
     public static final int COL_DOG_ADVENTURE_TAILS = 9;
+    public static final int COL_DOG_PLAYGROUP = 10;
 
 //    private ImageView mIconView;
     private TextView mNameView;
@@ -106,6 +108,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private TextView mTextViewYellow;
     private TextView mTextViewOrange;
     private TextView mTextViewRed;
+    private CheckBox playgroupView;
     private CheckBox mWalkAMView;
     private CheckBox mWalkPMView;
     private CheckBox mOfficeView;
@@ -184,6 +187,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 //        mTextViewOrange = (TextView) view.findViewById(R.id.text_orange);
 //        mTextViewRed = (TextView) view.findViewById(R.id.text_red);
 //        mWalkingColorView = (ImageView) view.findViewById(R.id.detail_dog);
+        playgroupView = (CheckBox) view.findViewById(R.id.playgroup_check_box);
         mWalkAMView = (CheckBox) view.findViewById(R.id.walk_AM_checked_text_view);
         mWalkPMView = (CheckBox) view.findViewById(R.id.walk_PM_checked_text_view);
         mOfficeView = (CheckBox) view.findViewById(R.id.office_checked_text_view);
@@ -316,6 +320,19 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
 //            String breedView = data.getString(COL_DOG_WALKING_COLOR);
 //            mBreedView.setText(breedView);
+
+            //            MyLogger.d("sunshine", "DetailFragment walk AM value: " + data.getInt(COL_DOG_WALK_AM));
+            playgroupView.setVisibility(View.VISIBLE);
+            Boolean playgroup = (data.getInt(COL_DOG_PLAYGROUP) == 1);
+            MyLogger.d("sunshine", "DetailFragment playgroup boolean value: " + playgroup);
+            if (playgroup) {
+                playgroupView.setChecked(true);
+//                setCheckboxStateDelayed(mWalkAMView, walkAM, 100);
+//                MyLogger.d("sunshine", "walk AM set after set checked to true: " + mWalkAMView.isChecked());
+            } else {
+//                mWalkAMView.setChecked(false);
+//                MyLogger.d("sunshine", "walk AM set after set checked to false: " + mWalkAMView.isChecked());
+            }
 
 //            MyLogger.d("sunshine", "DetailFragment walk AM value: " + data.getInt(COL_DOG_WALK_AM));
             mWalkAMView.setVisibility(View.VISIBLE);
@@ -487,7 +504,30 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 }
             });
 
-            // setup on Check Change Listeners for all six check boxes
+            // setup on Check Change Listeners for all seven check boxes
+            playgroupView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+                    ContentValues values = new ContentValues();
+                    int completedStatus = isChecked ? 1 : 0; // 1 for checked, 0 for unchecked
+                    values.put(WeatherContract.DogEntry.COLUMN_DOG_PLAYGROUP, completedStatus);
+
+
+                    // Assuming you have a unique ID for the item associated with the checkbox
+                    String whereClause = WeatherContract.DogEntry.COLUMN_ID+ " = ?";
+                    String[] whereArgs = {String.valueOf(dogId)}; // Replace itemId with the actual ID
+//                    getContext().getContentResolver().update(WeatherContract.DogEntry.CONTENT_URI, values, whereClause, whereArgs);
+                    if (db.update(WeatherContract.DogEntry.TABLE_NAME, values, whereClause, whereArgs) == 1) {
+                        getContext().getContentResolver().notifyChange(WeatherContract.DogEntry.CONTENT_URI, null);
+                    }
+                    db.close();
+                    MyLogger.d("sunshine", "setOnCheckedChangeListener dog id: " + dogId);
+                    MyLogger.d("sunshine", "setOnCheckedChangeListener completed status: " + completedStatus);
+                    MyLogger.d("sunshine", "setOnCheckedChangeListener whereClause: " + whereClause);
+                    MyLogger.d("sunshine", "setOnCheckedChangeListener whereArgs: " + whereArgs);
+                }
+            });
             mWalkAMView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

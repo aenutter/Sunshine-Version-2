@@ -106,6 +106,9 @@ public class DogAdapter extends CursorAdapter {
         String kennel = cursor.getString(DogFragment.COL_DOS_KENNEL_NUMBER);
         viewHolder.kennelView.setText(location + "-" + kennel);
 
+        Boolean playgroup = (cursor.getInt(DogFragment.COL_DOG_PLAYGROUP) == 1);
+        if (playgroup) viewHolder.playGroupView.setText("Playgroup"); else viewHolder.playGroupView.setText("");
+
         String walkingColor  = cursor.getString(DogFragment.COL_DOG_WALKING_COLOR);
 //        MyLogger.d("sunshine", "inside DogAdapter cursor walking color: " + walkingColor);
         // Find TextView and set weather forecast on it
