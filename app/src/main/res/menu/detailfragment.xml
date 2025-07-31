@@ -2,16 +2,22 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/action_delete"
-        android:title="@string/action_delete"
-        app:showAsAction="always"
-        android:icon="@drawable/delete_24dp">
-    </item>
+    <!--<item android:id="@+id/action_delete"-->
+        <!--android:title="@string/action_delete"-->
+        <!--app:showAsAction="always"-->
+        <!--android:icon="@drawable/delete_24dp">-->
+    <!--</item>-->
 
-    <item android:id="@+id/action_new"
-        android:title="@string/action_delete"
-        app:showAsAction="always"
-        android:icon="@drawable/add_24dp">
-    </item>
+    <!--<item android:id="@+id/action_new"-->
+        <!--android:title="@string/action_delete"-->
+        <!--app:showAsAction="always"-->
+        <!--android:icon="@drawable/add_24dp">-->
+    <!--</item>-->
+
+    <!--<item android:id="@+id/action_move"-->
+        <!--android:title="@string/action_move"-->
+        <!--app:showAsAction="always"-->
+        <!--android:icon="@drawable/move_item_24dp">-->
+    <!--</item>-->
 </menu>
     <!--app:actionProviderClass="android.support.v7.widget.ShareActionProvider" />-->

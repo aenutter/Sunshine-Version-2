@@ -206,7 +206,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        inflater.inflate(R.menu.detailfragment, menu);
+//        inflater.inflate(R.menu.detailfragment, menu);
 
         // Retrieve the share menu item
         MenuItem menuItem = menu.findItem(R.id.action_delete);
@@ -215,11 +215,13 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
 
         // If onLoadFinished happens before this, we can go ahead and set the share intent now.
-        if (mForecast != null) {
-            mShareActionProvider.setShareIntent(createShareForecastIntent());
-        }
+//        if (mForecast != null) {
+//            mShareActionProvider.setShareIntent(createShareForecastIntent());
+//        }
 
-        MenuItem menuNewItem = menu.findItem(R.id.action_new);
+//        MenuItem menuNewItem = menu.findItem(R.id.action_new);
+
+//        MenuItem menuMoveItem = menu.findItem(R.id.action_move);
     }
 
     private Intent createShareForecastIntent() {

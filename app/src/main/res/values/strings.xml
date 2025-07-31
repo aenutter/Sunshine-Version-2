@@ -17,6 +17,7 @@
     <string name="action_share">Share</string>
     <string name="action_delete">Delete</string>
     <string name="action_new">New</string>
+    <string name="action_move">Move</string>
 
     <!-- Menu label to fetch updated weather info from the server -->
     <string name="action_refresh" translatable="false">Refresh</string>

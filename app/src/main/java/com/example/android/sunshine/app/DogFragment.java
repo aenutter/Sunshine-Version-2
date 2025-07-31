@@ -24,6 +24,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,6 +35,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.android.sunshine.app.data.AppConstants;
 import com.example.android.sunshine.app.data.WeatherContract;
@@ -47,6 +50,8 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
     private DogAdapter mDogAdapter;
 //    WeatherDbHelper mOpenHelper;
     Cursor cursor;
+//    private ShareActionProvider mShareActionProvider;
+//    private String mForecast;
 
     static final String DETAIL_URI = "URI";
 
@@ -123,6 +128,24 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.forecastfragment, menu);
+
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.detailfragment, menu);
+
+        // Retrieve the share menu item
+        MenuItem menuItem = menu.findItem(R.id.action_delete);
+
+        // Get the provider and hold onto it to set/change the share intent.
+//        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+//
+//        // If onLoadFinished happens before this, we can go ahead and set the share intent now.
+//        if (mForecast != null) {
+//            mShareActionProvider.setShareIntent(createShareForecastIntent());
+//        }
+
+        MenuItem menuNewItem = menu.findItem(R.id.action_new);
+
+        MenuItem menuMoveItem = menu.findItem(R.id.action_move);
     }
 
     @Override
@@ -130,15 +153,22 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//        if (id == R.id.action_refresh) {
+        int id = item.getItemId();
+        if (id == R.id.action_delete) {
 //            updateWeather();
-//            return true;
-//        }
-//        if (id == R.id.action_map) {
-////            openPreferredLocationInMap();
-//            return true;
-//        }
+            Toast.makeText(getContext(), "Action Delete", Toast.LENGTH_LONG).show();
+            return true;
+        }
+        if (id == R.id.action_new) {
+//            openPreferredLocationInMap();
+            Toast.makeText(getContext(), "Action New", Toast.LENGTH_LONG).show();
+            return true;
+        }
+        if (id == R.id.action_move) {
+//            openPreferredLocationInMap();
+            Toast.makeText(getContext(), "Action Move", Toast.LENGTH_LONG).show();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -167,7 +197,7 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
                 MyLogger.d("sunshine", "onItemClick position: " + position);
                 if (cursor != null) {
 //                    String locationSetting = Utility.getPreferredLocation(getActivity());
-                    MyLogger.d("sunshine", "onItemClick uri: " + WeatherContract.DogEntry.buildDogUri(position + 6));
+                    MyLogger.d("sunshine", "onItemClick uri: " + WeatherContract.DogEntry.buildDogUri(position + AppConstants.GLOBAL_OFFSET ));
                     ((Callback) getActivity())
                             .onItemSelected(WeatherContract.DogEntry.buildDogUri(position + AppConstants.GLOBAL_OFFSET )
                             );
