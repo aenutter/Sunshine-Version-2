@@ -156,14 +156,14 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 //        }, delayMillis);
 //    }
 
-    public void setCheckboxStateDelayed(final CheckBox checkBox, final boolean checked, long delayMillis) {
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                checkBox.setChecked(checked);
-            }
-        }, delayMillis);
-    }
+//    public void setCheckboxStateDelayed(final CheckBox checkBox, final boolean checked, long delayMillis) {
+//        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                checkBox.setChecked(checked);
+//            }
+//        }, delayMillis);
+//    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -209,7 +209,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         inflater.inflate(R.menu.detailfragment, menu);
 
         // Retrieve the share menu item
-        MenuItem menuItem = menu.findItem(R.id.action_share);
+        MenuItem menuItem = menu.findItem(R.id.action_delete);
 
         // Get the provider and hold onto it to set/change the share intent.
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
@@ -218,6 +218,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         if (mForecast != null) {
             mShareActionProvider.setShareIntent(createShareForecastIntent());
         }
+
+        MenuItem menuNewItem = menu.findItem(R.id.action_new);
     }
 
     private Intent createShareForecastIntent() {

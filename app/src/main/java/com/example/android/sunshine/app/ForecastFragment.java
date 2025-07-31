@@ -116,15 +116,15 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-//        if (id == R.id.action_refresh) {
-//            updateWeather();
+//        int id = item.getItemId();
+////        if (id == R.id.action_refresh) {
+////            updateWeather();
+////            return true;
+////        }
+//        if (id == R.id.action_map) {
+//            openPreferredLocationInMap();
 //            return true;
 //        }
-        if (id == R.id.action_map) {
-            openPreferredLocationInMap();
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
