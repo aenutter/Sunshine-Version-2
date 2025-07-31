@@ -264,6 +264,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
         if (data != null && data.moveToFirst()) {
             // Read weather condition ID from cursor
             dogId = data.getInt(COL_ID);

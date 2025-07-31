@@ -15,16 +15,151 @@
  */
 package com.example.android.sunshine.app;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 import android.text.format.Time;
+import android.util.Log;
+
+import com.example.android.sunshine.app.data.AppConstants;
+import com.example.android.sunshine.app.data.WeatherContract;
+import com.example.android.sunshine.app.data.WeatherDbHelper;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Vector;
 
 public class Utility {
+
+    public static void sortData(Context context) {
+
+        WeatherDbHelper mOpenHelper;
+        mOpenHelper = new WeatherDbHelper(context);
+        Integer COLUMN_ID = 0;
+        Integer COLUMN_DOG_NAME = 1;
+        Integer COLUMN_DOG_WALKING_COLOR = 2;
+        Integer COLUMN_DOG_LOCATION = 3;
+        Integer COLUMN_DOG_KENNEL_NUMBER = 4;
+        Integer COLUMN_DOG_PLAYGROUP = 5;
+        Integer COLUMN_DOG_GENDER = 6;
+        Integer COLUMN_DOG_WALK_AM = 7;
+        Integer COLUMN_DOG_WALK_PM = 8;
+        Integer COLUMN_DOG_OFFICE = 9;
+        Integer COLUMN_DOG_VISITOR = 10;
+        Integer COLUMN_DOG_VOLUNTEER_ROOM = 11;
+        Integer COLUMN_DOG_ADVENTURE_TAILS = 12;
+
+
+
+        final SQLiteDatabase database = mOpenHelper.getWritableDatabase();
+    // Assuming 'database' is your SQLiteDatabase instance
+
+        // 1. Delete existing data (use with caution!)
+//        database.delete(WeatherContract.DogEntry.TABLE_NAME, null, null);
+
+        // 2. Retrieve sorted data
+    //    WeatherContract.DogEntry.COLUMN_DOG_LOCATION + " desc, " + WeatherContract.DogEntry.COLUMN_DOG_KENNEL_NUMBER + " asc"
+        String selectQuery = "SELECT * FROM " + WeatherContract.DogEntry.TABLE_NAME + " ORDER BY " + WeatherContract.DogEntry.COLUMN_DOG_LOCATION
+                + " desc, " + WeatherContract.DogEntry.COLUMN_DOG_KENNEL_NUMBER + " asc";
+        MyLogger.d("sunshine", "utility sortdata sql query: " + selectQuery);
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        Cursor newCursor = cursor;
+        MyLogger.d("sunshine", "utility sortdata newcursor rows before delete: " + newCursor.getCount());
+                // 1. Delete existing data (use with caution!)
+        Integer rowsDeleted = database.delete(WeatherContract.DogEntry.TABLE_NAME, null, null);
+//        selectQuery = "UPDATE sqlite_sequence SET seq = 0 WHERE name = " + WeatherContract.DogEntry.TABLE_NAME;
+//        newCursor = database.rawQuery(selectQuery, null);
+
+//        MyLogger.d("sunshine", "utility sortdata newcursor rows after delete: " + newCursor.getCount());
+        Vector<ContentValues> cVVector = new Vector<ContentValues>(newCursor.getCount());
+
+
+        context.getContentResolver().notifyChange(WeatherContract.DogEntry.CONTENT_URI, null);
+        MyLogger.d("sunshine", "utility sortdata rows deleted: " + rowsDeleted);
+        MyLogger.d("sunshine", "utility sortdata cursor column count before while loop: " + cursor.getColumnCount());
+        MyLogger.d("sunshine", "utility sortdata rows after delete: " + cursor.getCount());
+
+//        for(int i = 0; i < cursor.getColumnCount(); i++) {
+//            MyLogger.d("sunshine", "utility sortdata cursor column " + i + " name: " + cursor.getColumnName(i));
+//        }
+        // 3. Insert data back in sorted order
+        int i = 0;
+        if (cursor.moveToFirst()) {
+//            cursor.moveToFirst();
+            ContentValues values = new ContentValues();
+//            for(int i = 0; i < cursor.getColumnCount(); i++) {
+//                MyLogger.d("sunshine", "utility sortdata cursor column " + i + " name: " + cursor.getColumnName(i));
+////                MyLogger.d("sunshine", "utility sortdata cursor column value: " + i + " id: " + cursor.getInt(cursor.getColumnIndex("_id")));
+//
+//            }
+            do {
+//                MyLogger.d("sunshine", "utility sortdata cursor  in while loop column count: " + cursor.getColumnCount());
+//                MyLogger.d("sunshine", "utility sortdata cursor in while loop column 0 name: " + cursor.getColumnName(0));
+                // Extract data from cursor and create ContentValues
+
+                // Populate values based on your table columns
+
+                // e.g., values.put("column_name", cursor.getString(cursor.getColumnIndex("column_name")));
+
+//                values.put(WeatherContract.DogEntry.COLUMN_ID, cursor.getInt(COLUMN_ID));
+//                MyLogger.d("sunshine", "utility sortdata inside while loop id: " + cursor.getInt(COLUMN_ID));
+
+//                values.put(WeatherContract.DogEntry.COLUMN_ID, cursor.getInt(0));
+
+                values.put(WeatherContract.DogEntry.COLUMN_DOG_NAME, cursor.getString(COLUMN_DOG_NAME));
+                MyLogger.d("sunshine", "utility sortdata inside while loop name: " + cursor.getString(COLUMN_DOG_NAME));
+
+                values.put(WeatherContract.DogEntry.COLUMN_DOG_WALKING_COLOR, cursor.getString(COLUMN_DOG_WALKING_COLOR));
+                MyLogger.d("sunshine", "utility sortdata inside while loop walking color: " + cursor.getString(COLUMN_DOG_WALKING_COLOR));
+
+                values.put(WeatherContract.DogEntry.COLUMN_DOG_LOCATION, cursor.getString(COLUMN_DOG_LOCATION));
+                values.put(WeatherContract.DogEntry.COLUMN_DOG_KENNEL_NUMBER, cursor.getInt(COLUMN_DOG_KENNEL_NUMBER));
+                values.put(WeatherContract.DogEntry.COLUMN_DOG_PLAYGROUP, cursor.getInt(COLUMN_DOG_PLAYGROUP));
+                values.put(WeatherContract.DogEntry.COLUMN_DOG_GENDER, cursor.getString(COLUMN_DOG_GENDER));
+                values.put(WeatherContract.DogEntry.COLUMN_DOG_WALK_AM, cursor.getInt(COLUMN_DOG_WALK_AM));
+                values.put(WeatherContract.DogEntry.COLUMN_DOG_WALK_PM, cursor.getInt(COLUMN_DOG_WALK_PM));
+                values.put(WeatherContract.DogEntry.COLUMN_DOG_OFFICE, cursor.getInt(COLUMN_DOG_OFFICE));
+                values.put(WeatherContract.DogEntry.COLUMN_DOG_VISITOR, cursor.getInt(COLUMN_DOG_VISITOR));
+                values.put(WeatherContract.DogEntry.COLUMN_DOG_VOLUNTEER_ROOM, cursor.getInt(COLUMN_DOG_VOLUNTEER_ROOM));
+                values.put(WeatherContract.DogEntry.COLUMN_DOG_ADVENTURE_TAILS, cursor.getInt(COLUMN_DOG_ADVENTURE_TAILS));
+                cVVector.add(values);
+                Long inserted = database.insert(WeatherContract.DogEntry.TABLE_NAME, null, values);
+                MyLogger.d("sunshine", "utility sortdata inside while loop inserted: " + inserted);
+//                String selection = WeatherContract.DogEntry.TABLE_NAME+
+//                        "." + WeatherContract.DogEntry.COLUMN_ID + " = ? ";
+//                String[] selectionArgs = new String[]{String.valueOf(cursor.getInt(i+6))};
+//                int updated = database.update(WeatherContract.DogEntry.TABLE_NAME, values, null, null);
+//                MyLogger.d("sunshine", "utility sortdata inside while loop inserted: " + updated);
+                if (i == 0)
+                    AppConstants.GLOBAL_OFFSET = inserted.intValue();
+                i++;
+            } while (cursor.moveToNext());
+        }
+//        if ( cVVector.size() > 0 ) {
+//            ContentValues[] cvArray = new ContentValues[cVVector.size()];
+//            cVVector.toArray(cvArray);
+//            context.getContentResolver().bulkInsert(WeatherContract.DogEntry.CONTENT_URI, cvArray);
+//
+//            // delete old data so we don't build up an endless history
+////                getContext().getContentResolver().delete(WeatherContract.DogEntry.CONTENT_URI,
+////                        WeatherContract.WeatherEntry.COLUMN_DATE + " <= ?",
+////                        new String[] {Long.toString(dayTime.setJulianDay(julianStartDay-1))});
+//
+////            notifyWeather();
+//        }
+
+        MyLogger.d("sunshine", "Sortdata Sync Complete. " + cVVector.size() + " Inserted");
+        cursor.close();
+        newCursor.close();
+
+        database.close();
+        context.getContentResolver().notifyChange(WeatherContract.DogEntry.CONTENT_URI, null);
+    }
+
     public static String getPreferredLocation(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getString(context.getString(R.string.pref_location_key),
@@ -67,37 +202,37 @@ public class Utility {
      * @param dateInMillis The date in milliseconds
      * @return a user-friendly representation of the date.
      */
-    public static String getFriendlyDayString(Context context, long dateInMillis) {
-        // The day string for forecast uses the following logic:
-        // For today: "Today, June 8"
-        // For tomorrow:  "Tomorrow"
-        // For the next 5 days: "Wednesday" (just the day name)
-        // For all days after that: "Mon Jun 8"
-
-        Time time = new Time();
-        time.setToNow();
-        long currentTime = System.currentTimeMillis();
-        int julianDay = Time.getJulianDay(dateInMillis, time.gmtoff);
-        int currentJulianDay = Time.getJulianDay(currentTime, time.gmtoff);
-
-        // If the date we're building the String for is today's date, the format
-        // is "Today, June 24"
-        if (julianDay == currentJulianDay) {
-            String today = context.getString(R.string.today);
-            int formatId = R.string.format_full_friendly_date;
-            return String.format(context.getString(
-                    formatId,
-                    today,
-                    getFormattedMonthDay(context, dateInMillis)));
-        } else if ( julianDay < currentJulianDay + 7 ) {
-            // If the input date is less than a week in the future, just return the day name.
-            return getDayName(context, dateInMillis);
-        } else {
-            // Otherwise, use the form "Mon Jun 3"
-            SimpleDateFormat shortenedDateFormat = new SimpleDateFormat("EEE MMM dd");
-            return shortenedDateFormat.format(dateInMillis);
-        }
-    }
+//    public static String getFriendlyDayString(Context context, long dateInMillis) {
+//        // The day string for forecast uses the following logic:
+//        // For today: "Today, June 8"
+//        // For tomorrow:  "Tomorrow"
+//        // For the next 5 days: "Wednesday" (just the day name)
+//        // For all days after that: "Mon Jun 8"
+//
+//        Time time = new Time();
+//        time.setToNow();
+//        long currentTime = System.currentTimeMillis();
+//        int julianDay = Time.getJulianDay(dateInMillis, time.gmtoff);
+//        int currentJulianDay = Time.getJulianDay(currentTime, time.gmtoff);
+//
+//        // If the date we're building the String for is today's date, the format
+//        // is "Today, June 24"
+//        if (julianDay == currentJulianDay) {
+//            String today = context.getString(R.string.today);
+//            int formatId = R.string.format_full_friendly_date;
+//            return String.format(context.getString(
+//                    formatId,
+//                    today,
+//                    getFormattedMonthDay(context, dateInMillis)));
+//        } else if ( julianDay < currentJulianDay + 7 ) {
+//            // If the input date is less than a week in the future, just return the day name.
+//            return getDayName(context, dateInMillis);
+//        } else {
+//            // Otherwise, use the form "Mon Jun 3"
+//            SimpleDateFormat shortenedDateFormat = new SimpleDateFormat("EEE MMM dd");
+//            return shortenedDateFormat.format(dateInMillis);
+//        }
+//    }
 
     /**
      * Given a day, returns just the name to use for that day.

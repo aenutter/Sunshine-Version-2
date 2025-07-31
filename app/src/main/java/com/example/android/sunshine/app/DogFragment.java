@@ -34,6 +34,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.android.sunshine.app.data.AppConstants;
 import com.example.android.sunshine.app.data.WeatherContract;
 import com.example.android.sunshine.app.data.WeatherDbHelper;
 import com.example.android.sunshine.app.sync.DogSyncAdapter;
@@ -163,15 +164,31 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
                 // CursorAdapter returns a cursor at the correct position for getItem(), or null
                 // if it cannot seek to that position.
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+                MyLogger.d("sunshine", "onItemClick position: " + position);
                 if (cursor != null) {
-                    String locationSetting = Utility.getPreferredLocation(getActivity());
+//                    String locationSetting = Utility.getPreferredLocation(getActivity());
+                    MyLogger.d("sunshine", "onItemClick uri: " + WeatherContract.DogEntry.buildDogUri(position + 6));
                     ((Callback) getActivity())
-                            .onItemSelected(WeatherContract.DogEntry.buildDogUri(position + 6)
+                            .onItemSelected(WeatherContract.DogEntry.buildDogUri(position + AppConstants.GLOBAL_OFFSET )
                             );
                 }
                 mPosition = position;
             }
         });
+
+//        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                QuestionItem questionItem = (QuestionItem)parent.getItemAtPosition(position);
+//
+//                if(questionItem.id == 1){
+//                    //do something
+//                }
+//                if(position == 2){
+//                    // do something
+//                }
+//            }
+//        });
 
         // If there's instance state, mine it for useful information.
         // The end-goal here is that the user never knows that turning their device sideways
@@ -251,6 +268,7 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
 
         // Sort order:  Ascending, by date.
         String sortOrder = WeatherContract.DogEntry._ID + " ASC";
+        String msortOrder = WeatherContract.DogEntry.COLUMN_DOG_LOCATION + " desc, " + WeatherContract.DogEntry.COLUMN_DOG_KENNEL_NUMBER + " asc";
 
 //        String locationSetting = Utility.getPreferredLocation(getActivity());
 //        Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(
@@ -263,7 +281,7 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
                 DOG_COLUMNS,
                 null,
                 null,
-                sortOrder);
+                msortOrder);
     }
 
     @Override

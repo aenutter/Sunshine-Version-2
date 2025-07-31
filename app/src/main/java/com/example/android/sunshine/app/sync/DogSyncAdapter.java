@@ -182,6 +182,10 @@ public class DogSyncAdapter extends AbstractThreadedSyncAdapter {
                 }
             }
         }
+        Context context = getContext();
+        Utility.sortData(context);
+        context.getContentResolver().notifyChange(WeatherContract.DogEntry.CONTENT_URI, null);
+
         return;
     }
 

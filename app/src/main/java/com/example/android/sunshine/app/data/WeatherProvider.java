@@ -29,6 +29,8 @@ import android.widget.Toast;
 
 import com.example.android.sunshine.app.MyLogger;
 
+import static android.R.attr.direction;
+
 public class WeatherProvider extends ContentProvider {
 
     // The URI Matcher used by this content provider.
@@ -254,6 +256,9 @@ public class WeatherProvider extends ContentProvider {
                     selectionArgs = new String[]{null};
                     selection = null;
                 }
+                String msortOrder = WeatherContract.DogEntry.COLUMN_DOG_LOCATION + " desc, " + WeatherContract.DogEntry.COLUMN_DOG_KENNEL_NUMBER + " asc";
+//                String[] sortOrder = {"date ASC", "semester ASC"};
+
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         WeatherContract.DogEntry.TABLE_NAME,
                         projection,
@@ -261,7 +266,7 @@ public class WeatherProvider extends ContentProvider {
                         selectionArgs,
                         null,
                         null,
-                        sortOrder
+                        msortOrder
                 );
 //                Log.d("sunshine", "projection: " + projection);
 //                System.out.println("projection" + projection);
@@ -272,6 +277,7 @@ public class WeatherProvider extends ContentProvider {
                 MyLogger.d("sunshine", "DOGS query selection: " + selection);
                 if (selectionArgs != null)
                     MyLogger.d("sunshine", "DOGS query selectionArgs: " + selectionArgs[0]);
+                MyLogger.d("sunshine", "DOGS query msortorder: " + msortOrder);
 //                MyLogger.d("sunshine", "projection: " + projection[0]);
                 break;
             }

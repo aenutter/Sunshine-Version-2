@@ -1,0 +1,10 @@
+package com.example.android.sunshine.app.data;
+
+/**
+ * Created by aenut on 7/31/2025.
+ */
+
+public class AppConstants {
+//    public static final String API_KEY = "your_api_key";
+    public static int GLOBAL_OFFSET = 0;
+}
