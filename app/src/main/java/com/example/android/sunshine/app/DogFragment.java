@@ -207,25 +207,6 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
 
             // show it
             alertDialog.show();
-//            Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-////            Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-//            if (positiveButton != null) {
-//                WeatherDbHelper mOpenHelper;
-//                mOpenHelper = new WeatherDbHelper(getContext());
-//                final SQLiteDatabase database = mOpenHelper.getWritableDatabase();
-//                String selection = WeatherContract.DogEntry.TABLE_NAME+
-//                        "." + WeatherContract.DogEntry.COLUMN_ID + " = ? ";
-//                String[] selectionArgs = new String[]{String.valueOf(mPosition + AppConstants.GLOBAL_OFFSET)};
-//                Integer rowsDeleted = database.delete(WeatherContract.DogEntry.TABLE_NAME, selection, selectionArgs);
-//                Toast.makeText(getContext(), "Action Delete rows deleted: " + rowsDeleted + " position: " + mPosition, Toast.LENGTH_LONG).show();
-//                database.close();
-//                Utility.sortData(getContext());
-////            getContext().getContentResolver().notifyChange(WeatherContract.DogEntry.CONTENT_URI, null);
-//                return true;
-//            }
-//            System.exit(0);
-//            alertDialog.getButton()
-//            updateWeather();
 
         }
         if (id == R.id.action_new) {

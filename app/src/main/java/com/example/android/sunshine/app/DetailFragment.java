@@ -36,18 +36,26 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CheckedTextView;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.sunshine.app.data.WeatherContract;
 import com.example.android.sunshine.app.data.WeatherContract.WeatherEntry;
 import com.example.android.sunshine.app.data.WeatherDbHelper;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -66,6 +74,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     WeatherDbHelper mOpenHelper;
     int dogId;
     private View view;
+//    HashMap<String, List<String>> dependentData;
 
     private static final int DETAIL_LOADER = 0;
 
@@ -122,6 +131,10 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private RadioButton mRadioButtonOrange;
     private RadioButton mRadioButtonRed;
     private RadioGroup radioGroupWalkingColors;
+    Spinner spinnerFirst;
+    Spinner spinnerSecond;
+
+
 
     public DetailFragment() {
         setHasOptionsMenu(true);
@@ -169,6 +182,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Access views within the fragment's layout
+
         mNameView = (TextView) view.findViewById(R.id.detail_dog_name_text_view);
 //        // Now, you can safely set the text11
 //        if (mNameView != null) {
@@ -180,6 +194,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
 
         MyLogger.d("sunshine", "mNameView initialized");
+        spinnerFirst = (Spinner) view.findViewById(R.id.spinner_first);
+        spinnerSecond = (Spinner) view.findViewById(R.id.spinner_second);
         mGenderView = (TextView) view.findViewById(R.id.detail_dog_gender_textview);
 //        mTextViewBlue = (TextView) view.findViewById(R.id.text_blue);
 //        mTextViewPink = (TextView) view.findViewById(R.id.text_pink);
@@ -276,20 +292,35 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             for (i=0; i< data.getColumnCount(); i++)
                 MyLogger.d("sunshine", "onloadfinished cursor column names: " + data.getColumnName(i) + " column value: " + data.getString(i));
 
-            // Use weather art image
-//            mIconView.setImageResource(Utility.getArtResourceForWeatherCondition(weatherId));
+            final HashMap<String, List<String>> dependentData = new HashMap<>();
+            dependentData.put("Mandy", Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"));
+            dependentData.put("Kennel", Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"));
 
-            // Read date from cursor and update views for day of week and date
-//            long date = data.getLong(COL_WEATHER_DATE);
-//            String nameText = Utility.getDayName(getActivity(), date);
-//            String dateText = Utility.getFormattedMonthDay(getActivity(), date);
-//            mFriendlyDateView.setText(friendlyDateText);
-//            mDateView.setText(dateText);
-//            mTextViewBlue.setVisibility(View.VISIBLE);
-//            mTextViewPink.setVisibility(View.VISIBLE);
-//            mTextViewYellow.setVisibility(View.VISIBLE);
-//            mTextViewOrange.setVisibility(View.VISIBLE);
-//            mTextViewRed.setVisibility(View.VISIBLE);
+            // Populate first spinner
+            ArrayAdapter<String> adapterFirst = new ArrayAdapter<>(getContext(),
+                    android.R.layout.simple_spinner_item, new ArrayList<>(dependentData.keySet()));
+            adapterFirst.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerFirst.setAdapter(adapterFirst);
+
+            // Set listener for first spinner
+            spinnerFirst.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    String selectedCategory = parent.getItemAtPosition(position).toString();
+                    List<String> secondSpinnerOptions = dependentData.get(selectedCategory);
+
+                    // Populate second spinner based on first spinner's selection
+                    ArrayAdapter<String> adapterSecond = new ArrayAdapter<>(getActivity(),
+                            android.R.layout.simple_spinner_item, secondSpinnerOptions);
+                    adapterSecond.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinnerSecond.setAdapter(adapterSecond);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    // Optionally handle when nothing is selected
+                }
+            });
 
             String walkingColor  = data.getString(DogFragment.COL_DOG_WALKING_COLOR);
 

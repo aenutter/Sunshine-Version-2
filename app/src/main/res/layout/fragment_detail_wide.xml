@@ -29,28 +29,15 @@
             android:fontFamily="sans-serif-condensed"
             android:textColor="@color/grey_700"
             android:textSize="48sp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray" />
 
-        <TextView
-            android:id="@+id/detail_dog_breed_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-condensed"
-            android:textColor="@color/grey_700"
-            android:textSize="48sp" />
-
-        <!--<TextView-->
-            <!--android:id="@+id/detail_dog_breed_text_view"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:fontFamily="sans-serif-condensed"-->
-            <!--android:text="staff only ~ select walk color level"-->
-            <!--android:textColor="@color/grey_700"-->
-            <!--android:textSize="24sp" />-->
-
-        <RadioGroup
+         <RadioGroup
             android:id="@+id/walking_color_radio_group"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="52dp"
             android:layout_weight="0.49"
             android:orientation="horizontal">
             <!-- RadioButtons will go here -->
@@ -113,6 +100,11 @@
                 android:visibility="invisible" />
 
         </RadioGroup>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:paddingTop="20dp"/>
 
         <!-- Humidity, wind, pressure -->
         <LinearLayout
@@ -185,6 +177,39 @@
                 android:text=" Adventure Tails"
                 android:visibility="invisible" />
 
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray" />
+        <TextView
+            android:id="@+id/location_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="  Location"
+            android:gravity="left"
+            android:textAppearance="@color/black"
+            android:textSize="16sp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="0dp"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spinner_first"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:dropDownWidth="150dp" />
+
+            <Spinner
+                android:id="@+id/spinner_second"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:dropDownWidth="50dp" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
