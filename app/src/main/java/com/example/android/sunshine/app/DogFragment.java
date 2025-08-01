@@ -15,6 +15,7 @@
  */
 package com.example.android.sunshine.app;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -25,6 +26,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,6 +36,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -155,19 +158,75 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_delete) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                    getContext());
+
+            // set prompts.xml to alertdialog builder
+//            alertDialogBuilder.setView(promptsView);
+//
+//            final EditText userInput = (EditText) promptsView
+//                    .findViewById(R.id.editTextDialogUserInput);
+
+            // set dialog message
+            alertDialogBuilder
+                    .setCancelable(false)
+                    .setMessage("Delete this entry? ")
+                    .setPositiveButton("OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    // get user input and set it to result
+                                    // edit text
+//                                    result.setText(userInput.getText());
+                                    if (id == DialogInterface.BUTTON_POSITIVE) {
+//                                        Toast.makeText(getActivity(), "Positive button clicked!", Toast.LENGTH_SHORT).show();
+                                        WeatherDbHelper mOpenHelper;
+                                        mOpenHelper = new WeatherDbHelper(getContext());
+                                        final SQLiteDatabase database = mOpenHelper.getWritableDatabase();
+                                        String selection = WeatherContract.DogEntry.TABLE_NAME+
+                                                "." + WeatherContract.DogEntry.COLUMN_ID + " = ? ";
+                                        String[] selectionArgs = new String[]{String.valueOf(mPosition + AppConstants.GLOBAL_OFFSET)};
+                                        Integer rowsDeleted = database.delete(WeatherContract.DogEntry.TABLE_NAME, selection, selectionArgs);
+                                        Toast.makeText(getContext(), "Action Delete rows deleted: " + rowsDeleted + " position: " + mPosition, Toast.LENGTH_LONG).show();
+                                        database.close();
+                                        Utility.sortData(getContext());
+                                    }
+                                }
+                            })
+                    .setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    if (id == DialogInterface.BUTTON_NEGATIVE) {
+                                        Toast.makeText(getActivity(), "Negative button clicked!", Toast.LENGTH_SHORT).show();
+                                    }
+                                    dialog.cancel();
+                                }
+                            });
+
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
+//            Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+////            Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+//            if (positiveButton != null) {
+//                WeatherDbHelper mOpenHelper;
+//                mOpenHelper = new WeatherDbHelper(getContext());
+//                final SQLiteDatabase database = mOpenHelper.getWritableDatabase();
+//                String selection = WeatherContract.DogEntry.TABLE_NAME+
+//                        "." + WeatherContract.DogEntry.COLUMN_ID + " = ? ";
+//                String[] selectionArgs = new String[]{String.valueOf(mPosition + AppConstants.GLOBAL_OFFSET)};
+//                Integer rowsDeleted = database.delete(WeatherContract.DogEntry.TABLE_NAME, selection, selectionArgs);
+//                Toast.makeText(getContext(), "Action Delete rows deleted: " + rowsDeleted + " position: " + mPosition, Toast.LENGTH_LONG).show();
+//                database.close();
+//                Utility.sortData(getContext());
+////            getContext().getContentResolver().notifyChange(WeatherContract.DogEntry.CONTENT_URI, null);
+//                return true;
+//            }
+//            System.exit(0);
+//            alertDialog.getButton()
 //            updateWeather();
-            WeatherDbHelper mOpenHelper;
-            mOpenHelper = new WeatherDbHelper(getContext());
-            final SQLiteDatabase database = mOpenHelper.getWritableDatabase();
-            String selection = WeatherContract.DogEntry.TABLE_NAME+
-                    "." + WeatherContract.DogEntry.COLUMN_ID + " = ? ";
-            String[] selectionArgs = new String[]{String.valueOf(mPosition + AppConstants.GLOBAL_OFFSET)};
-            Integer rowsDeleted = database.delete(WeatherContract.DogEntry.TABLE_NAME, selection, selectionArgs);
-            Toast.makeText(getContext(), "Action Delete rows deleted: " + rowsDeleted + " position: " + mPosition, Toast.LENGTH_LONG).show();
-            database.close();
-            Utility.sortData(getContext());
-//            getContext().getContentResolver().notifyChange(WeatherContract.DogEntry.CONTENT_URI, null);
-            return true;
+
         }
         if (id == R.id.action_new) {
 //            openPreferredLocationInMap();
