@@ -15,6 +15,7 @@
  */
 package com.example.android.sunshine.app;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -36,14 +37,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.android.sunshine.app.data.AppConstants;
 import com.example.android.sunshine.app.data.WeatherContract;
 import com.example.android.sunshine.app.data.WeatherDbHelper;
 import com.example.android.sunshine.app.sync.DogSyncAdapter;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Encapsulates fetching the forecast and displaying it as a {@link ListView} layout.
@@ -161,12 +169,6 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                     getContext());
 
-            // set prompts.xml to alertdialog builder
-//            alertDialogBuilder.setView(promptsView);
-//
-//            final EditText userInput = (EditText) promptsView
-//                    .findViewById(R.id.editTextDialogUserInput);
-
             // set dialog message
             alertDialogBuilder
                     .setCancelable(false)
@@ -211,7 +213,95 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
         }
         if (id == R.id.action_new) {
 //            openPreferredLocationInMap();
-            Toast.makeText(getContext(), "Action New", Toast.LENGTH_LONG).show();
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                    getContext());
+
+            Spinner spinnerFirst;
+            Context context = getContext();
+            LayoutInflater inflater = LayoutInflater.from(context);
+//            View customLayoutView = inflater.inflate(R.layout.dialog_with_spinners, null);
+//            inflater = ggetLayoutInflater();
+            final View dialogView = inflater.inflate(R.layout.dialog_with_spinners, null);
+            alertDialogBuilder.setView(dialogView);
+            spinnerFirst = (Spinner) dialogView.findViewById(R.id.spinner_first);
+//            spinnerSecond = (Spinner) dialogView.findViewById(R.id.spinner_second);
+            final HashMap<String, List<String>> dependentData = new HashMap<>();
+            dependentData.put("Mandy", Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
+                    "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28"));
+            dependentData.put("Kennel", Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
+                    "13", "14", "15", "16", "17", "18", "19", "20"));
+
+            // Populate first spinner
+            ArrayAdapter<String> adapterFirst = new ArrayAdapter<>(getContext(),
+                    android.R.layout.simple_spinner_item, new ArrayList<>(dependentData.keySet()));
+            adapterFirst.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerFirst.setAdapter(adapterFirst);
+
+
+            // Set listener for first spinner
+            spinnerFirst.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    Spinner spinnerSecond;
+                    spinnerSecond = (Spinner) dialogView.findViewById(R.id.spinner_second);
+                    String selectedCategory = parent.getItemAtPosition(position).toString();
+                    List<String> secondSpinnerOptions = dependentData.get(selectedCategory);
+
+                    // Populate second spinner based on first spinner's selection
+                    ArrayAdapter<String> adapterSecond = new ArrayAdapter<>(getActivity(),
+                            android.R.layout.simple_spinner_item, secondSpinnerOptions);
+                    adapterSecond.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinnerSecond.setAdapter(adapterSecond);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    // Optionally handle when nothing is selected
+                }
+            });
+
+            // set dialog message
+            alertDialogBuilder
+                    .setCancelable(false)
+                    .setMessage("Add a dog? ")
+                    .setPositiveButton("OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    // get user input and set it to result
+                                    // edit text
+//                                    result.setText(userInput.getText());
+                                    if (id == DialogInterface.BUTTON_POSITIVE) {
+//                                        Toast.makeText(getActivity(), "Positive button clicked!", Toast.LENGTH_SHORT).show();
+                                        WeatherDbHelper mOpenHelper;
+                                        mOpenHelper = new WeatherDbHelper(getContext());
+                                        final SQLiteDatabase database = mOpenHelper.getWritableDatabase();
+                                        String selection = WeatherContract.DogEntry.TABLE_NAME+
+                                                "." + WeatherContract.DogEntry.COLUMN_ID + " = ? ";
+                                        String[] selectionArgs = new String[]{String.valueOf(mPosition + AppConstants.GLOBAL_OFFSET)};
+                                        Integer rowsDeleted = database.delete(WeatherContract.DogEntry.TABLE_NAME, selection, selectionArgs);
+                                        Toast.makeText(getContext(), "Action Delete rows deleted: " + rowsDeleted + " position: " + mPosition, Toast.LENGTH_LONG).show();
+                                        database.close();
+                                        Utility.sortData(getContext());
+                                    }
+                                }
+                            })
+                    .setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    if (id == DialogInterface.BUTTON_NEGATIVE) {
+                                        Toast.makeText(getActivity(), "Negative button clicked!", Toast.LENGTH_SHORT).show();
+                                    }
+                                    dialog.cancel();
+                                }
+                            });
+
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
+
+//            Toast.makeText(getContext(), "Action New", Toast.LENGTH_LONG).show();
             return true;
         }
         if (id == R.id.action_move) {

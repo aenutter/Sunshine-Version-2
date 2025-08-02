@@ -292,35 +292,35 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             for (i=0; i< data.getColumnCount(); i++)
                 MyLogger.d("sunshine", "onloadfinished cursor column names: " + data.getColumnName(i) + " column value: " + data.getString(i));
 
-            final HashMap<String, List<String>> dependentData = new HashMap<>();
-            dependentData.put("Mandy", Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"));
-            dependentData.put("Kennel", Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"));
-
-            // Populate first spinner
-            ArrayAdapter<String> adapterFirst = new ArrayAdapter<>(getContext(),
-                    android.R.layout.simple_spinner_item, new ArrayList<>(dependentData.keySet()));
-            adapterFirst.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinnerFirst.setAdapter(adapterFirst);
-
-            // Set listener for first spinner
-            spinnerFirst.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    String selectedCategory = parent.getItemAtPosition(position).toString();
-                    List<String> secondSpinnerOptions = dependentData.get(selectedCategory);
-
-                    // Populate second spinner based on first spinner's selection
-                    ArrayAdapter<String> adapterSecond = new ArrayAdapter<>(getActivity(),
-                            android.R.layout.simple_spinner_item, secondSpinnerOptions);
-                    adapterSecond.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spinnerSecond.setAdapter(adapterSecond);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-                    // Optionally handle when nothing is selected
-                }
-            });
+//            final HashMap<String, List<String>> dependentData = new HashMap<>();
+//            dependentData.put("Mandy", Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"));
+//            dependentData.put("Kennel", Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"));
+//
+//            // Populate first spinner
+//            ArrayAdapter<String> adapterFirst = new ArrayAdapter<>(getContext(),
+//                    android.R.layout.simple_spinner_item, new ArrayList<>(dependentData.keySet()));
+//            adapterFirst.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//            spinnerFirst.setAdapter(adapterFirst);
+//
+//            // Set listener for first spinner
+//            spinnerFirst.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                @Override
+//                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                    String selectedCategory = parent.getItemAtPosition(position).toString();
+//                    List<String> secondSpinnerOptions = dependentData.get(selectedCategory);
+//
+//                    // Populate second spinner based on first spinner's selection
+//                    ArrayAdapter<String> adapterSecond = new ArrayAdapter<>(getActivity(),
+//                            android.R.layout.simple_spinner_item, secondSpinnerOptions);
+//                    adapterSecond.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                    spinnerSecond.setAdapter(adapterSecond);
+//                }
+//
+//                @Override
+//                public void onNothingSelected(AdapterView<?> parent) {
+//                    // Optionally handle when nothing is selected
+//                }
+//            });
 
             String walkingColor  = data.getString(DogFragment.COL_DOG_WALKING_COLOR);
 
