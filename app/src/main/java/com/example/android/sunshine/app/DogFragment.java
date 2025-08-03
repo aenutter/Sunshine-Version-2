@@ -15,6 +15,7 @@
  */
 package com.example.android.sunshine.app;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -227,13 +228,37 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
 
 //            EditText nameEditText = (EditText) dialogView.findViewById(R.id.name_edit_text);
 
-            Spinner spinner = (Spinner) dialogView.findViewById(R.id.spinner_gender);
+
+            Spinner spinnerGender = (Spinner) dialogView.findViewById(R.id.spinner_gender);
             String[] options = {"Female", "Male"}; // Your data for the spinner
 
             ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
                     android.R.layout.simple_spinner_item, options);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinner.setAdapter(adapter);
+            spinnerGender.setAdapter(adapter);
+            spinnerGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                            Spinner spinnerSecond;
+//                            spinnerSecond = (Spinner) dialogView.findViewById(R.id.spinner_second);
+
+                    String selectedGender = parent.getItemAtPosition(position).toString();
+                    AppConstants.GLOBAL_GENDER = selectedGender;
+                    Toast.makeText(getContext(), "Action add selected gender: " + selectedGender, Toast.LENGTH_LONG).show();
+//                            List<String> secondSpinnerOptions = dependentData.get(selectedCategory);
+
+                    // Populate second spinner based on first spinner's selection
+//                            ArrayAdapter<String> adapterSecond = new ArrayAdapter<>(getActivity(),
+//                                    android.R.layout.simple_spinner_item, secondSpinnerOptions);
+//                            adapterSecond.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                            spinnerSecond.setAdapter(adapterSecond);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    // Optionally handle when nothing is selected
+                }
+            });
 
             spinnerFirst = (Spinner) dialogView.findViewById(R.id.spinner_first);
 //            spinnerSecond = (Spinner) dialogView.findViewById(R.id.spinner_second);
@@ -313,6 +338,8 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
 //                                    result.setText(userInput.getText());
                                     EditText nameEditText = (EditText) dialogView.findViewById(R.id.name_edit_text);
                                     String name = nameEditText.getText().toString();
+                                    AppConstants.GLOBAL_NAME = name;
+
 
 
                                     if (id == DialogInterface.BUTTON_POSITIVE) {
@@ -320,11 +347,27 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
                                         WeatherDbHelper mOpenHelper;
                                         mOpenHelper = new WeatherDbHelper(getContext());
                                         final SQLiteDatabase database = mOpenHelper.getWritableDatabase();
-                                        String selection = WeatherContract.DogEntry.TABLE_NAME+
-                                                "." + WeatherContract.DogEntry.COLUMN_ID + " = ? ";
-                                        String[] selectionArgs = new String[]{String.valueOf(mPosition + AppConstants.GLOBAL_OFFSET)};
-                                        Integer rowsDeleted = database.delete(WeatherContract.DogEntry.TABLE_NAME, selection, selectionArgs);
-                                        Toast.makeText(getContext(), "Action Delete rows deleted: " + rowsDeleted + " position: " + mPosition, Toast.LENGTH_LONG).show();
+                                        ContentValues values = new ContentValues();
+
+                                            values.put(WeatherContract.DogEntry.COLUMN_DOG_NAME, AppConstants.GLOBAL_NAME);
+//                                            MyLogger.d("sunshine", "utility sortdata inside while loop name: " + cursor.getString(COLUMN_DOG_NAME));
+
+                                            values.put(WeatherContract.DogEntry.COLUMN_DOG_WALKING_COLOR, "blue");
+//                                            MyLogger.d("sunshine", "utility sortdata inside while loop walking color: " + cursor.getString(COLUMN_DOG_WALKING_COLOR));
+
+                                            values.put(WeatherContract.DogEntry.COLUMN_DOG_LOCATION, AppConstants.GLOBAL_LOCATION);
+                                            values.put(WeatherContract.DogEntry.COLUMN_DOG_KENNEL_NUMBER, AppConstants.GLOBAL_KENNEL);
+                                            values.put(WeatherContract.DogEntry.COLUMN_DOG_PLAYGROUP, 0);
+                                            values.put(WeatherContract.DogEntry.COLUMN_DOG_GENDER, AppConstants.GLOBAL_GENDER);
+                                            values.put(WeatherContract.DogEntry.COLUMN_DOG_WALK_AM, 0);
+                                            values.put(WeatherContract.DogEntry.COLUMN_DOG_WALK_PM, 0);
+                                            values.put(WeatherContract.DogEntry.COLUMN_DOG_OFFICE, 0);
+                                            values.put(WeatherContract.DogEntry.COLUMN_DOG_VISITOR, 0);
+                                            values.put(WeatherContract.DogEntry.COLUMN_DOG_VOLUNTEER_ROOM, 0);
+                                            values.put(WeatherContract.DogEntry.COLUMN_DOG_ADVENTURE_TAILS, 0);
+                                        Long inserted = database.insert(WeatherContract.DogEntry.TABLE_NAME, null, values);
+                                        MyLogger.d("sunshine", "utility sortdata inside while loop inserted: " + inserted);
+                                        Toast.makeText(getContext(), "Action new rows inserted: " + inserted, Toast.LENGTH_LONG).show();
                                         database.close();
                                         Utility.sortData(getContext());
                                     }
