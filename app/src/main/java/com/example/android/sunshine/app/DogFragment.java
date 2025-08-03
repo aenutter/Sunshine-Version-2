@@ -39,6 +39,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -223,6 +224,17 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
 //            inflater = ggetLayoutInflater();
             final View dialogView = inflater.inflate(R.layout.dialog_with_spinners, null);
             alertDialogBuilder.setView(dialogView);
+
+//            EditText nameEditText = (EditText) dialogView.findViewById(R.id.name_edit_text);
+
+            Spinner spinner = (Spinner) dialogView.findViewById(R.id.spinner_gender);
+            String[] options = {"Female", "Male"}; // Your data for the spinner
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
+                    android.R.layout.simple_spinner_item, options);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(adapter);
+
             spinnerFirst = (Spinner) dialogView.findViewById(R.id.spinner_first);
 //            spinnerSecond = (Spinner) dialogView.findViewById(R.id.spinner_second);
             final HashMap<String, List<String>> dependentData = new HashMap<>();
@@ -244,14 +256,42 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     Spinner spinnerSecond;
                     spinnerSecond = (Spinner) dialogView.findViewById(R.id.spinner_second);
-                    String selectedCategory = parent.getItemAtPosition(position).toString();
-                    List<String> secondSpinnerOptions = dependentData.get(selectedCategory);
+
+                    String selectedLocation = parent.getItemAtPosition(position).toString();
+                    AppConstants.GLOBAL_LOCATION = selectedLocation;
+                    Toast.makeText(getContext(), "Action add selected location: " + selectedLocation, Toast.LENGTH_LONG).show();
+
+                    List<String> secondSpinnerOptions = dependentData.get(selectedLocation);
 
                     // Populate second spinner based on first spinner's selection
                     ArrayAdapter<String> adapterSecond = new ArrayAdapter<>(getActivity(),
                             android.R.layout.simple_spinner_item, secondSpinnerOptions);
                     adapterSecond.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinnerSecond.setAdapter(adapterSecond);
+
+                    spinnerSecond.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                            Spinner spinnerSecond;
+//                            spinnerSecond = (Spinner) dialogView.findViewById(R.id.spinner_second);
+
+                            String selectedKennel = parent.getItemAtPosition(position).toString();
+                            AppConstants.GLOBAL_KENNEL = selectedKennel;
+                            Toast.makeText(getContext(), "Action add selected kennel: " + selectedKennel, Toast.LENGTH_LONG).show();
+//                            List<String> secondSpinnerOptions = dependentData.get(selectedCategory);
+
+                            // Populate second spinner based on first spinner's selection
+//                            ArrayAdapter<String> adapterSecond = new ArrayAdapter<>(getActivity(),
+//                                    android.R.layout.simple_spinner_item, secondSpinnerOptions);
+//                            adapterSecond.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                            spinnerSecond.setAdapter(adapterSecond);
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                            // Optionally handle when nothing is selected
+                        }
+                    });
                 }
 
                 @Override
@@ -259,6 +299,7 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
                     // Optionally handle when nothing is selected
                 }
             });
+
 
             // set dialog message
             alertDialogBuilder
@@ -270,6 +311,10 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
                                     // get user input and set it to result
                                     // edit text
 //                                    result.setText(userInput.getText());
+                                    EditText nameEditText = (EditText) dialogView.findViewById(R.id.name_edit_text);
+                                    String name = nameEditText.getText().toString();
+
+
                                     if (id == DialogInterface.BUTTON_POSITIVE) {
 //                                        Toast.makeText(getActivity(), "Positive button clicked!", Toast.LENGTH_SHORT).show();
                                         WeatherDbHelper mOpenHelper;

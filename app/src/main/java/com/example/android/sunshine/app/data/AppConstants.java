@@ -7,4 +7,7 @@ package com.example.android.sunshine.app.data;
 public class AppConstants {
 //    public static final String API_KEY = "your_api_key";
     public static int GLOBAL_OFFSET = 0;
+    public static String GLOBAL_NAME = "";
+    public static String GLOBAL_LOCATION = "";
+    public static String GLOBAL_KENNEL = "";
 }

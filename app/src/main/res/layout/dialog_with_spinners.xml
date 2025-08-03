@@ -13,7 +13,7 @@
 
         <TextView
             android:id="@+id/name_text"
-            android:layout_width="75dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
@@ -33,7 +33,8 @@
             android:gravity="left"
             android:text=""
             android:textAppearance="@color/black"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:background="@color/grey"/>
 
     </LinearLayout>
 
@@ -46,13 +47,13 @@
 
         <TextView
             android:id="@+id/gender_text"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="0dp"
             android:gravity="left"
-            android:text="  Gender:"
+            android:text="  Gender:  "
             android:textAppearance="@color/black"
             android:textSize="16sp" />
 
@@ -60,7 +61,8 @@
             android:id="@+id/spinner_gender"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:dropDownWidth="150dp" />
+            android:dropDownWidth="150dp"
+            android:background="@color/grey"/>
     </LinearLayout>
 
     <LinearLayout
@@ -71,16 +73,30 @@
         android:layout_marginLeft="16dp"
         android:orientation="horizontal">
 
+        <TextView
+            android:id="@+id/location_text"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginLeft="0dp"
+            android:gravity="left"
+            android:text="  Location:   "
+            android:textAppearance="@color/black"
+            android:textSize="16sp" />
+
         <Spinner
             android:id="@+id/spinner_first"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:dropDownWidth="150dp" />
+            android:dropDownWidth="150dp"
+            android:background="@color/grey"/>
 
         <Spinner
             android:id="@+id/spinner_second"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:dropDownWidth="50dp" />
+            android:dropDownWidth="50dp"
+            android:background="@color/grey"/>
     </LinearLayout>
 </LinearLayout>
