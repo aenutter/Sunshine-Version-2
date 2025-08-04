@@ -91,9 +91,9 @@ public class DogAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
 
         ViewHolder viewHolder = (ViewHolder) view.getTag();
-        String[] stringArray = context.getResources().getStringArray(R.array.kennel_array);
+//        String[] stringArray = context.getResources().getStringArray(R.array.kennel_array);
         // Now you can access elements: stringArray[0], stringArray[1], etc.
-        MyLogger.d("sunshine", "inside DogAdapter cursor kennel number: " + stringArray[cursor.getPosition()]);
+//        MyLogger.d("sunshine", "inside DogAdapter cursor kennel number: " + stringArray[cursor.getPosition()]);
 //        Toast.makeText(context, "kennel number: " + stringArray[cursor.getPosition()], Toast.LENGTH_SHORT).show();
 
         int viewType = getItemViewType(cursor.getPosition());

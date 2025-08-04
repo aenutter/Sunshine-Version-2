@@ -190,7 +190,7 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
                                                 "." + WeatherContract.DogEntry.COLUMN_ID + " = ? ";
                                         String[] selectionArgs = new String[]{String.valueOf(mPosition + AppConstants.GLOBAL_OFFSET)};
                                         Integer rowsDeleted = database.delete(WeatherContract.DogEntry.TABLE_NAME, selection, selectionArgs);
-                                        Toast.makeText(getContext(), "Action Delete rows deleted: " + rowsDeleted + " position: " + mPosition, Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getContext(), "Action Delete rows deleted: " + rowsDeleted + " position: " + mPosition, Toast.LENGTH_SHORT).show();
                                         database.close();
                                         Utility.sortData(getContext());
                                     }
@@ -244,7 +244,7 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
 
                     String selectedGender = parent.getItemAtPosition(position).toString();
                     AppConstants.GLOBAL_GENDER = selectedGender;
-                    Toast.makeText(getContext(), "Action add selected gender: " + selectedGender, Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getContext(), "Action add selected gender: " + selectedGender, Toast.LENGTH_LONG).show();
 //                            List<String> secondSpinnerOptions = dependentData.get(selectedCategory);
 
                     // Populate second spinner based on first spinner's selection
@@ -284,7 +284,7 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
 
                     String selectedLocation = parent.getItemAtPosition(position).toString();
                     AppConstants.GLOBAL_LOCATION = selectedLocation;
-                    Toast.makeText(getContext(), "Action add selected location: " + selectedLocation, Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getContext(), "Action add selected location: " + selectedLocation, Toast.LENGTH_SHORT).show();
 
                     List<String> secondSpinnerOptions = dependentData.get(selectedLocation);
 
@@ -302,7 +302,7 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
 
                             String selectedKennel = parent.getItemAtPosition(position).toString();
                             AppConstants.GLOBAL_KENNEL = selectedKennel;
-                            Toast.makeText(getContext(), "Action add selected kennel: " + selectedKennel, Toast.LENGTH_LONG).show();
+//                            Toast.makeText(getContext(), "Action add selected kennel: " + selectedKennel, Toast.LENGTH_SHORT).show();
 //                            List<String> secondSpinnerOptions = dependentData.get(selectedCategory);
 
                             // Populate second spinner based on first spinner's selection
@@ -337,7 +337,12 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
                                     // edit text
 //                                    result.setText(userInput.getText());
                                     EditText nameEditText = (EditText) dialogView.findViewById(R.id.name_edit_text);
-                                    String name = nameEditText.getText().toString();
+                                    String name = nameEditText.getText().toString().trim();
+                                    if (name.isEmpty()) {
+                                        Toast.makeText(getContext(), "Please enter the dog's name.", Toast.LENGTH_LONG).show();
+                                        return;
+                                    }
+
                                     AppConstants.GLOBAL_NAME = name;
 
 
@@ -367,7 +372,7 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
                                             values.put(WeatherContract.DogEntry.COLUMN_DOG_ADVENTURE_TAILS, 0);
                                         Long inserted = database.insert(WeatherContract.DogEntry.TABLE_NAME, null, values);
                                         MyLogger.d("sunshine", "utility sortdata inside while loop inserted: " + inserted);
-                                        Toast.makeText(getContext(), "Action new rows inserted: " + inserted, Toast.LENGTH_LONG).show();
+//                                        Toast.makeText(getContext(), "Action new rows inserted: " + inserted, Toast.LENGTH_LONG).show();
                                         database.close();
                                         Utility.sortData(getContext());
                                     }
@@ -394,8 +399,152 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
         }
         if (id == R.id.action_move) {
 //            openPreferredLocationInMap();
-            Toast.makeText(getContext(), "Action Move", Toast.LENGTH_LONG).show();
+//            Toast.makeText(getContext(), "Action Move", Toast.LENGTH_LONG).show();
+            //            openPreferredLocationInMap();
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                    getContext());
+
+            Spinner spinnerFirst;
+            Context context = getContext();
+            LayoutInflater inflater = LayoutInflater.from(context);
+//            View customLayoutView = inflater.inflate(R.layout.dialog_with_spinners, null);
+//            inflater = ggetLayoutInflater();
+            final View dialogView = inflater.inflate(R.layout.dialog_move, null);
+            alertDialogBuilder.setView(dialogView);
+
+//            EditText nameEditText = (EditText) dialogView.findViewById(R.id.name_edit_text);
+
+
+            spinnerFirst = (Spinner) dialogView.findViewById(R.id.spinner_location);
+//            spinnerSecond = (Spinner) dialogView.findViewById(R.id.spinner_second);
+            final HashMap<String, List<String>> dependentData = new HashMap<>();
+            dependentData.put("Mandy", Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
+                    "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28"));
+            dependentData.put("Kennel", Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
+                    "13", "14", "15", "16", "17", "18", "19", "20"));
+
+            // Populate first spinner
+            ArrayAdapter<String> adapterFirst = new ArrayAdapter<>(getContext(),
+                    android.R.layout.simple_spinner_item, new ArrayList<>(dependentData.keySet()));
+            adapterFirst.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerFirst.setAdapter(adapterFirst);
+
+
+            // Set listener for first spinner
+            spinnerFirst.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    Spinner spinnerSecond;
+                    spinnerSecond = (Spinner) dialogView.findViewById(R.id.spinner_kennel);
+
+                    String selectedLocation = parent.getItemAtPosition(position).toString();
+                    AppConstants.GLOBAL_LOCATION = selectedLocation;
+//                    Toast.makeText(getContext(), "Action add selected location: " + selectedLocation, Toast.LENGTH_SHORT).show();
+
+                    List<String> secondSpinnerOptions = dependentData.get(selectedLocation);
+
+                    // Populate second spinner based on first spinner's selection
+                    ArrayAdapter<String> adapterSecond = new ArrayAdapter<>(getActivity(),
+                            android.R.layout.simple_spinner_item, secondSpinnerOptions);
+                    adapterSecond.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinnerSecond.setAdapter(adapterSecond);
+
+                    spinnerSecond.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                            Spinner spinnerSecond;
+//                            spinnerSecond = (Spinner) dialogView.findViewById(R.id.spinner_second);
+
+                            String selectedKennel = parent.getItemAtPosition(position).toString();
+                            AppConstants.GLOBAL_KENNEL = selectedKennel;
+//                            Toast.makeText(getContext(), "Action add selected kennel: " + selectedKennel, Toast.LENGTH_SHORT).show();
+//                            List<String> secondSpinnerOptions = dependentData.get(selectedCategory);
+
+                            // Populate second spinner based on first spinner's selection
+//                            ArrayAdapter<String> adapterSecond = new ArrayAdapter<>(getActivity(),
+//                                    android.R.layout.simple_spinner_item, secondSpinnerOptions);
+//                            adapterSecond.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                            spinnerSecond.setAdapter(adapterSecond);
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                            // Optionally handle when nothing is selected
+                        }
+                    });
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    // Optionally handle when nothing is selected
+                }
+            });
+
+
+            // set dialog message
+            alertDialogBuilder
+                    .setCancelable(false)
+                    .setMessage("Move a dog? ")
+                    .setPositiveButton("OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    // get user input and set it to result
+                                    // edit text
+//                                    result.setText(userInput.getText());
+
+                                    if (id == DialogInterface.BUTTON_POSITIVE) {
+//                                        Toast.makeText(getActivity(), "Positive button clicked!", Toast.LENGTH_SHORT).show();
+                                        WeatherDbHelper mOpenHelper;
+                                        mOpenHelper = new WeatherDbHelper(getContext());
+                                        final SQLiteDatabase database = mOpenHelper.getWritableDatabase();
+                                        ContentValues values = new ContentValues();
+
+//                                        values.put(WeatherContract.DogEntry.COLUMN_DOG_NAME, AppConstants.GLOBAL_NAME);
+////                                            MyLogger.d("sunshine", "utility sortdata inside while loop name: " + cursor.getString(COLUMN_DOG_NAME));
+//
+//                                        values.put(WeatherContract.DogEntry.COLUMN_DOG_WALKING_COLOR, "blue");
+////                                            MyLogger.d("sunshine", "utility sortdata inside while loop walking color: " + cursor.getString(COLUMN_DOG_WALKING_COLOR));
+
+                                        values.put(WeatherContract.DogEntry.COLUMN_DOG_LOCATION, AppConstants.GLOBAL_LOCATION);
+                                        values.put(WeatherContract.DogEntry.COLUMN_DOG_KENNEL_NUMBER, AppConstants.GLOBAL_KENNEL);
+//                                        values.put(WeatherContract.DogEntry.COLUMN_DOG_PLAYGROUP, 0);
+//                                        values.put(WeatherContract.DogEntry.COLUMN_DOG_GENDER, AppConstants.GLOBAL_GENDER);
+//                                        values.put(WeatherContract.DogEntry.COLUMN_DOG_WALK_AM, 0);
+//                                        values.put(WeatherContract.DogEntry.COLUMN_DOG_WALK_PM, 0);
+//                                        values.put(WeatherContract.DogEntry.COLUMN_DOG_OFFICE, 0);
+//                                        values.put(WeatherContract.DogEntry.COLUMN_DOG_VISITOR, 0);
+//                                        values.put(WeatherContract.DogEntry.COLUMN_DOG_VOLUNTEER_ROOM, 0);
+//                                        values.put(WeatherContract.DogEntry.COLUMN_DOG_ADVENTURE_TAILS, 0);
+                                        String selection = WeatherContract.DogEntry.TABLE_NAME+
+                                                "." + WeatherContract.DogEntry.COLUMN_ID + " = ? ";
+                                        String[] selectionArgs = new String[]{String.valueOf(mPosition + AppConstants.GLOBAL_OFFSET)};
+                                        Integer rowUpdated = database.update(WeatherContract.DogEntry.TABLE_NAME, values, selection, selectionArgs);
+                                        MyLogger.d("sunshine", "dialog move rows updated: " + rowUpdated);
+//                                        Toast.makeText(getContext(), "Action new rows inserted: " + inserted, Toast.LENGTH_LONG).show();
+                                        database.close();
+                                        Utility.sortData(getContext());
+                                    }
+                                }
+                            })
+                    .setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    if (id == DialogInterface.BUTTON_NEGATIVE) {
+                                        Toast.makeText(getActivity(), "Negative button clicked!", Toast.LENGTH_SHORT).show();
+                                    }
+                                    dialog.cancel();
+                                }
+                            });
+
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
+
+//            Toast.makeText(getContext(), "Action New", Toast.LENGTH_LONG).show();
             return true;
+//            return true;
         }
 
         return super.onOptionsItemSelected(item);

@@ -30,9 +30,13 @@
             android:textColor="@color/grey_700"
             android:textSize="48sp" />
         <View
+            android:id="@+id/first_line_view"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@android:color/darker_gray" />
+            android:background="@android:color/darker_gray"
+            android:visibility="invisible"
+            android:paddingBottom="20dp"
+            android:layout_marginBottom="10dp"/>
 
          <RadioGroup
             android:id="@+id/walking_color_radio_group"
@@ -101,10 +105,12 @@
 
         </RadioGroup>
         <View
+            android:id="@+id/second_line_view"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@android:color/darker_gray"
-            android:paddingTop="20dp"/>
+            android:paddingTop="20dp"
+            android:visibility="invisible" />
 
         <!-- Humidity, wind, pressure -->
         <LinearLayout
@@ -179,9 +185,13 @@
 
         </LinearLayout>
         <View
+            android:id="@+id/third_line_view"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@android:color/darker_gray" />
+            android:background="@android:color/darker_gray"
+            android:visibility="invisible"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"/>
 
     </LinearLayout>
 </LinearLayout>

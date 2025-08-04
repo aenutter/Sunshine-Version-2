@@ -133,6 +133,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private RadioGroup radioGroupWalkingColors;
     Spinner spinnerFirst;
     Spinner spinnerSecond;
+    View mFirstLineView;
+    View mSecondLineView;
+    View mThirdLineView;
 
 
 
@@ -197,6 +200,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         spinnerFirst = (Spinner) view.findViewById(R.id.spinner_first);
         spinnerSecond = (Spinner) view.findViewById(R.id.spinner_second);
         mGenderView = (TextView) view.findViewById(R.id.detail_dog_gender_textview);
+        mFirstLineView = (View) view.findViewById(R.id.first_line_view);
+        mSecondLineView = (View) view.findViewById(R.id.second_line_view);
+        mThirdLineView = (View) view.findViewById(R.id.third_line_view);
 //        mTextViewBlue = (TextView) view.findViewById(R.id.text_blue);
 //        mTextViewPink = (TextView) view.findViewById(R.id.text_pink);
 //        mTextViewYellow = (TextView) view.findViewById(R.id.text_yellow);
@@ -321,7 +327,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 //                    // Optionally handle when nothing is selected
 //                }
 //            });
-
+            mFirstLineView.setVisibility(View.VISIBLE);
+            mSecondLineView.setVisibility(View.VISIBLE);
+            mThirdLineView.setVisibility(View.VISIBLE);
             String walkingColor  = data.getString(DogFragment.COL_DOG_WALKING_COLOR);
 
             if (walkingColor.equals("blue"))
