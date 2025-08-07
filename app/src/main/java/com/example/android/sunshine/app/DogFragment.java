@@ -21,6 +21,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -70,6 +71,8 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
 
     private ListView mListView;
     private int mPosition = ListView.INVALID_POSITION;
+    private int position = 0;
+    private long itemID = 0;
     private boolean mUseTodayLayout;
 
     private static final String SELECTED_KEY = "selected_position";
@@ -168,6 +171,18 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_delete) {
+            Toast.makeText(getContext(), "Action Delete position: " + mPosition + " itemID: " + itemID, Toast.LENGTH_LONG).show();
+//            Bundle bundle = getArguments();
+//            if (bundle != null) {
+//                mPosition = bundle.getInt("position");
+//                itemID = bundle.getLong("itemID");
+//                Toast.makeText(getContext(), "Action Delete bundle position: " + mPosition + " itemID: " + itemID, Toast.LENGTH_LONG).show();
+//                // Use the position within your dialog logic
+//                // ...
+//            } else {
+//                Toast.makeText(getContext(), "Action Delete bundle is empty", Toast.LENGTH_LONG).show();
+//            }
+
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                     getContext());
 
@@ -188,9 +203,9 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
                                         final SQLiteDatabase database = mOpenHelper.getWritableDatabase();
                                         String selection = WeatherContract.DogEntry.TABLE_NAME+
                                                 "." + WeatherContract.DogEntry.COLUMN_ID + " = ? ";
-                                        String[] selectionArgs = new String[]{String.valueOf(mPosition + AppConstants.GLOBAL_OFFSET)};
+                                        String[] selectionArgs = new String[]{String.valueOf(itemID)};
                                         Integer rowsDeleted = database.delete(WeatherContract.DogEntry.TABLE_NAME, selection, selectionArgs);
-                                        Toast.makeText(getContext(), "Action Delete rows deleted: " + rowsDeleted + " position: " + mPosition, Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getContext(), "Action Delete rows deleted: " + rowsDeleted + " itemID: " + itemID, Toast.LENGTH_LONG).show();
                                         database.close();
                                         Utility.sortData(getContext());
                                     }
@@ -439,7 +454,7 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
 
                     String selectedLocation = parent.getItemAtPosition(position).toString();
                     AppConstants.GLOBAL_LOCATION = selectedLocation;
-//                    Toast.makeText(getContext(), "Action add selected location: " + selectedLocation, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Action add selected location: " + selectedLocation, Toast.LENGTH_SHORT).show();
 
                     List<String> secondSpinnerOptions = dependentData.get(selectedLocation);
 
@@ -457,7 +472,7 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
 
                             String selectedKennel = parent.getItemAtPosition(position).toString();
                             AppConstants.GLOBAL_KENNEL = selectedKennel;
-//                            Toast.makeText(getContext(), "Action add selected kennel: " + selectedKennel, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Action add selected kennel: " + selectedKennel, Toast.LENGTH_SHORT).show();
 //                            List<String> secondSpinnerOptions = dependentData.get(selectedCategory);
 
                             // Populate second spinner based on first spinner's selection
@@ -500,7 +515,9 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
                                         ContentValues values = new ContentValues();
 
 //                                        values.put(WeatherContract.DogEntry.COLUMN_DOG_NAME, AppConstants.GLOBAL_NAME);
-////                                            MyLogger.d("sunshine", "utility sortdata inside while loop name: " + cursor.getString(COLUMN_DOG_NAME));
+//                                        MyLogger.d("sunshine", "utility sortdata inside while loop name: " + cursor.getString(cursor.getColumnIndex(WeatherContract.DogEntry.COLUMN_DOG_NAME)));
+//                                        Toast.makeText(getContext(), "dialog move dog name: " + cursor.getString(cursor.getColumnIndex(WeatherContract.DogEntry.COLUMN_DOG_NAME)), Toast.LENGTH_LONG).show();
+
 //
 //                                        values.put(WeatherContract.DogEntry.COLUMN_DOG_WALKING_COLOR, "blue");
 ////                                            MyLogger.d("sunshine", "utility sortdata inside while loop walking color: " + cursor.getString(COLUMN_DOG_WALKING_COLOR));
@@ -517,10 +534,22 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
 //                                        values.put(WeatherContract.DogEntry.COLUMN_DOG_ADVENTURE_TAILS, 0);
                                         String selection = WeatherContract.DogEntry.TABLE_NAME+
                                                 "." + WeatherContract.DogEntry.COLUMN_ID + " = ? ";
-                                        String[] selectionArgs = new String[]{String.valueOf(mPosition + AppConstants.GLOBAL_OFFSET)};
-                                        Integer rowUpdated = database.update(WeatherContract.DogEntry.TABLE_NAME, values, selection, selectionArgs);
-                                        MyLogger.d("sunshine", "dialog move rows updated: " + rowUpdated);
+                                        String[] selectionArgs = new String[]{String.valueOf(itemID)};
+                                        Integer rowUpdated = 0;
+//                                        database.beginTransaction();
+                                        try {
+                                            rowUpdated = database.update(WeatherContract.DogEntry.TABLE_NAME, values, selection, selectionArgs);
+                                        } catch (SQLiteException e) {
+                                            // Handle the exception, which provides error details
+                                            // Log the error message or display it to the user
+                                            MyLogger.d("sunshine", "Database update error: " + e.getMessage());
+                                            Toast.makeText(getContext(), "Database update error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                                        }
+                                        MyLogger.d("sunshine", "dialog move rows updated: " + rowUpdated + " position: " + mPosition + " itemID: " + itemID);
+                                        Toast.makeText(getContext(), "dialog move rows updated: " + rowUpdated + " position: " + mPosition + " itemID: " + itemID, Toast.LENGTH_LONG).show();
 //                                        Toast.makeText(getContext(), "Action new rows inserted: " + inserted, Toast.LENGTH_LONG).show();
+//                                        database.setTransactionSuccessful();
+//                                        database.endTransaction();
                                         database.close();
                                         Utility.sortData(getContext());
                                     }
@@ -570,8 +599,15 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 // CursorAdapter returns a cursor at the correct position for getItem(), or null
                 // if it cannot seek to that position.
+
+//                Bundle bundle = new Bundle();
+//                bundle.putInt("position", position); // Or bundle.putSerializable("data", myDataObject);
+                itemID = adapterView.getItemIdAtPosition(position);
+//                bundle.putLong("itemID", itemID);
+
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                 MyLogger.d("sunshine", "onItemClick position: " + position);
+                Toast.makeText(getActivity(), "onItemClick position: " + position + " global offset: " + AppConstants.GLOBAL_OFFSET, Toast.LENGTH_LONG).show();
                 if (cursor != null) {
 //                    String locationSetting = Utility.getPreferredLocation(getActivity());
                     MyLogger.d("sunshine", "onItemClick uri: " + WeatherContract.DogEntry.buildDogUri(position + AppConstants.GLOBAL_OFFSET ));

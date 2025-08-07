@@ -19,3 +19,9 @@ delete from activities;
 SELECT dogs.name, activities.activities_id
 FROM dogs
 INNER JOIN activities.activities_id ON dogs.dogs_id = activities.activities_id;
+
+remove load from json
+check if kennel is already occupied
+test
+check if name is already present
+refractor file names and namespace
