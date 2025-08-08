@@ -22,6 +22,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -592,6 +594,10 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
         // Get a reference to the ListView, and attach this adapter to it.
         mListView = (ListView) rootView.findViewById(R.id.listview_forecast);
         mListView.setAdapter(mDogAdapter);
+
+        mListView.setDivider(new ColorDrawable(Color.GRAY)); // Set divider color
+        mListView.setDividerHeight(1); // Set divider height in pixels
+
         // We'll call our MainActivity
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -645,7 +651,7 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
         }
 
         mDogAdapter.setUseTodayLayout(mUseTodayLayout);
-
+        Utility.sortData(getContext());
         return rootView;
     }
 
