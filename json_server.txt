@@ -27,4 +27,4 @@ check if name is already present
 refractor file names and namespace
 delete files
 x put divider in listview
-sql update at midnight
+x sql update at midnight

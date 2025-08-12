@@ -15,7 +15,11 @@
  */
 package com.example.android.sunshine.app;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -23,6 +27,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -51,9 +56,11 @@ import android.widget.Toast;
 import com.example.android.sunshine.app.data.WeatherContract;
 import com.example.android.sunshine.app.data.WeatherContract.WeatherEntry;
 import com.example.android.sunshine.app.data.WeatherDbHelper;
+import com.example.android.sunshine.app.data.MyContentObserver;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -117,13 +124,13 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private TextView mTextViewYellow;
     private TextView mTextViewOrange;
     private TextView mTextViewRed;
-    private CheckBox playgroupView;
-    private CheckBox mWalkAMView;
-    private CheckBox mWalkPMView;
-    private CheckBox mOfficeView;
-    private CheckBox mVisitorView;
-    private CheckBox mVolunteerView;
-    private CheckBox mAdventureTailsView;
+    private static CheckBox playgroupView;
+    private static CheckBox mWalkAMView;
+    private static CheckBox mWalkPMView;
+    private static CheckBox mOfficeView;
+    private static CheckBox mVisitorView;
+    private static CheckBox mVolunteerView;
+    private static CheckBox mAdventureTailsView;
     private RadioGroup mRadioGroup;
     private RadioButton mRadioButtonBlue;
     private RadioButton mRadioButtonPink;
@@ -160,6 +167,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
 //        mWindView = (TextView) rootView.findViewById(R.id.detail_wind_textview);
 //        mPressureView = (TextView) rootView.findViewById(R.id.detail_pressure_textview);
+        createAlarm();
         return rootView;
     }
 
@@ -223,6 +231,20 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         mRadioButtonRed = (RadioButton) view.findViewById(R.id.radio_red);
         radioGroupWalkingColors = (RadioGroup) view.findViewById(R.id.walking_color_radio_group);
         view.requestLayout();
+
+//        private MyContentObserver contentObserver;
+//
+//        // Create a Handler for the observer to run on the main thread
+//        Handler handler = new Handler(Looper.getMainLooper());
+//        contentObserver = new MyContentObserver(handler);
+//
+//        // Register the observer with the ContentResolver
+//        // Replace 'YOUR_CONTENT_URI' with the actual URI you want to observe
+//        requireContext().getContentResolver().registerContentObserver(
+//                YOUR_CONTENT_URI, // The URI to observe
+//                true, // Notify descendants of the URI
+//                contentObserver
+//        );
     }
 
     @Override
@@ -727,4 +749,67 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) { }
+
+    public void createAlarm() {
+        //System request code
+        int DATA_FETCHER_RC = 123;
+        //Create an alarm manager
+        AlarmManager mAlarmManager = (AlarmManager)getContext().getSystemService(Context.ALARM_SERVICE);
+
+        //Create the time of day you would like it to go off. Use a calendar
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+
+        //Create an intent that points to the receiver. The system will notify the app about the current time, and send a broadcast to the app
+        Intent intent = new Intent(getContext(), AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), DATA_FETCHER_RC,intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        //initialize the alarm by using inexactrepeating. This allows the system to scheduler your alarm at the most efficient time around your
+        //set time, it is usually a few seconds off your requested time.
+        // you can also use setExact however this is not recommended. Use this only if it must be done then.
+
+        //Also set the interval using the AlarmManager constants
+        mAlarmManager.setInexactRepeating(AlarmManager.RTC,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY, pendingIntent);
+
+    }
+    //This is the broadcast receiver you create where you place your logic once the alarm is run. Once the system realizes your alarm should be run, it will communicate to your app via the BroadcastReceiver. You must implement onReceive.
+    public static class AlarmReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //Your code once the alarm is set off goes here
+            //You can use an intent filter to filter the specified intent
+            WeatherDbHelper mOpenHelper;
+            mOpenHelper = new WeatherDbHelper(context);
+            final SQLiteDatabase database = mOpenHelper.getWritableDatabase();
+//            String selection = WeatherContract.DogEntry.TABLE_NAME+
+//                    "." + WeatherContract.DogEntry.COLUMN_ID + " = ? ";
+//            String[] selectionArgs = new String[]{String.valueOf(itemID)};
+
+            ContentValues values = new ContentValues();
+            values.put(WeatherContract.DogEntry.COLUMN_DOG_PLAYGROUP, 0);
+            values.put(WeatherContract.DogEntry.COLUMN_DOG_WALK_AM, 0);
+            values.put(WeatherContract.DogEntry.COLUMN_DOG_WALK_PM, 0);
+            values.put(WeatherContract.DogEntry.COLUMN_DOG_OFFICE, 0);
+            values.put(WeatherContract.DogEntry.COLUMN_DOG_VISITOR, 0);
+            values.put(WeatherContract.DogEntry.COLUMN_DOG_VOLUNTEER_ROOM, 0);
+            values.put(WeatherContract.DogEntry.COLUMN_DOG_ADVENTURE_TAILS, 0);
+            // Add more columns and their new values as needed
+
+            Integer rowsUpdated = database.update(WeatherContract.DogEntry.TABLE_NAME, values, null, null);
+//            Integer rowsDeleted = database.delete(WeatherContract.DogEntry.TABLE_NAME, selection, selectionArgs);
+            Toast.makeText(context, "Action Delete rows updated: " + rowsUpdated, Toast.LENGTH_LONG).show();
+            MyLogger.d("sunshine", "inside AlarmReceiver rows updated: " + rowsUpdated);
+            database.close();
+            context.getContentResolver().notifyChange(WeatherContract.DogEntry.CONTENT_URI, null);
+            DetailFragment.playgroupView.setChecked(false);
+            DetailFragment.mWalkAMView.setChecked(false);
+            DetailFragment.mWalkPMView.setChecked(false);
+            DetailFragment.mOfficeView.setChecked(false);
+            DetailFragment.mVisitorView.setChecked(false);
+            DetailFragment.mVolunteerView.setChecked(false);
+            DetailFragment.mAdventureTailsView.setChecked(false);
+        }
+    }
+
 }
