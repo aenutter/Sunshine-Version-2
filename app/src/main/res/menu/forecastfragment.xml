@@ -9,7 +9,7 @@
     </item>
 
     <item android:id="@+id/action_new"
-        android:title="@string/action_delete"
+        android:title="@string/action_new"
         app:showAsAction="always"
         android:icon="@drawable/add_24dp">
     </item>
@@ -18,5 +18,11 @@
         android:title="@string/action_move"
         app:showAsAction="always"
         android:icon="@drawable/move_item_24dp">
+    </item>
+
+    <item android:id="@+id/action_clear"
+        android:title="@string/action_clear"
+        app:showAsAction="always"
+        android:icon="@drawable/delete_history_24dp">
     </item>
 </menu>

@@ -56,7 +56,7 @@ import android.widget.Toast;
 import com.example.android.sunshine.app.data.WeatherContract;
 import com.example.android.sunshine.app.data.WeatherContract.WeatherEntry;
 import com.example.android.sunshine.app.data.WeatherDbHelper;
-import com.example.android.sunshine.app.data.MyContentObserver;
+//import com.example.android.sunshine.app.data.MyContentObserver;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -124,13 +124,13 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private TextView mTextViewYellow;
     private TextView mTextViewOrange;
     private TextView mTextViewRed;
-    private static CheckBox playgroupView;
-    private static CheckBox mWalkAMView;
-    private static CheckBox mWalkPMView;
-    private static CheckBox mOfficeView;
-    private static CheckBox mVisitorView;
-    private static CheckBox mVolunteerView;
-    private static CheckBox mAdventureTailsView;
+    public static CheckBox playgroupView;
+    public static CheckBox mWalkAMView;
+    public static CheckBox mWalkPMView;
+    public static CheckBox mOfficeView;
+    public static CheckBox mVisitorView;
+    public static CheckBox mVolunteerView;
+    public static CheckBox mAdventureTailsView;
     private RadioGroup mRadioGroup;
     private RadioButton mRadioButtonBlue;
     private RadioButton mRadioButtonPink;
@@ -758,8 +758,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         //Create the time of day you would like it to go off. Use a calendar
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 17);
+        calendar.set(Calendar.MINUTE, 38);
 
         //Create an intent that points to the receiver. The system will notify the app about the current time, and send a broadcast to the app
         Intent intent = new Intent(getContext(), AlarmReceiver.class);

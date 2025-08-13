@@ -164,6 +164,8 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
         MenuItem menuNewItem = menu.findItem(R.id.action_new);
 
         MenuItem menuMoveItem = menu.findItem(R.id.action_move);
+
+        MenuItem menuClearHistory = menu.findItem(R.id.action_clear);
     }
 
     @Override
@@ -172,6 +174,84 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        if (id == R.id.action_clear) {
+            Toast.makeText(getContext(), "Action Clear History position: " + mPosition + " itemID: " + itemID, Toast.LENGTH_LONG).show();
+//            Bundle bundle = getArguments();
+//            if (bundle != null) {
+//                mPosition = bundle.getInt("position");
+//                itemID = bundle.getLong("itemID");
+//                Toast.makeText(getContext(), "Action Delete bundle position: " + mPosition + " itemID: " + itemID, Toast.LENGTH_LONG).show();
+//                // Use the position within your dialog logic
+//                // ...
+//            } else {
+//                Toast.makeText(getContext(), "Action Delete bundle is empty", Toast.LENGTH_LONG).show();
+//            }
+
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                    getContext());
+
+            // set dialog message
+            alertDialogBuilder
+                    .setCancelable(false)
+                    .setMessage("Clear all Activity History? ")
+                    .setPositiveButton("OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    // get user input and set it to result
+                                    // edit text
+//                                    result.setText(userInput.getText());
+                                    if (id == DialogInterface.BUTTON_POSITIVE) {
+//                                        Toast.makeText(getActivity(), "Positive button clicked!", Toast.LENGTH_SHORT).show();
+                                        WeatherDbHelper mOpenHelper;
+                                        mOpenHelper = new WeatherDbHelper(getContext());
+                                        final SQLiteDatabase database = mOpenHelper.getWritableDatabase();
+//            String selection = WeatherContract.DogEntry.TABLE_NAME+
+//                    "." + WeatherContract.DogEntry.COLUMN_ID + " = ? ";
+//            String[] selectionArgs = new String[]{String.valueOf(itemID)};
+
+                                        ContentValues values = new ContentValues();
+                                        values.put(WeatherContract.DogEntry.COLUMN_DOG_PLAYGROUP, 0);
+                                        values.put(WeatherContract.DogEntry.COLUMN_DOG_WALK_AM, 0);
+                                        values.put(WeatherContract.DogEntry.COLUMN_DOG_WALK_PM, 0);
+                                        values.put(WeatherContract.DogEntry.COLUMN_DOG_OFFICE, 0);
+                                        values.put(WeatherContract.DogEntry.COLUMN_DOG_VISITOR, 0);
+                                        values.put(WeatherContract.DogEntry.COLUMN_DOG_VOLUNTEER_ROOM, 0);
+                                        values.put(WeatherContract.DogEntry.COLUMN_DOG_ADVENTURE_TAILS, 0);
+                                        // Add more columns and their new values as needed
+
+                                        Integer rowsUpdated = database.update(WeatherContract.DogEntry.TABLE_NAME, values, null, null);
+//            Integer rowsDeleted = database.delete(WeatherContract.DogEntry.TABLE_NAME, selection, selectionArgs);
+                                        Toast.makeText(getContext(), "Action Clear History rows updated: " + rowsUpdated, Toast.LENGTH_LONG).show();
+                                        MyLogger.d("sunshine", "Action Clear History rows update: " + rowsUpdated);
+                                        database.close();
+                                        getContext().getContentResolver().notifyChange(WeatherContract.DogEntry.CONTENT_URI, null);
+                                        DetailFragment.playgroupView.setChecked(false);
+                                        DetailFragment.mWalkAMView.setChecked(false);
+                                        DetailFragment.mWalkPMView.setChecked(false);
+                                        DetailFragment.mOfficeView.setChecked(false);
+                                        DetailFragment.mVisitorView.setChecked(false);
+                                        DetailFragment.mVolunteerView.setChecked(false);
+                                        DetailFragment.mAdventureTailsView.setChecked(false);
+                                    }
+                                }
+                            })
+                    .setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    if (id == DialogInterface.BUTTON_NEGATIVE) {
+                                        Toast.makeText(getActivity(), "Negative button clicked!", Toast.LENGTH_SHORT).show();
+                                    }
+                                    dialog.cancel();
+                                }
+                            });
+
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
+
+        }
         if (id == R.id.action_delete) {
             Toast.makeText(getContext(), "Action Delete position: " + mPosition + " itemID: " + itemID, Toast.LENGTH_LONG).show();
 //            Bundle bundle = getArguments();
